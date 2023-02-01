@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>IceShell.Core</PackageId>
+    <Title>IceShell Core</Title>
+    <Authors>WithLithum</Authors>
+    <Company>NexusKrop</Company>
+    <Product>IceShell</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NexusKrop.IceCube" Version="0.1.1-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Exceptions\ER.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ER.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Exceptions\ER.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ER.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Messages.resx">
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Platforms\" />
+    <Folder Include="Util\" />
+  </ItemGroup>
+
+</Project>
