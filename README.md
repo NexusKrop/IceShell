@@ -12,3 +12,7 @@ you like to change.
 ### Build from Source
 
 See [BUILDING](BUILDING.md) file.
+
+## License
+
+
