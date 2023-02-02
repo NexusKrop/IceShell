@@ -22,11 +22,11 @@ public class Shell
 
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
 
-    private bool _exit;
+    public static bool ExitShell { get; set; }
 
-    public void Quit()
+    public static void Quit()
     {
-        _exit = true;
+        ExitShell = true;
     }
 
     public bool ExecuteOnDisk(string fileName, string[]? args)
@@ -104,83 +104,27 @@ public class Shell
                 return;
             }
 
-            // Get the command from manager
-            var cmd = _manager.Get(command);
-            Type? type;
+            var type = _manager.GetComplex(command);
 
-            // If not a command
-            if (cmd == null)
-            {
-                // Wait! check for a complex command instead.
-                type = _manager.GetComplex(command);
-
-                // If no such complex command either
-                if (type == null)
-                {
-                    // Reads the arguments out
-                    _parser.ReadArgs(out args);
-
-                    // Executes them on path
-                    if (!ExecuteOnPath(command, args))
-                    {
-                        // If no such path file, say bad command
-                        ConsoleOutput.PrintShellError(Messages.BadCommand);
-                    }
-
-                    return;
-                }
-            }
-            else
-            {
-                _parser.ReadArgs(out args);
-                // Perform simple command logic here
-                type = cmd.CommandType;
-
-                // Check if zero arguments, and arguments are specified
-                if (cmd.NumArgs == 0 && !(args == null || args.Length == 0))
-                {
-                    ConsoleOutput.PrintShellError(string.Format(Messages.TooManyArguments, cmd.NumArgs));
-                    return;
-                }
-
-                // Check if argument count matches required count.
-                // If claimed argument count is below 0, the command will verify themselves.
-                if (cmd.NumArgs > 0)
-                {
-                    if (args == null)
-                    {
-                        ConsoleOutput.PrintShellError(string.Format(Messages.NoArguments, cmd.NumArgs));
-                        return;
-                    }
-
-                    if (args.Length > cmd.NumArgs)
-                    {
-                        ConsoleOutput.PrintShellError(string.Format(Messages.TooManyArguments, cmd.NumArgs));
-                        return;
-                    }
-
-                    if (args.Length < cmd.NumArgs)
-                    {
-                        ConsoleOutput.PrintShellError(string.Format(Messages.TooLessArguments, cmd.NumArgs));
-                        return;
-                    }
-                }
-            }
-
+            // If no such complex command either
             if (type == null)
             {
-                ConsoleOutput.PrintShellError(Messages.BadCommand);
+                // Reads the arguments out
+                _parser.ReadArgs(out args);
+
+                // Executes them on path
+                if (!ExecuteOnPath(command, args))
+                {
+                    // If no such path file, say bad command
+                    ConsoleOutput.PrintShellError(Messages.BadCommand);
+                }
+
                 return;
             }
 
             var instance = Activator.CreateInstance(type);
 
-            if (instance is ICommand icmd)
-            {
-                icmd.Execute(this, args);
-                Console.WriteLine();
-            }
-            else if (instance is IComplexCommand ixcmd)
+            if (instance is IComplexCommand ixcmd)
             {
                 var arg = new ComplexArgument(_parser);
 
@@ -207,11 +151,9 @@ public class Shell
     {
         Console.WriteLine();
 
-        while (!_exit)
+        while (!ExitShell)
         {
-            Console.Write("{0}> ", Environment.CurrentDirectory);
-
-            var input = Console.ReadLine();
+            var input = ReadLine.Read(string.Format("{0}> ", Environment.CurrentDirectory));
 
             if (string.IsNullOrWhiteSpace(input))
             {
