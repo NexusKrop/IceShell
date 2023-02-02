@@ -123,7 +123,7 @@ public static class PathSearcher
 
             var possible = GetSystemExecutableName(Path.Combine(path, name));
 
-            if (!File.Exists(possible))
+            if (!File.Exists(possible) || !FileUtil.IsExecutable(possible))
             {
                 continue;
             }

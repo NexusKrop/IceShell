@@ -108,18 +108,22 @@ public class Shell
             var cmd = _manager.Get(command);
             Type? type;
 
-            // If not a command, check if user specify an executable in PATH
+            // If not a command
             if (cmd == null)
             {
+                // Wait! check for a complex command instead.
                 type = _manager.GetComplex(command);
 
-                // Wait! check for a complex command instead.
+                // If no such complex command either
                 if (type == null)
                 {
+                    // Reads the arguments out
                     _parser.ReadArgs(out args);
 
+                    // Executes them on path
                     if (!ExecuteOnPath(command, args))
                     {
+                        // If no such path file, say bad command
                         ConsoleOutput.PrintShellError(Messages.BadCommand);
                     }
 
