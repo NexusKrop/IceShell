@@ -45,6 +45,11 @@ public class Shell
 
         args?.Iterate(x => startInfo.ArgumentList.Add(x));
 
+        if (!FileUtil.IsExecutable(actual))
+        {
+            throw new CommandFormatException(Messages.FileNotExecutable);
+        }
+
         Process.Start(startInfo);
 
         return true;

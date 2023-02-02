@@ -129,6 +129,9 @@
   <data name="EmptyCommand" xml:space="preserve">
     <value>Empty command</value>
   </data>
+  <data name="FileNotExecutable" xml:space="preserve">
+    <value>File not in an executable (runnable) format</value>
+  </data>
   <data name="NoArguments" xml:space="preserve">
     <value>No argument specified (command requires {0})</value>
   </data>

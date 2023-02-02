@@ -97,6 +97,15 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File not in an executable (runnable) format.
+        /// </summary>
+        internal static string FileNotExecutable {
+            get {
+                return ResourceManager.GetString("FileNotExecutable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No argument specified (command requires {0}).
         /// </summary>
         internal static string NoArguments {
