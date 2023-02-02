@@ -147,4 +147,7 @@
   <data name="TooManyArguments" xml:space="preserve">
     <value>Too many arguments (command requires {0})</value>
   </data>
+  <data name="UnexceptedError" xml:space="preserve">
+    <value>Unexcepted error: {0}</value>
+  </data>
 </root>

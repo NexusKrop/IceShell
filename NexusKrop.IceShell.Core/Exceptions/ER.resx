@@ -117,6 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ComplexArgumentOrderFailure" xml:space="preserve">
+    <value>Required complex argument values cannot have perceeding optional complex argument values.</value>
+  </data>
+  <data name="ComplexInvalidOption" xml:space="preserve">
+    <value>Invalid option argument</value>
+  </data>
+  <data name="ComplexMissingRequiredOption" xml:space="preserve">
+    <value>Missing required option '{0}'</value>
+  </data>
+  <data name="ComplexNonExistingOption" xml:space="preserve">
+    <value>No such option '{0}'</value>
+  </data>
+  <data name="ComplexNoValueAllowed" xml:space="preserve">
+    <value>Option '{0}' excepts no value but found value</value>
+  </data>
+  <data name="ComplexPreceedingOption" xml:space="preserve">
+    <value>Value arguments cannot be preceeded by option arguments</value>
+  </data>
+  <data name="ComplexValueRequired" xml:space="preserve">
+    <value>Option '{0}' excepts value but found nothing</value>
+  </data>
+  <data name="DirBadDirectory" xml:space="preserve">
+    <value>Directory not found</value>
+  </data>
   <data name="ExceptedBeginOfQuote" xml:space="preserve">
     <value>Excepted begin of quote but found nothing</value>
   </data>

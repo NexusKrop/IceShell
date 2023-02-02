@@ -2,18 +2,20 @@
 
 using NexusKrop.IceShell.Core.Exceptions;
 using System.Collections.Specialized;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 public class CommandParser
 {
     public const char WHITESPACE = ' ';
     public const char DOUBLE_QUOTE = '"';
+    public const char ESCAPE = '\\';
 
-    public CommandParser()
+    internal CommandParser()
     {
     }
 
-    public CommandParser(string line, int position)
+    internal CommandParser(string line, int position)
     {
         Line = line;
         Position = position;
@@ -29,13 +31,13 @@ public class CommandParser
         return Position + offset <= Length;
     }
 
-    public void Clear()
+    internal void Clear()
     {
         Line = string.Empty;
         Position = 0;
     }
 
-    public void SetLine(string line)
+    internal void SetLine(string line)
     {
         Clear();
         Line = line;
@@ -56,10 +58,25 @@ public class CommandParser
         return Line[Position++];
     }
 
-    public void ReadCommand(out string? command, out string[]? args)
+    public string ReadToEnd()
     {
-        command = ReadString();
+        if (!CanRead())
+        {
+            throw new CommandFormatException(ER.ExceptedString);
+        }
 
+        var builder = new StringBuilder();
+
+        while (CanRead())
+        {
+            builder.Append(Read());
+        }
+
+        return builder.ToString();
+    }
+
+    public void ReadArgs(out string[]? args)
+    {
         List<string> ar = new();
 
         while (CanRead())
@@ -105,6 +122,8 @@ public class CommandParser
 
         Skip();
 
+        var escaping = false;
+
         while (true)
         {
             if (!CanRead())
@@ -113,6 +132,19 @@ public class CommandParser
             }
 
             var c = Read();
+
+            if (c == ESCAPE)
+            {
+                escaping = true;
+                continue;
+            }
+
+            if (escaping)
+            {
+                escaping = false;
+                builder.Append(c);
+                continue;
+            }
 
             if (c == DOUBLE_QUOTE)
             {

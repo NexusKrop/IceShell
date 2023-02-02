@@ -61,6 +61,78 @@ namespace NexusKrop.IceShell.Core.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required complex argument values cannot have perceeding optional complex argument values..
+        /// </summary>
+        internal static string ComplexArgumentOrderFailure {
+            get {
+                return ResourceManager.GetString("ComplexArgumentOrderFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid option argument.
+        /// </summary>
+        internal static string ComplexInvalidOption {
+            get {
+                return ResourceManager.GetString("ComplexInvalidOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing required option &apos;{0}&apos;.
+        /// </summary>
+        internal static string ComplexMissingRequiredOption {
+            get {
+                return ResourceManager.GetString("ComplexMissingRequiredOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No such option &apos;{0}&apos;.
+        /// </summary>
+        internal static string ComplexNonExistingOption {
+            get {
+                return ResourceManager.GetString("ComplexNonExistingOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option &apos;{0}&apos; excepts no value but found value.
+        /// </summary>
+        internal static string ComplexNoValueAllowed {
+            get {
+                return ResourceManager.GetString("ComplexNoValueAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value arguments cannot be preceeded by option arguments.
+        /// </summary>
+        internal static string ComplexPreceedingOption {
+            get {
+                return ResourceManager.GetString("ComplexPreceedingOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option &apos;{0}&apos; excepts value but found nothing.
+        /// </summary>
+        internal static string ComplexValueRequired {
+            get {
+                return ResourceManager.GetString("ComplexValueRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory not found.
+        /// </summary>
+        internal static string DirBadDirectory {
+            get {
+                return ResourceManager.GetString("DirBadDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Excepted begin of quote but found nothing.
         /// </summary>
         internal static string ExceptedBeginOfQuote {

@@ -1,16 +1,15 @@
 ﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+
+using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Specifing -1 in NumArgs tells Shell not to vaildate the number of
-// arguments passed by the user
-
-// TODO: implement arguments
-[Command("dir", -1)]
-internal class DirCommand : ICommand
+[ComplexCommand("dir")]
+internal class DirCommandEx : IComplexCommand
 {
     private sealed record class DirTableRow(string ShortDateTime, string Size, string FileName);
 
@@ -23,18 +22,21 @@ internal class DirCommand : ICommand
     private int _sizeLongest;
     private int _fileNameLongest;
 
-    // TODO: replace with ToString
-    private static string GetTableDateTime(DateTime time)
+    private string _dateFormat = "yyyy/MM/dd";
+    private string _timeFormat = "HH:mm";
+    private string _dir = Environment.CurrentDirectory;
+
+    private string GetTableDateTime(DateTime time)
     {
         // Use a string builder
         // As we need to dynamically determine the space between sdStr and stStr
         var builder = new StringBuilder();
 
         // sdStr = short date string
-        var sdStr = time.ToShortDateString();
+        var sdStr = time.ToString(_dateFormat);
 
         // stStr = short time string
-        var stStr = time.ToShortTimeString();
+        var stStr = time.ToString(_timeFormat);
 
         // We add short date string first.
         builder.Append(sdStr);
@@ -114,16 +116,14 @@ internal class DirCommand : ICommand
         }
     }
 
-    public void Execute(Shell shell, string[]? args)
+    private void Execute()
     {
-        var current = Environment.CurrentDirectory;
-
         // Print DOS-like table title, sans the volume information (too complex).
-        Console.WriteLine(Messages.DirDirectory, current);
+        Console.WriteLine(Messages.DirDirectory, _dir);
         Console.WriteLine();
 
         // Iterate through directories.
-        foreach (var folder in Directory.GetDirectories(current))
+        foreach (var folder in Directory.GetDirectories(_dir))
         {
             // Acquire info and last changed datetime for the entry.
             var info = new DirectoryInfo(folder);
@@ -146,7 +146,7 @@ internal class DirCommand : ICommand
         }
 
         // Do the same for files.
-        foreach (var file in Directory.GetFiles(current))
+        foreach (var file in Directory.GetFiles(_dir))
         {
             var info = new FileInfo(file);
             var modified = File.GetLastWriteTime(file);
@@ -173,5 +173,41 @@ internal class DirCommand : ICommand
         }
 
         Console.WriteLine("{0} files, {1} directories", _fileCount, _dirCount);
+    }
+
+    public void Define(ComplexArgument argument)
+    {
+        argument.AddValue(new("directory", false));
+        argument.AddOption(new('d', true, false));
+        argument.AddOption(new('t', true, false));
+    }
+
+    public void Execute(ComplexArgumentParseResult argument)
+    {
+        if (argument.Values.Count == 1)
+        {
+            var targetDir = argument.Values[0];
+
+            if (string.IsNullOrWhiteSpace(targetDir) || !Directory.Exists(targetDir))
+            {
+                throw new CommandFormatException(ER.DirBadDirectory);
+            }
+
+            _dir = targetDir;
+        }
+
+        if (argument.Options.TryGetValue('d', out var dateFormat)
+            && !string.IsNullOrWhiteSpace(dateFormat))
+        {
+            _dateFormat = dateFormat;
+        }
+
+        if (argument.Options.TryGetValue('t', out var timeFormat)
+            && !string.IsNullOrWhiteSpace(timeFormat))
+        {
+            _timeFormat = timeFormat;
+        }
+
+        Execute();
     }
 }

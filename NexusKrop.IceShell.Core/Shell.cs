@@ -4,6 +4,8 @@ using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
+using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Collections.Generic;
@@ -75,7 +77,8 @@ public class Shell
 
         try
         {
-            _parser.ReadCommand(out var command, out var args);
+            var command = _parser.ReadString();
+            string[]? args = null;
 
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -84,73 +87,109 @@ public class Shell
             }
 
             // If starts with "dot limiter" (.\ etc) explicitly execute it in working dir
-            if (command.StartsWith(WORKINGDIR_EXECUTABLE_DELIMITER) && !ExecuteOnDisk(command, args))
+            if (command.StartsWith(WORKINGDIR_EXECUTABLE_DELIMITER))
             {
-                ConsoleOutput.PrintShellError(Messages.BadFile);
+                _parser.ReadArgs(out args);
+
+                if (!ExecuteOnDisk(command, args))
+                {
+                    ConsoleOutput.PrintShellError(Messages.BadFile);
+                }
+
                 return;
             }
 
             // Get the command from manager
             var cmd = _manager.Get(command);
+            Type? type;
 
             // If not a command, check if user specify an executable in PATH
             if (cmd == null)
             {
-                // If not, complain
-                if (!ExecuteOnPath(command, args))
+                type = _manager.GetComplex(command);
+
+                // Wait! check for a complex command instead.
+                if (type == null)
                 {
-                    ConsoleOutput.PrintShellError(Messages.BadCommand);
+                    _parser.ReadArgs(out args);
+
+                    if (!ExecuteOnPath(command, args))
+                    {
+                        ConsoleOutput.PrintShellError(Messages.BadCommand);
+                        return;
+                    }
                 }
-
-                return;
             }
-
-            // Check if zero arguments, and arguments are specified
-            if (cmd.NumArgs == 0 && !(args == null || args.Length == 0))
+            else
             {
-                ConsoleOutput.PrintShellError(string.Format(Messages.TooManyArguments, cmd.NumArgs));
-                return;
-            }
+                _parser.ReadArgs(out args);
+                // Perform simple command logic here
+                type = cmd.CommandType;
 
-            // Check if argument count matches required count.
-            // If claimed argument count is below 0, the command will verify themselves.
-            if (cmd.NumArgs > 0)
-            {
-                if (args == null)
-                {
-                    ConsoleOutput.PrintShellError(string.Format(Messages.NoArguments, cmd.NumArgs));
-                    return;
-                }
-
-                if (args.Length > cmd.NumArgs)
+                // Check if zero arguments, and arguments are specified
+                if (cmd.NumArgs == 0 && !(args == null || args.Length == 0))
                 {
                     ConsoleOutput.PrintShellError(string.Format(Messages.TooManyArguments, cmd.NumArgs));
                     return;
                 }
 
-                if (args.Length < cmd.NumArgs)
+                // Check if argument count matches required count.
+                // If claimed argument count is below 0, the command will verify themselves.
+                if (cmd.NumArgs > 0)
                 {
-                    ConsoleOutput.PrintShellError(string.Format(Messages.TooLessArguments, cmd.NumArgs));
-                    return;
+                    if (args == null)
+                    {
+                        ConsoleOutput.PrintShellError(string.Format(Messages.NoArguments, cmd.NumArgs));
+                        return;
+                    }
+
+                    if (args.Length > cmd.NumArgs)
+                    {
+                        ConsoleOutput.PrintShellError(string.Format(Messages.TooManyArguments, cmd.NumArgs));
+                        return;
+                    }
+
+                    if (args.Length < cmd.NumArgs)
+                    {
+                        ConsoleOutput.PrintShellError(string.Format(Messages.TooLessArguments, cmd.NumArgs));
+                        return;
+                    }
                 }
             }
 
-            var instance = Activator.CreateInstance(cmd.CommandType);
-
-            if (instance is not ICommand icmd)
+            if (type == null)
             {
                 ConsoleOutput.PrintShellError(Messages.BadCommand);
                 return;
             }
 
-            icmd.Execute(this, args);
-            Console.WriteLine();
+            var instance = Activator.CreateInstance(type);
+
+            if (instance is ICommand icmd)
+            {
+                icmd.Execute(this, args);
+                Console.WriteLine();
+            }
+            else if (instance is IComplexCommand ixcmd)
+            {
+                var arg = new ComplexArgument(_parser);
+
+                ixcmd.Define(arg);
+                ixcmd.Execute(arg.Parse());
+                Console.WriteLine();
+            }
+            else
+            {
+                ConsoleOutput.PrintShellError(Messages.BadCommand);
+            }
+        }
+        catch (CommandFormatException ex)
+        {
+            ConsoleOutput.PrintShellError(ex.Message);
         }
         catch (Exception ex)
         {
-            ConsoleOutput.PrintShellError(ex.Message);
-
-            Debug.WriteLine(ex.InnerException);
+            ConsoleOutput.PrintShellError(ex.ToString());
         }
     }
 

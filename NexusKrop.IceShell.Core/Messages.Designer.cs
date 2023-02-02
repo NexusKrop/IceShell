@@ -149,5 +149,14 @@ namespace NexusKrop.IceShell.Core {
                 return ResourceManager.GetString("TooManyArguments", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexcepted error: {0}.
+        /// </summary>
+        internal static string UnexceptedError {
+            get {
+                return ResourceManager.GetString("UnexceptedError", resourceCulture);
+            }
+        }
     }
 }
