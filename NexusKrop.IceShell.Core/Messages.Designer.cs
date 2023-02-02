@@ -167,5 +167,32 @@ namespace NexusKrop.IceShell.Core {
                 return ResourceManager.GetString("UnexceptedError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IceShell version {0}.
+        /// </summary>
+        internal static string VerLine1 {
+            get {
+                return ResourceManager.GetString("VerLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running on {0}.
+        /// </summary>
+        internal static string VerLine2 {
+            get {
+                return ResourceManager.GetString("VerLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copyright (C) NexusKrop &amp; contributors.
+        /// </summary>
+        internal static string VerLine3 {
+            get {
+                return ResourceManager.GetString("VerLine3", resourceCulture);
+            }
+        }
     }
 }

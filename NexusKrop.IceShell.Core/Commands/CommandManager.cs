@@ -19,6 +19,7 @@ public class CommandManager
         Register(typeof(EchoCommand));
         Register(typeof(ExitCommand));
         Register(typeof(CdCommand));
+        Register(typeof(VerCommand));
     }
 
     public record class CommandRegistryEntry(Type CommandType, int NumArgs);

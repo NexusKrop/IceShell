@@ -9,6 +9,9 @@
     <Authors>WithLithum</Authors>
     <Company>NexusKrop</Company>
     <Product>IceShell</Product>
+
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,11 +40,6 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Platforms\" />
-    <Folder Include="Util\" />
   </ItemGroup>
 
 </Project>

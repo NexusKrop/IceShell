@@ -153,4 +153,13 @@
   <data name="UnexceptedError" xml:space="preserve">
     <value>Unexcepted error: {0}</value>
   </data>
+  <data name="VerLine1" xml:space="preserve">
+    <value>IceShell version {0}</value>
+  </data>
+  <data name="VerLine2" xml:space="preserve">
+    <value>Running on {0}</value>
+  </data>
+  <data name="VerLine3" xml:space="preserve">
+    <value>Copyright (C) NexusKrop &amp; contributors</value>
+  </data>
 </root>
