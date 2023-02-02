@@ -50,7 +50,7 @@ public class Shell
             throw new CommandFormatException(Messages.FileNotExecutable);
         }
 
-        Process.Start(startInfo);
+        Process.Start(startInfo)?.WaitForExit();
 
         return true;
     }
@@ -71,7 +71,7 @@ public class Shell
 
         args?.Iterate(x => startInfo.ArgumentList.Add(x));
 
-        Process.Start(startInfo);
+        Process.Start(startInfo)?.WaitForExit();
 
         return true;
     }
@@ -121,8 +121,9 @@ public class Shell
                     if (!ExecuteOnPath(command, args))
                     {
                         ConsoleOutput.PrintShellError(Messages.BadCommand);
-                        return;
                     }
+
+                    return;
                 }
             }
             else
