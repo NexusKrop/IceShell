@@ -46,7 +46,7 @@ public class ComplexArgument
 
         while (_parser.CanRead())
         {
-            var delimiter = _parser.Read();
+            var delimiter = _parser.Peek(1);
 
             if (delimiter == COMPLEX_OPTION_SYMBOL)
             {
