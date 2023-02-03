@@ -123,6 +123,12 @@
   <data name="BadFile" xml:space="preserve">
     <value>Executable not found</value>
   </data>
+  <data name="BadFileGeneric" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="BadFileHandler" xml:space="preserve">
+    <value>No type association set for this file type</value>
+  </data>
   <data name="DirDirectory" xml:space="preserve">
     <value>Directory of {0}</value>
   </data>

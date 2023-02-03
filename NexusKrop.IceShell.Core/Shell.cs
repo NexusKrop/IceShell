@@ -12,6 +12,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 using ReadLineReboot;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -89,10 +90,10 @@ public class Shell
     public void Execute(string input)
     {
         _parser.SetLine(input);
+        var command = _parser.ReadString();
 
         try
         {
-            var command = _parser.ReadString();
             string[]? args = null;
 
             if (string.IsNullOrWhiteSpace(command))
@@ -149,7 +150,7 @@ public class Shell
         }
         catch (CommandFormatException ex)
         {
-            ConsoleOutput.PrintShellError(ex.Message);
+            ConsoleOutput.PrintShellError(string.Format("{0}: {1}", command, ex.Message));
         }
         catch (Exception ex)
         {

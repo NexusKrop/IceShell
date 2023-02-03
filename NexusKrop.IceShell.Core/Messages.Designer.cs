@@ -79,6 +79,24 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File not found.
+        /// </summary>
+        internal static string BadFileGeneric {
+            get {
+                return ResourceManager.GetString("BadFileGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No type association set for this file type.
+        /// </summary>
+        internal static string BadFileHandler {
+            get {
+                return ResourceManager.GetString("BadFileHandler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory of {0}.
         /// </summary>
         internal static string DirDirectory {

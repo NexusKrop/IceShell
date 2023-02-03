@@ -19,6 +19,8 @@ public class CommandManager
         RegisterComplex(typeof(ExitCommandEx));
         RegisterComplex(typeof(CdCommandEx));
         RegisterComplex(typeof(VerCommand));
+        RegisterComplex(typeof(StartCommandEx));
+        RegisterComplex(typeof(ClsCommandEx));
     }
 
     public record class CommandRegistryEntry(Type CommandType, int NumArgs);
