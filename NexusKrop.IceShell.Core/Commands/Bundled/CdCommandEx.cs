@@ -2,6 +2,7 @@
 
 using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,10 @@ public class CdCommandEx : IComplexCommand
     {
         var target = PathSearcher.ShellToSystem(argument.Values[0]!);
 
-        Checks.DirectoryExists(target);
+        if (!Directory.Exists(target))
+        {
+            throw new CommandFormatException(Messages.BadDirectory);
+        }
 
         Shell.ChangeDirectory(target);
     }

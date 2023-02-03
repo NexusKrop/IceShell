@@ -111,6 +111,11 @@ public class Shell
                 {
                     ConsoleOutput.PrintShellError(Messages.BadFile);
                 }
+                else
+                {
+                    // Add a new blank line
+                    Console.WriteLine();
+                }
 
                 return;
             }
@@ -128,6 +133,11 @@ public class Shell
                 {
                     // If no such path file, say bad command
                     ConsoleOutput.PrintShellError(Messages.BadCommand);
+                }
+                else
+                {
+                    // Add a new blank line
+                    Console.WriteLine();
                 }
 
                 return;

@@ -70,6 +70,15 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory not found.
+        /// </summary>
+        internal static string BadDirectory {
+            get {
+                return ResourceManager.GetString("BadDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executable not found.
         /// </summary>
         internal static string BadFile {
