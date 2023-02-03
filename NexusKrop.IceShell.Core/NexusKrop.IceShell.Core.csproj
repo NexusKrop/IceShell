@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="NexusKrop.IceCube" Version="0.1.1-alpha" />
-    <PackageReference Include="ReadLine" Version="2.0.1" />
+    <PackageReference Include="ReadLine.Reboot" Version="3.4.1" />
   </ItemGroup>
 
   <ItemGroup>

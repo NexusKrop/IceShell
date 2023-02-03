@@ -3,6 +3,7 @@
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Completion.Cache;
+using ReadLineReboot;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -32,24 +32,23 @@ internal class DirCache
 
     internal string[] Complete(string text)
     {
-        if (string.IsNullOrWhiteSpace(text))
-        {
-            return _completionEntries.ToArray();
-        }
-
         var results = new List<string>(_completionEntries.Count / 2);
+
+        var nows = string.IsNullOrWhiteSpace(text);
 
         foreach (var entry in _completionEntries)
         {
-            if (entry == text)
+            var fileEntry = $".\\{entry}";
+
+            if (nows || entry == text)
             {
-                results.Add(entry);
+                results.Add(fileEntry);
                 break;
             }
 
             if (entry.StartsWith(text))
             {
-                results.Add(entry);
+                results.Add(fileEntry);
             }
         }
 

@@ -9,6 +9,7 @@ using NexusKrop.IceShell.Core.Completion;
 using NexusKrop.IceShell.Core.Completion.Cache;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
+using ReadLineReboot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
