@@ -25,6 +25,32 @@ public class CommandManager
 
     private readonly Dictionary<string, Type> _complexCommands = new();
 
+    public string[] CompleteCommand(string begin)
+    {
+        if (string.IsNullOrWhiteSpace(begin))
+        {
+            return Array.Empty<string>();
+        }
+
+        var list = new List<string>(_complexCommands.Count);
+
+        foreach (var command in _complexCommands.Keys)
+        {
+            if (begin == command)
+            {
+                list.Add(command);
+                break;
+            }
+
+            if (command.StartsWith(begin))
+            {
+                list.Add(command);
+            }
+        }
+
+        return list.ToArray();
+    }
+
     public Type? GetComplex(string name)
     {
         if (!_complexCommands.TryGetValue(name, out var result))

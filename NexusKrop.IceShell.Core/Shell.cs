@@ -5,6 +5,8 @@ using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.Completion;
+using NexusKrop.IceShell.Core.Completion.Cache;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
@@ -20,9 +22,16 @@ public class Shell
     private readonly CommandParser _parser = new();
     private readonly CommandManager _manager = new();
 
+    private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
 
     public static bool ExitShell { get; set; }
+
+    public static void ChangeDirectory(string target)
+    {
+        Directory.SetCurrentDirectory(target);
+        DIR_CACHE.UpdateDirectory(target);
+    }
 
     public static void Quit()
     {
@@ -150,6 +159,8 @@ public class Shell
     public int StartInteractive()
     {
         Console.WriteLine();
+        ReadLine.HistoryEnabled = true;
+        ReadLine.AutoCompletionHandler = new ShellCompletionHandler(_manager, DIR_CACHE);
 
         while (!ExitShell)
         {

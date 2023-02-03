@@ -23,6 +23,6 @@ public class CdCommandEx : IComplexCommand
 
         Checks.DirectoryExists(target);
 
-        Directory.SetCurrentDirectory(target);
+        Shell.ChangeDirectory(target);
     }
 }
