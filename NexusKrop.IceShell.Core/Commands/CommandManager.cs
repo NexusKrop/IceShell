@@ -22,6 +22,7 @@ public class CommandManager
         RegisterComplex(typeof(VerCommand));
         RegisterComplex(typeof(StartCommandEx));
         RegisterComplex(typeof(ClsCommandEx));
+        RegisterComplex(typeof(MkdirCommandEx));
     }
 
     private sealed record ComplexCommandEntry(Type Type, string[] OSPlatform);

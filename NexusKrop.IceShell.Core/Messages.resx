@@ -141,6 +141,12 @@
   <data name="FileNotExecutable" xml:space="preserve">
     <value>File not in an executable (runnable) format</value>
   </data>
+  <data name="MkdirDirectoryAlreadyExists" xml:space="preserve">
+    <value>File or directory {0} already exists</value>
+  </data>
+  <data name="MkdirFileExists" xml:space="preserve">
+    <value>A file named {0} exists</value>
+  </data>
   <data name="NoArguments" xml:space="preserve">
     <value>No argument specified (command requires {0})</value>
   </data>

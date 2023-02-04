@@ -133,6 +133,24 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File or directory {0} already exists.
+        /// </summary>
+        internal static string MkdirDirectoryAlreadyExists {
+            get {
+                return ResourceManager.GetString("MkdirDirectoryAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file named {0} exists.
+        /// </summary>
+        internal static string MkdirFileExists {
+            get {
+                return ResourceManager.GetString("MkdirFileExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No argument specified (command requires {0}).
         /// </summary>
         internal static string NoArguments {
