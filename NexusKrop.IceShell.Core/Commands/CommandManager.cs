@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands;
 
+using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -62,7 +63,7 @@ public class CommandManager
             x = null;
         }
 
-        if (x != null && !x.OSPlatform.Any(platform => OperatingSystem.IsOSPlatform(platform)))
+        if (x != null && !x.OSPlatform.IsEmpty() && !x.OSPlatform.Any(platform => OperatingSystem.IsOSPlatform(platform)))
         {
             return null;
         }
