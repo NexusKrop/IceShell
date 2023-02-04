@@ -1,10 +1,8 @@
-﻿namespace NexusKrop.IceShell.Core.Completion.Cache;
-using System;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Completion.Cache;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 internal class DirCache
 {

@@ -1,4 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!-- Copyright (C) NexusKrop & contributors 2023 -->
+<!-- See "COPYING.txt" for licence -->
+
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>

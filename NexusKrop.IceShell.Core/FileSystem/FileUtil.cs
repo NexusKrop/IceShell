@@ -1,10 +1,9 @@
-﻿namespace NexusKrop.IceShell.Core.FileSystem;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.FileSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
 
 public static class FileUtil
 {

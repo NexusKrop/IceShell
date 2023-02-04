@@ -1,10 +1,12 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Complex;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
 
+namespace NexusKrop.IceShell.Core.Commands.Complex;
+using System.Collections.Generic;
+
+/// <summary>
+/// Represents the parse results of a complex argument set. This class cannot be inherited.
+/// </summary>
 public sealed class ComplexArgumentParseResult
 {
     internal ComplexArgumentParseResult(IReadOnlyDictionary<char, string?> options, IReadOnlyList<string?> values)

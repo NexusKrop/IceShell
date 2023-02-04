@@ -1,15 +1,17 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// Defines a command that starts the specified file, either by executing it as as executable, or
+/// opening it through an associated program.
+/// </summary>
 [ComplexCommand("start")]
 public class StartCommandEx : IComplexCommand
 {

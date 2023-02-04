@@ -1,13 +1,13 @@
-﻿namespace NexusKrop.IceShell.Core.FileSystem;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.FileSystem;
 
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public static class PathSearcher
 {

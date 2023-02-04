@@ -1,13 +1,14 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// Defines a command that echoes or displays the specified text.
+/// </summary>
 [ComplexCommand("echo")]
 public class EchoCommandEx : IComplexCommand
 {

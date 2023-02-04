@@ -1,7 +1,9 @@
-﻿namespace NexusKrop.IceShell.Core;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core;
 
 using NexusKrop.IceCube;
-using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -11,14 +13,11 @@ using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using ReadLineReboot;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// Represents the command-line interactive shell, the core of IceShell.
+/// </summary>
 public class Shell
 {
     private readonly CommandParser _parser = new();
@@ -27,19 +26,37 @@ public class Shell
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
 
+    /// <summary>
+    /// Gets or sets whether all shells will exit after executing their next command, or
+    /// evaluated their next user input.
+    /// </summary>
     public static bool ExitShell { get; set; }
 
+    /// <summary>
+    /// Changes the current directory of this process.
+    /// </summary>
+    /// <param name="target">The target directory. Must be a system path.</param>
     public static void ChangeDirectory(string target)
     {
         Directory.SetCurrentDirectory(target);
         DIR_CACHE.UpdateDirectory(target);
     }
 
+    /// <summary>
+    /// Tasks all shell instances to exit after executing their next (or last, if currently executing) command or user input.
+    /// </summary>
     public static void Quit()
     {
         ExitShell = true;
     }
 
+    /// <summary>
+    /// Executes an executable in the current folder, and if success, waits for it to exit.
+    /// </summary>
+    /// <param name="fileName">The name of the file.</param>
+    /// <param name="args">The arguments.</param>
+    /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="CommandFormatException">The specified file was not executable.</exception>
     public bool ExecuteOnDisk(string fileName, string[]? args)
     {
         var actual = PathSearcher.GetSystemExecutableName(Path.Combine(Environment.CurrentDirectory, fileName));
@@ -66,6 +83,12 @@ public class Shell
         return true;
     }
 
+    /// <summary>
+    /// Executes an executable located in <c>PATH</c>.
+    /// </summary>
+    /// <param name="fileName">The name of the executable. Subdirectorys are prohibited.</param>
+    /// <param name="args">The arguments to pass to the executable.</param>
+    /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
     public bool ExecuteOnPath(string fileName, string[]? args)
     {
         var actual = PathSearcher.SearchExecutable(fileName);
@@ -87,6 +110,10 @@ public class Shell
         return true;
     }
 
+    /// <summary>
+    /// Parses and then executes the specified user input.
+    /// </summary>
+    /// <param name="input">The input.</param>
     public void Execute(string input)
     {
         _parser.SetLine(input);
@@ -168,7 +195,11 @@ public class Shell
         }
     }
 
-    public int StartInteractive()
+    /// <summary>
+    /// Runs the shell interactively.
+    /// </summary>
+    /// <returns>The exit code.</returns>
+    public int RunInteractive()
     {
         Console.WriteLine();
         ReadLine.HistoryEnabled = true;

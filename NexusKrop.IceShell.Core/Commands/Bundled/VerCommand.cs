@@ -1,13 +1,15 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// Defines a command that shows the version of the operating system and the shell program.
+/// </summary>
 [ComplexCommand("ver")]
 public class VerCommand : IComplexCommand
 {

@@ -1,3 +1,6 @@
-﻿using NexusKrop.IceShell.Core;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
 
-return new Shell().StartInteractive();
+using NexusKrop.IceShell.Core;
+
+return new Shell().RunInteractive();

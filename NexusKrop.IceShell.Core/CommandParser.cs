@@ -1,8 +1,9 @@
-﻿namespace NexusKrop.IceShell.Core;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core;
 
 using NexusKrop.IceShell.Core.Exceptions;
-using System.Collections.Specialized;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 public class CommandParser

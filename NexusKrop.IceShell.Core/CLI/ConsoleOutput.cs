@@ -1,9 +1,8 @@
-﻿namespace NexusKrop.IceShell.Core.CLI;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.CLI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public static class ConsoleOutput
 {

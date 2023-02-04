@@ -1,9 +1,8 @@
-﻿namespace NexusKrop.IceShell.Core.Exceptions;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 internal static class ExceptionHelper
 {

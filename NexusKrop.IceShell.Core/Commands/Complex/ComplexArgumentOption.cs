@@ -1,10 +1,10 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Complex;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
 
+namespace NexusKrop.IceShell.Core.Commands.Complex;
+/// <summary>
+/// Represents an option in complex arguments.
+/// </summary>
 public record ComplexArgumentOption
 {
     public ComplexArgumentOption(string option, string? value = null)

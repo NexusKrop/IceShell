@@ -1,17 +1,15 @@
-﻿namespace NexusKrop.IceShell.Core.Commands;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
 
-using NexusKrop.IceCube;
+namespace NexusKrop.IceShell.Core.Commands;
+
 using NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
 
 public class CommandManager
 {
@@ -26,7 +24,7 @@ public class CommandManager
         RegisterComplex(typeof(ClsCommandEx));
     }
 
-    private record ComplexCommandEntry(Type Type, string[] OSPlatform);
+    private sealed record ComplexCommandEntry(Type Type, string[] OSPlatform);
 
     private readonly Dictionary<string, ComplexCommandEntry> _complexCommands = new();
 

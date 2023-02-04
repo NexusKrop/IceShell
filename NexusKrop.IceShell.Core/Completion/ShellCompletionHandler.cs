@@ -1,14 +1,12 @@
-﻿namespace NexusKrop.IceShell.Core.Completion;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Completion;
 
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Completion.Cache;
 using ReadLineReboot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class ShellCompletionHandler : IAutoCompleteHandler
 {

@@ -1,13 +1,17 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Complex;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Commands.Complex;
 
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// Provides parsing and definition service for complex command arguments.
+/// </summary>
 public class ComplexArgument
 {
     public const char COMPLEX_OPTION_SYMBOL = '/';
