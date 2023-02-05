@@ -17,7 +17,7 @@ public static class CommandChecks
     {
         if (!File.Exists(file))
         {
-            throw ExceptionHelper.WithName(Messages.BadFile, file);
+            throw ExceptionHelper.WithName(Messages.BadFileGeneric, file);
         }
     }
 
@@ -30,6 +30,14 @@ public static class CommandChecks
         if (File.Exists(file))
         {
             throw ExceptionHelper.WithName(Messages.MkdirFileExists, file);
+        }
+    }
+
+    public static void DirectoryNotExists(string dir)
+    {
+        if (Directory.Exists(dir))
+        {
+            throw ExceptionHelper.WithName(Messages.DirectoryExists, dir);
         }
     }
 }

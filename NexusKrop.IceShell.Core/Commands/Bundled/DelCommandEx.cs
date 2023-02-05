@@ -1,7 +1,11 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 
 /// <summary>
@@ -17,14 +21,21 @@ public class DelCommandEx : IComplexCommand
 
     private static void DeleteFileCommit(string file)
     {
-        File.Delete(file);
+        try
+        {
+            File.Delete(file);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw new CommandFormatException(Messages.FileUnauthorized);
+        }
     }
 
     public void Execute(ComplexArgumentParseResult argument)
     {
         var target = PathSearcher.ShellToSystem(argument.Values[0]!);
 
-        Checks.FileExists(target);
+        CommandChecks.FileExists(target);
 
         // Reserved for future use
         DeleteFileCommit(target);

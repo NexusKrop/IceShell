@@ -124,6 +124,15 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory with name {0} already exists.
+        /// </summary>
+        internal static string DirectoryExists {
+            get {
+                return ResourceManager.GetString("DirectoryExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty command.
         /// </summary>
         internal static string EmptyCommand {
@@ -138,6 +147,15 @@ namespace NexusKrop.IceShell.Core {
         internal static string FileNotExecutable {
             get {
                 return ResourceManager.GetString("FileNotExecutable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient permissions or file is being used.
+        /// </summary>
+        internal static string FileUnauthorized {
+            get {
+                return ResourceManager.GetString("FileUnauthorized", resourceCulture);
             }
         }
         

@@ -23,6 +23,7 @@ public class MkfileCommandEx : IComplexCommand
         var actual = PathSearcher.ShellToSystem(argument.Values[0]!);
 
         CommandChecks.FileNotExists(actual);
+        CommandChecks.DirectoryNotExists(actual);
 
         // Create an absolutely empty file
         File.WriteAllBytes(actual, Array.Empty<byte>());

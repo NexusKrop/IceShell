@@ -138,11 +138,17 @@
   <data name="DirDirectory" xml:space="preserve">
     <value>Directory of {0}</value>
   </data>
+  <data name="DirectoryExists" xml:space="preserve">
+    <value>Directory with name {0} already exists</value>
+  </data>
   <data name="EmptyCommand" xml:space="preserve">
     <value>Empty command</value>
   </data>
   <data name="FileNotExecutable" xml:space="preserve">
     <value>File not in an executable (runnable) format</value>
+  </data>
+  <data name="FileUnauthorized" xml:space="preserve">
+    <value>Insufficient permissions or file is being used</value>
   </data>
   <data name="MkdirDirectoryAlreadyExists" xml:space="preserve">
     <value>File or directory {0} already exists</value>

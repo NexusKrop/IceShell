@@ -26,15 +26,23 @@ public class MoveCommandEx : IComplexCommand
     {
         var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
         var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);
-
-        Checks.FileExists(realSource);
         var force = argument.OptionPresents('f');
+
+        CommandChecks.FileExists(realSource);
+        CommandChecks.DirectoryNotExists(realDest);
 
         if (File.Exists(realDest) && !force)
         {
             throw ExceptionHelper.WithName(Messages.MkdirFileExists, realDest);
         }
 
-        File.Move(realSource, realDest, force);
+        try
+        {
+            File.Move(realSource, realDest, force);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw new CommandFormatException(Messages.FileUnauthorized);
+        }
     }
 }
