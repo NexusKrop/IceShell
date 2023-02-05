@@ -106,7 +106,7 @@ public class ComplexArgument
 
         var delimiter = _parser.Read();
 
-        if (delimiter != '=')
+        if (delimiter != ':')
         {
             return null;
         }
