@@ -17,4 +17,9 @@ public sealed class ComplexArgumentParseResult
 
     public IReadOnlyDictionary<char, string?> Options { get; set; }
     public IReadOnlyList<string?> Values { get; set; }
+
+    public bool OptionPresents(char option)
+    {
+        return Options.ContainsKey(option);
+    }
 }

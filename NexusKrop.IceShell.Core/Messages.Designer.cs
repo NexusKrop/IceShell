@@ -106,6 +106,15 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete file {0}?.
+        /// </summary>
+        internal static string DelConfirm {
+            get {
+                return ResourceManager.GetString("DelConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory of {0}.
         /// </summary>
         internal static string DirDirectory {

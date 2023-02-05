@@ -132,6 +132,9 @@
   <data name="BadFileHandler" xml:space="preserve">
     <value>No type association set for this file type</value>
   </data>
+  <data name="DelConfirm" xml:space="preserve">
+    <value>Delete file {0}?</value>
+  </data>
   <data name="DirDirectory" xml:space="preserve">
     <value>Directory of {0}</value>
   </data>

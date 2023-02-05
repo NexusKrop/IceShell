@@ -9,4 +9,5 @@ internal static class ExceptionHelper
     public static Exception ExceptedString() => new CommandFormatException(ER.ExceptedString);
 
     public static Exception WithName(string message, char name) => new CommandFormatException(string.Format(message, name));
+    public static Exception WithName(string message, string name) => new CommandFormatException(string.Format(message, name));
 }

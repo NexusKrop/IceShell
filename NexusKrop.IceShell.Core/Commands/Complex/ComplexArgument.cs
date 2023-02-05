@@ -26,9 +26,19 @@ public class ComplexArgument
         _parser = parser;
     }
 
+    public void AddOption(char name, bool hasValue, bool required = false)
+    {
+        AddOption(new(name, hasValue, required));
+    }
+
     public void AddOption(ComplexOptionDefinition option)
     {
         _optionDefinitions.Add(option.ShortName, option);
+    }
+
+    public void AddValue(string name, bool required = false)
+    {
+        AddValue(new(name, required));
     }
 
     public void AddValue(ComplexValueDefinition definition)
@@ -98,6 +108,11 @@ public class ComplexArgument
         {
             throw ExceptionHelper.WithName(ER.ComplexValueRequired, name);
         }
+    }
+
+    public bool OptionPresents(char name)
+    {
+        return _optionDefinitions.ContainsKey(name);
     }
 
     private string? ParseOption(out char name)
