@@ -209,6 +209,7 @@ public class Shell
         ReadLine.AutoCompletionHandler = new ShellCompletionHandler(CommandManager, DIR_CACHE);
 
         ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "modules"));
+        ModuleManager.InitializeModules();
 
         while (!ExitShell)
         {

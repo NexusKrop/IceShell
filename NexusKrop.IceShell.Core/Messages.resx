@@ -156,6 +156,9 @@
   <data name="MkdirFileExists" xml:space="preserve">
     <value>A file named {0} exists</value>
   </data>
+  <data name="ModuleInitFail" xml:space="preserve">
+    <value>Module {0} failed to initialize:</value>
+  </data>
   <data name="NoArguments" xml:space="preserve">
     <value>No argument specified (command requires {0})</value>
   </data>

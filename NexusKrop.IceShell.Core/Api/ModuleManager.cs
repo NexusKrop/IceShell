@@ -42,6 +42,48 @@ public class ModuleManager
         }
     }
 
+    public void AddModule(IModule module)
+    {
+        _modules.Add(module);
+    }
+
+    public void AddModule(Type type)
+    {
+        var moduleI = type.GetInterface(nameof(IModule));
+
+        if (moduleI != typeof(IModule) ||
+            Activator.CreateInstance(type) is not IModule module)
+        {
+            return;
+        }
+
+        AddModule(module);
+    }
+
+    public void InitializeModules()
+    {
+        foreach (var module in _modules)
+        {
+            try
+            {
+                module.Initialize();
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutput.WriteLineColour(string.Format(Messages.ModuleInitFail, module.GetType().Name), ConsoleColor.Red);
+                ConsoleOutput.PrintShellError(ex.ToString());
+            }
+        }
+    }
+
+    public void LoadModuleFrom(Assembly assembly)
+    {
+        foreach (var type in assembly.GetTypes())
+        {
+            AddModule(type);
+        }
+    }
+
     /// <summary>
     /// Loads a module from the given path or file.
     /// </summary>
@@ -57,17 +99,6 @@ public class ModuleManager
         var assembly = Assembly.LoadFrom(file);
 #pragma warning restore S3885
 
-        foreach (var type in assembly.GetTypes())
-        {
-            var moduleI = type.GetInterface(nameof(IModule));
-
-            if (moduleI != typeof(IModule) ||
-                Activator.CreateInstance(moduleI) is not IModule module)
-            {
-                continue;
-            }
-
-            _modules.Add(module);
-        }
+        LoadModuleFrom(assembly);
     }
 }

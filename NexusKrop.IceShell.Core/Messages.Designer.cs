@@ -178,6 +178,15 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Module {0} failed to initialize:.
+        /// </summary>
+        internal static string ModuleInitFail {
+            get {
+                return ResourceManager.GetString("ModuleInitFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No argument specified (command requires {0}).
         /// </summary>
         internal static string NoArguments {

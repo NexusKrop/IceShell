@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexusKrop.IceShell", "NexusKrop.IceShell\NexusKrop.IceShell.csproj", "{60907104-94AF-4C44-9073-C535527CC0FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexusKrop.IceShell.Core", "NexusKrop.IceShell.Core\NexusKrop.IceShell.Core.csproj", "{26BFADAE-10ED-49D3-9EAD-5EB077F883C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexusKrop.IceShell.Core", "NexusKrop.IceShell.Core\NexusKrop.IceShell.Core.csproj", "{26BFADAE-10ED-49D3-9EAD-5EB077F883C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{6A7F1333-527F-493D-9F6B-8A5E04153755}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		COPYING.txt = COPYING.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexusKrop.IceShell.Commands", "NexusKrop.IceShell.Commands\NexusKrop.IceShell.Commands.csproj", "{678EAC5B-37F8-4044-943B-AC40F85FDCFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +30,10 @@ Global
 		{26BFADAE-10ED-49D3-9EAD-5EB077F883C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26BFADAE-10ED-49D3-9EAD-5EB077F883C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26BFADAE-10ED-49D3-9EAD-5EB077F883C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{678EAC5B-37F8-4044-943B-AC40F85FDCFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{678EAC5B-37F8-4044-943B-AC40F85FDCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{678EAC5B-37F8-4044-943B-AC40F85FDCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{678EAC5B-37F8-4044-943B-AC40F85FDCFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
