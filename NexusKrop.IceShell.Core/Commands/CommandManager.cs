@@ -9,6 +9,7 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Versioning;
 
@@ -16,6 +17,8 @@ public class CommandManager
 {
     internal CommandManager()
     {
+        CommandEntries = new ReadOnlyDictionary<string, ComplexCommandEntry>(_complexCommands);
+
         RegisterComplex(typeof(DirCommandEx));
         RegisterComplex(typeof(EchoCommandEx));
         RegisterComplex(typeof(ExitCommandEx));
@@ -29,9 +32,11 @@ public class CommandManager
         RegisterComplex(typeof(MoveCommandEx));
     }
 
-    private sealed record ComplexCommandEntry(Type Type, string[] OSPlatform);
+    public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform);
 
     private readonly Dictionary<string, ComplexCommandEntry> _complexCommands = new();
+
+    public IReadOnlyDictionary<string, ComplexCommandEntry> CommandEntries { get; }
 
     public string[] CompleteCommand(string begin)
     {
