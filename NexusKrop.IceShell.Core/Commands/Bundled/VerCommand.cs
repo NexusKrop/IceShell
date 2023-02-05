@@ -6,6 +6,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
 /// <summary>
 /// Defines a command that shows the version of the operating system and the shell program.
@@ -13,7 +14,11 @@ using System.Diagnostics;
 [ComplexCommand("ver")]
 public class VerCommand : IComplexCommand
 {
+#if DEBUG
+    private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "unknown";
+#else
     private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Environment.ProcessPath ?? "NexusKrop.IceShell.exe").ProductVersion ?? "unknown";
+#endif
 
     public void Define(ComplexArgument argument)
     {
