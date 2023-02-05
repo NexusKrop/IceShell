@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core;
 
 using NexusKrop.IceCube;
+using NexusKrop.IceShell.Core.Api;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -21,10 +22,12 @@ using System.Diagnostics;
 public class Shell
 {
     private readonly CommandParser _parser = new();
-    private readonly CommandManager _manager = new();
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
+
+    public static CommandManager CommandManager { get; } = new();
+    public static ModuleManager ModuleManager { get; } = new();
 
     /// <summary>
     /// Gets or sets whether all shells will exit after executing their next command, or
@@ -147,7 +150,7 @@ public class Shell
                 return;
             }
 
-            var type = _manager.GetComplex(command);
+            var type = CommandManager.GetComplex(command);
 
             // If no such complex command either
             if (type == null)
@@ -203,7 +206,9 @@ public class Shell
     {
         Console.WriteLine();
         ReadLine.HistoryEnabled = true;
-        ReadLine.AutoCompletionHandler = new ShellCompletionHandler(_manager, DIR_CACHE);
+        ReadLine.AutoCompletionHandler = new ShellCompletionHandler(CommandManager, DIR_CACHE);
+
+        ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "modules"));
 
         while (!ExitShell)
         {
