@@ -1,14 +1,8 @@
 ﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceCube.Exceptions;
-using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Defines a command that deletes a file.
