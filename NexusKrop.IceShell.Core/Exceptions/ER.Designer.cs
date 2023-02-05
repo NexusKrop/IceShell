@@ -194,5 +194,14 @@ namespace NexusKrop.IceShell.Core.Exceptions {
                 return ResourceManager.GetString("ManagerTypeNotCommand", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} values required but only {1} found.
+        /// </summary>
+        internal static string MissingValues {
+            get {
+                return ResourceManager.GetString("MissingValues", resourceCulture);
+            }
+        }
     }
 }

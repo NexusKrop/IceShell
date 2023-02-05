@@ -92,6 +92,13 @@ public static class PathSearcher
     {
         CheckPath(path);
 
+        if (path.StartsWith('~'))
+        {
+            var realDestination = path.Remove(0, 1);
+            return ShellToSystem(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                realDestination));
+        }
+
         if (OperatingSystem.IsWindows())
         {
             return path;

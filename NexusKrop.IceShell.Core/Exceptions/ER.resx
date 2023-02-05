@@ -162,4 +162,7 @@
   <data name="ManagerTypeNotCommand" xml:space="preserve">
     <value>Type specified does not implement ICommand.</value>
   </data>
+  <data name="MissingValues" xml:space="preserve">
+    <value>{0} values required but only {1} found</value>
+  </data>
 </root>

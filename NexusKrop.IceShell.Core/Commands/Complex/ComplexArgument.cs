@@ -81,6 +81,11 @@ public class ComplexArgument
             }
         }
 
+        if (values.Count < _valueDefinitions.Count)
+        {
+            throw new CommandFormatException(string.Format(ER.MissingValues, _valueDefinitions.Count, values.Count));
+        }
+
         foreach (var option in _optionDefinitions)
         {
             if (!options.ContainsKey(option.Key) && option.Value.Required)

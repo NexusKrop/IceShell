@@ -29,7 +29,7 @@ public class CommandParser
 
     public bool CanRead(int offset = 1)
     {
-        return Position + offset <= Length;
+        return Position + offset < Length;
     }
 
     internal void Clear()
@@ -44,8 +44,13 @@ public class CommandParser
         Line = line;
     }
 
-    public char Peek(int offset = 0)
+    public char? Peek(int offset = 0)
     {
+        if (!CanRead(offset))
+        {
+            return null;
+        }
+
         return Line[Position + offset];
     }
 
