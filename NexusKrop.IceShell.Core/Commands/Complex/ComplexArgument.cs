@@ -81,7 +81,9 @@ public class ComplexArgument
             }
         }
 
-        if (values.Count < _valueDefinitions.Count)
+        var liveCount = _valueDefinitions.Count(x => x.Required);
+
+        if (values.Count < liveCount)
         {
             throw new CommandFormatException(string.Format(ER.MissingValues, _valueDefinitions.Count, values.Count));
         }
