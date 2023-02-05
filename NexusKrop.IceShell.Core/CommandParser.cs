@@ -29,7 +29,7 @@ public class CommandParser
 
     public bool CanRead(int offset = 1)
     {
-        return Position + offset < Length;
+        return Position + offset <= Length;
     }
 
     internal void Clear()
@@ -51,7 +51,14 @@ public class CommandParser
             return null;
         }
 
-        return Line[Position + offset];
+        try
+        {
+            return Line[Position + offset];
+        }
+        catch (IndexOutOfRangeException)
+        {
+            return null;
+        }
     }
 
     public void Skip()
