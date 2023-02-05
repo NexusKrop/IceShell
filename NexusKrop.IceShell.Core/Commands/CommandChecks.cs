@@ -20,4 +20,16 @@ public static class CommandChecks
             throw ExceptionHelper.WithName(Messages.BadFile, file);
         }
     }
+
+    /// <summary>
+    /// Throws a <see cref="CommandFormatException"/> if the specified file does exist.
+    /// </summary>
+    /// <param name="file">The file to check.</param>
+    public static void FileNotExists(string file)
+    {
+        if (File.Exists(file))
+        {
+            throw ExceptionHelper.WithName(Messages.MkdirFileExists, file);
+        }
+    }
 }
