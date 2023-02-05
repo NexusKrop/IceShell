@@ -121,11 +121,13 @@ internal class DirCommandEx : IComplexCommand
         }
     }
 
-    private void Execute()
+    private void Execute(bool revealHidden)
     {
         // Print DOS-like table title, sans the volume information (too complex).
         Console.WriteLine(Messages.DirDirectory, _dir);
         Console.WriteLine();
+
+        var windows = OperatingSystem.IsWindows();
 
         // Iterate through directories.
         foreach (var folder in Directory.GetDirectories(_dir))
@@ -163,6 +165,20 @@ internal class DirCommandEx : IComplexCommand
                 _dateLongest = tableDate.Length;
             }
 
+            if (!revealHidden)
+            {
+                if (windows && (info.Attributes.HasFlag(FileAttributes.Hidden)
+                    || info.Attributes.HasFlag(FileAttributes.System)))
+                {
+                    continue;
+                }
+
+                if (!windows && info.Name.StartsWith('.'))
+                {
+                    continue;
+                }
+            }
+
             _rows.Add(new(tableDate, info.Length.ToString(), info.Name));
             _fileCount++;
         }
@@ -185,6 +201,7 @@ internal class DirCommandEx : IComplexCommand
         argument.AddValue(new("directory", false));
         argument.AddOption(new('d', true, false));
         argument.AddOption(new('t', true, false));
+        argument.AddOption('h', false);
     }
 
     public void Execute(ComplexArgumentParseResult argument)
@@ -213,6 +230,6 @@ internal class DirCommandEx : IComplexCommand
             _timeFormat = timeFormat;
         }
 
-        Execute();
+        Execute(argument.OptionPresents('h'));
     }
 }
