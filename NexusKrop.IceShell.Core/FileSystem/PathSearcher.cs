@@ -97,7 +97,7 @@ public static class PathSearcher
 
         if (OperatingSystem.IsLinux() && path.StartsWith('/'))
         {
-            return SystemToShell($"sys:\\{path}");
+            return SystemToShell($"sys:{path}");
         }
 
         return path.Replace(Path.DirectorySeparatorChar, SHELL_SEPARATOR);
