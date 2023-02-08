@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
 
@@ -25,7 +26,14 @@ public class MkfileCommandEx : IComplexCommand
         CommandChecks.FileNotExists(actual);
         CommandChecks.DirectoryNotExists(actual);
 
-        // Create an absolutely empty file
-        File.WriteAllBytes(actual, Array.Empty<byte>());
+        try
+        {
+            // Create an absolutely empty file
+            File.WriteAllBytes(actual, Array.Empty<byte>());
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw new CommandFormatException(Messages.FileUnauthorizedCreate);
+        }
     }
 }

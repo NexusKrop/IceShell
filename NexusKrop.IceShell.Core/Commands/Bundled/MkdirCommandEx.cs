@@ -32,6 +32,13 @@ public class MkdirCommandEx : IComplexCommand
             throw new CommandFormatException(Messages.MkdirDirectoryAlreadyExists);
         }
 
-        Directory.CreateDirectory(dir);
+        try
+        {
+            Directory.CreateDirectory(dir);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw new CommandFormatException(Messages.FileUnauthorizedCreate);
+        }
     }
 }
