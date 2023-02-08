@@ -23,9 +23,12 @@ internal class DirCache
         _watcher.Path = dir;
 
         _completionEntries.Clear();
-        foreach (var entry in Directory.GetFileSystemEntries(dir))
+
+        var complete = Path.GetFullPath(dir);
+
+        foreach (var entry in Directory.GetFileSystemEntries(complete))
         {
-            _completionEntries.Add(Path.GetRelativePath(dir, entry));
+            _completionEntries.Add(Path.GetRelativePath(complete, entry));
         }
     }
 

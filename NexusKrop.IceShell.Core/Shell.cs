@@ -41,8 +41,8 @@ public class Shell
     /// <param name="target">The target directory. Must be a system path.</param>
     public static void ChangeDirectory(string target)
     {
-        Directory.SetCurrentDirectory(target);
         DIR_CACHE.UpdateDirectory(target);
+        Directory.SetCurrentDirectory(target);
     }
 
     /// <summary>
@@ -213,7 +213,7 @@ public class Shell
 
         while (!ExitShell)
         {
-            var input = ReadLine.Read(string.Format("{0}> ", Environment.CurrentDirectory));
+            var input = ReadLine.Read(string.Format("{0}> ", PathSearcher.SystemToShell(Environment.CurrentDirectory)));
 
             if (string.IsNullOrWhiteSpace(input))
             {

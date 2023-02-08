@@ -10,4 +10,8 @@
     <ProjectReference Include="..\NexusKrop.IceShell.Core\NexusKrop.IceShell.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Disk\" />
+  </ItemGroup>
+
 </Project>

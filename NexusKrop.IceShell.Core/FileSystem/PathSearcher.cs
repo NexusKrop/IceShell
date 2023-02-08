@@ -88,9 +88,34 @@ public static class PathSearcher
 #pragma warning restore S3267
     }
 
+    public static string SystemToShell(string path)
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            return path;
+        }
+
+        if (OperatingSystem.IsLinux() && path.StartsWith('/'))
+        {
+            return SystemToShell($"sys:\\{path}");
+        }
+
+        return path.Replace(Path.DirectorySeparatorChar, SHELL_SEPARATOR);
+    }
+
     public static string ShellToSystem(string path)
     {
         CheckPath(path);
+
+        if (path == "~\\")
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        }
+
+        if (OperatingSystem.IsLinux() && path.StartsWith("sys:\\"))
+        {
+            return ShellToSystem(path.Remove(0, 4));
+        }
 
         if (path.StartsWith('~'))
         {

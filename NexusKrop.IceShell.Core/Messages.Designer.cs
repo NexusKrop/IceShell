@@ -160,6 +160,15 @@ namespace NexusKrop.IceShell.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insufficient permissions or read-only file system.
+        /// </summary>
+        internal static string FileUnauthorizedCreate {
+            get {
+                return ResourceManager.GetString("FileUnauthorizedCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File or directory {0} already exists.
         /// </summary>
         internal static string MkdirDirectoryAlreadyExists {
