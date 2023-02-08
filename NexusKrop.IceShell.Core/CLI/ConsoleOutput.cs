@@ -4,12 +4,13 @@
 namespace NexusKrop.IceShell.Core.CLI;
 using System;
 
+using static Crayon.Output;
+
 public static class ConsoleOutput
 {
     public static void PrintShellError(string message)
     {
-        WriteLineColour(message, ConsoleColor.Red);
-        Console.WriteLine();
+        Console.WriteLine(Red(message));
     }
 
     public static void WriteLineColour(string message, ConsoleColor color)

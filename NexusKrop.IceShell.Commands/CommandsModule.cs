@@ -14,6 +14,6 @@ public class CommandsModule : IModule
 
     public void Initialize()
     {
-        throw new NotImplementedException();
+        // reserved
     }
 }

@@ -141,11 +141,6 @@ public class Shell
                 {
                     ConsoleOutput.PrintShellError(Messages.BadFile);
                 }
-                else
-                {
-                    // Add a new blank line
-                    Console.WriteLine();
-                }
 
                 return;
             }
@@ -164,11 +159,6 @@ public class Shell
                     // If no such path file, say bad command
                     ConsoleOutput.PrintShellError(Messages.BadCommand);
                 }
-                else
-                {
-                    // Add a new blank line
-                    Console.WriteLine();
-                }
 
                 return;
             }
@@ -181,7 +171,6 @@ public class Shell
 
                 ixcmd.Define(arg);
                 ixcmd.Execute(arg.Parse());
-                Console.WriteLine();
             }
             else
             {
@@ -204,7 +193,6 @@ public class Shell
     /// <returns>The exit code.</returns>
     public int RunInteractive()
     {
-        Console.WriteLine();
         ReadLine.HistoryEnabled = true;
         ReadLine.AutoCompletionHandler = new ShellCompletionHandler(CommandManager, DIR_CACHE);
 
@@ -221,6 +209,7 @@ public class Shell
             }
 
             Execute(input);
+            Console.WriteLine();
         }
 
         return 0;
