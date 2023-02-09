@@ -16,11 +16,18 @@ public class CdCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)
     {
-        argument.AddValue(new("destination", true));
+        argument.AddValue(new("destination", false));
     }
 
     public void Execute(ComplexArgumentParseResult argument)
     {
+        if (argument.Values.Count == 0)
+        {
+            // Print current directory if no current directory is provided
+            Console.WriteLine(PathSearcher.SystemToShell(Environment.CurrentDirectory));
+            return;
+        }
+
         var target = PathSearcher.ShellToSystem(argument.Values[0]!);
 
         if (!Directory.Exists(target))
