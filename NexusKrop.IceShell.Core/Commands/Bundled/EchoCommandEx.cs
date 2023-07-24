@@ -17,8 +17,9 @@ public class EchoCommandEx : IComplexCommand
         argument.AddValue(new("message", true));
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         Console.WriteLine(argument.Values[0]);
+        return 0;
     }
 }

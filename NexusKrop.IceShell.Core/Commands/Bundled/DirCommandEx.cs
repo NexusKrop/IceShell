@@ -205,7 +205,7 @@ internal class DirCommandEx : IComplexCommand
         argument.AddOption('h', false);
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         if (argument.Values.Count == 1)
         {
@@ -232,5 +232,7 @@ internal class DirCommandEx : IComplexCommand
         }
 
         Execute(argument.OptionPresents('h'));
+
+        return 0;
     }
 }

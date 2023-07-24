@@ -6,7 +6,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
 /// <summary>
-/// Defines a command that does nothing. This command is to be used as a comment command.
+/// Defines a command that does nothing and always succeeds. This command is to be used as a comment command.
 /// </summary>
 [ComplexCommand("rm")]
 public class RmCommandEx : IComplexCommand
@@ -16,8 +16,8 @@ public class RmCommandEx : IComplexCommand
         argument.AddValue(new("comment", false));
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
-        // Does nothing.
+        return 0;
     }
 }

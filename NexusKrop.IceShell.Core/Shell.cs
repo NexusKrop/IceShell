@@ -128,7 +128,7 @@ public class Shell
     /// Parses and then executes the specified user input.
     /// </summary>
     /// <param name="input">The input.</param>
-    public void Execute(string input)
+    public int Execute(string input)
     {
         _parser.SetLine(input);
         var command = _parser.ReadString();
@@ -140,7 +140,7 @@ public class Shell
             if (string.IsNullOrWhiteSpace(command))
             {
                 ConsoleOutput.PrintShellError(Messages.EmptyCommand);
-                return;
+                return 1;
             }
 
             // If starts with "dot limiter" (.\ etc) explicitly execute it in working dir
@@ -151,9 +151,10 @@ public class Shell
                 if (!ExecuteOnDisk(command, args))
                 {
                     ConsoleOutput.PrintShellError(Messages.BadFile);
+                    return 1;
                 }
 
-                return;
+                return 0;
             }
 
             var type = CommandManager.GetComplex(command);
@@ -169,9 +170,10 @@ public class Shell
                 {
                     // If no such path file, say bad command
                     ConsoleOutput.PrintShellError(Messages.BadCommand);
+                    return 1;
                 }
 
-                return;
+                return 0;
             }
 
             var instance = Activator.CreateInstance(type);
@@ -181,7 +183,7 @@ public class Shell
                 var arg = new ComplexArgument(_parser);
 
                 ixcmd.Define(arg);
-                ixcmd.Execute(arg.Parse());
+                return ixcmd.Execute(arg.Parse());
             }
             else
             {
@@ -196,6 +198,9 @@ public class Shell
         {
             ConsoleOutput.PrintShellError(ex.ToString());
         }
+
+        // Fallback = fails
+        return 1;
     }
 
     /// <summary>

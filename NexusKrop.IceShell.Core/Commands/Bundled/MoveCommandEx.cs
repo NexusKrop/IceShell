@@ -22,7 +22,7 @@ public class MoveCommandEx : IComplexCommand
         argument.AddOption('f', false);
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
         var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);
@@ -44,5 +44,12 @@ public class MoveCommandEx : IComplexCommand
         {
             throw new CommandFormatException(Messages.FileUnauthorized);
         }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine(ex);
+            return 1;
+        }
+
+        return 0;
     }
 }

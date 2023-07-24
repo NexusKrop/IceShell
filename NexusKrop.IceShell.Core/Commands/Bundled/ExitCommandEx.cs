@@ -16,8 +16,9 @@ public class ExitCommandEx : IComplexCommand
         // no arguments
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         Shell.Quit();
+        return 0;
     }
 }

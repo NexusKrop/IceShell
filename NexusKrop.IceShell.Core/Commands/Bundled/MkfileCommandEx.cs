@@ -19,7 +19,7 @@ public class MkfileCommandEx : IComplexCommand
         argument.AddValue("name", true);
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         var actual = PathSearcher.ShellToSystem(argument.Values[0]!);
 
@@ -35,5 +35,7 @@ public class MkfileCommandEx : IComplexCommand
         {
             throw new CommandFormatException(Messages.FileUnauthorizedCreate);
         }
+
+        return 0;
     }
 }

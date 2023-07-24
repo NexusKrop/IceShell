@@ -31,7 +31,7 @@ public class DelCommandEx : IComplexCommand
         }
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         var target = PathSearcher.ShellToSystem(argument.Values[0]!);
 
@@ -39,5 +39,7 @@ public class DelCommandEx : IComplexCommand
 
         // Reserved for future use
         DeleteFileCommit(target);
+
+        return 0;
     }
 }

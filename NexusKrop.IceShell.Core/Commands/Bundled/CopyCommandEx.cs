@@ -19,7 +19,7 @@ public class CopyCommandEx : IComplexCommand
         argument.AddOption('f', false);
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
         var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);
@@ -41,5 +41,7 @@ public class CopyCommandEx : IComplexCommand
         {
             throw new CommandFormatException(Messages.FileUnauthorized);
         }
+
+        return 0;
     }
 }

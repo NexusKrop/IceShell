@@ -25,11 +25,13 @@ public class VerCommand : IComplexCommand
         // No arguments
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         Console.WriteLine(Messages.VerLine1, PRODUCT_VERSION);
         Console.WriteLine(Messages.VerLine2, Environment.OSVersion.VersionString);
         Console.WriteLine();
         Console.WriteLine(Messages.VerLine3);
+
+        return 0;
     }
 }

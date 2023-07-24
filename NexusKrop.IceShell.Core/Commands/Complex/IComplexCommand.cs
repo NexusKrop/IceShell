@@ -10,7 +10,7 @@ namespace NexusKrop.IceShell.Core.Commands.Complex;
 /// <para>
 /// The reason of why complex commands are called complex commands is because there were
 /// a type of command, in the early stage of development of IceShell, called just <c>Command</c>, which uses a fixed number of arguments, without any support of options, only values.
-/// Compelx commands, which uses a variable amount of arguments, was introduced later, co-existing with the <c>Command</c>s. Later when introducing auto completion, the simple commands (the Commands) were scrapped and all commands that
+/// Complex commands, which uses a variable amount of arguments, was introduced later, co-existing with the <c>Command</c>s. Later when introducing auto completion, the simple commands (the Commands) were scrapped and all commands that
 /// were simple commands are ported to use complex command system.
 /// </para>
 /// </remarks>
@@ -26,5 +26,6 @@ public interface IComplexCommand
     /// Executes this command.
     /// </summary>
     /// <param name="argument">The parsed argument.</param>
-    void Execute(ComplexArgumentParseResult argument);
+    /// <returns>The execution result code. If <c>0</c>, the command is considered success.</returns>
+    int Execute(ComplexArgumentParseResult argument);
 }

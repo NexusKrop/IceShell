@@ -19,13 +19,13 @@ public class CdCommandEx : IComplexCommand
         argument.AddValue(new("destination", false));
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         if (argument.Values.Count == 0)
         {
             // Print current directory if no current directory is provided
             Console.WriteLine(PathSearcher.SystemToShell(Environment.CurrentDirectory));
-            return;
+            return 0;
         }
 
         var target = PathSearcher.ShellToSystem(argument.Values[0]!);
@@ -36,5 +36,7 @@ public class CdCommandEx : IComplexCommand
         }
 
         Shell.ChangeDirectory(target);
+
+        return 0;
     }
 }

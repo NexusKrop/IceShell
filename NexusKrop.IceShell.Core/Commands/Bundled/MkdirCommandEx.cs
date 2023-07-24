@@ -18,7 +18,7 @@ public class MkdirCommandEx : IComplexCommand
         argument.AddOption(new('i', false, false));
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         var dir = PathSearcher.ShellToSystem(argument.Values[0]!);
 
@@ -40,5 +40,7 @@ public class MkdirCommandEx : IComplexCommand
         {
             throw new CommandFormatException(Messages.FileUnauthorizedCreate);
         }
+
+        return 0;
     }
 }

@@ -20,7 +20,7 @@ public class StartCommandEx : IComplexCommand
         argument.AddValue(new("target", true));
     }
 
-    public void Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument)
     {
         var proc = argument.Values[0]!;
 
@@ -31,11 +31,13 @@ public class StartCommandEx : IComplexCommand
 
         try
         {
-            ProcessUtil.ShellExecute(argument.Values[0]!);
+            IceCube.Util.Shell.ShellExecute(argument.Values[0]!);
         }
         catch (Win32Exception x) when (x.NativeErrorCode == 1155)
         {
             throw new CommandFormatException(Messages.BadFileHandler);
         }
+
+        return 0;
     }
 }
