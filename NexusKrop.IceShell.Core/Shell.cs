@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core;
 
 using NexusKrop.IceCube;
+using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core.Api;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
@@ -22,9 +23,19 @@ using System.Diagnostics;
 public class Shell
 {
     private readonly CommandParser _parser = new();
+    private readonly ShellSettings _settings;
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
+
+    public Shell() : this(new())
+    {
+    }
+
+    public Shell(ShellSettings settings)
+    {
+        _settings = settings;
+    }
 
     public static CommandManager CommandManager { get; } = new();
     public static ModuleManager ModuleManager { get; } = new();
@@ -198,6 +209,16 @@ public class Shell
 
         ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "modules"));
         ModuleManager.InitializeModules();
+
+        // show date and time if allowed
+        if (_settings.DisplayDateTimeOnStartup)
+        {
+            System.Console.WriteLine($"Current date is {DateTime.Now.ToShortDateString()}");
+            System.Console.WriteLine($"Current time is {DateTime.Now.ToShortTimeString()}");
+        }
+
+        // Add an empty line afterward
+        System.Console.WriteLine();
 
         while (!ExitShell)
         {

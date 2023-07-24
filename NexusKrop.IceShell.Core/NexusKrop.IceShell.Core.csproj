@@ -4,7 +4,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>IceShell.Core</PackageId>
@@ -15,12 +15,13 @@
 
     <VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
-    <RepositoryUrl>https://codeberg.org/NexusKrop/IceShell</RepositoryUrl>
+    <RepositoryUrl>https://github.com/NexusKrop/IceShell.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Crayon" Version="2.0.69" />
-    <PackageReference Include="Microsoft.SourceLink.Gitea" Version="1.1.1">
+    <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
