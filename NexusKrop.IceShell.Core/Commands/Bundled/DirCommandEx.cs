@@ -5,6 +5,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
+using NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -124,7 +125,7 @@ internal class DirCommandEx : IComplexCommand
     private void Execute(bool revealHidden)
     {
         // Print DOS-like table title, sans the volume information (too complex).
-        Console.WriteLine(Messages.DirDirectory, _dir);
+        Console.WriteLine(Messages.DirDirectory, PathSearcher.SystemToShell(_dir));
         Console.WriteLine();
 
         var windows = OperatingSystem.IsWindows();
