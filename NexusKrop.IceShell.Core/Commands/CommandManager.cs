@@ -55,7 +55,7 @@ public class CommandManager
                 break;
             }
 
-            if (command.StartsWith(begin))
+            if (!command.Equals(begin) && command.StartsWith(begin))
             {
                 list.Add(command);
             }
