@@ -1,5 +1,7 @@
 using System.CommandLine;
+using System.CommandLine.Help;
 using System.CommandLine.Invocation;
+using NexusKrop.IceCube;
 
 namespace NexusKrop.IceShell.Core.Commands.Nove;
 
@@ -15,6 +17,7 @@ public class NoveHelpCommand : INoveCommandBuilder
         };
 
         retVal.SetHandler(ExecuteCommand);
+
         return retVal;
     }
 
@@ -28,7 +31,8 @@ public class NoveHelpCommand : INoveCommandBuilder
         var argCommand = context.ParseResult.GetValueForArgument(_argCommand);
 
         if (string.IsNullOrWhiteSpace(argCommand)
-            || !Shell.NoveCommandManager.TryGetCommand(argCommand, out var cmd))
+            || !Shell.NoveCommandManager.TryGetCommand(argCommand, out var cmd)
+            || cmd == null)
         {
             Shell.NoveCommandManager.ForEach(x =>
             {
@@ -40,7 +44,14 @@ public class NoveHelpCommand : INoveCommandBuilder
             return;
         }
 
-        // TODO help command specific
-        System.Console.WriteLine("Not implemented");
+        // See https://github.com/dotnet/command-line-api/blob/main/src/System.CommandLine/Help/HelpOptionAction.cs
+        var builder = new HelpBuilder(LocalizationResources.Instance, Console.IsOutputRedirected ? int.MaxValue : Console.WindowWidth);
+
+        var parseResult = cmd.Parse();
+
+        var helpContext = new HelpContext(builder,
+                                  cmd,
+                                  Console.Out);
+        builder.Write(helpContext);
     }
 }
