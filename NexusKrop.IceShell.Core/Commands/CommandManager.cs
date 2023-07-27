@@ -23,6 +23,7 @@ public class CommandManager
         RegisterComplex(typeof(EchoCommandEx));
         RegisterComplex(typeof(ExitCommandEx));
         RegisterComplex(typeof(CdCommandEx));
+        RegisterComplex(typeof(CopyCommandEx));
         RegisterComplex(typeof(VerCommand));
         RegisterComplex(typeof(StartCommandEx));
         RegisterComplex(typeof(ClsCommandEx));
