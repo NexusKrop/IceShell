@@ -164,9 +164,15 @@ public class Shell
             if (NoveCommandManager.TryGetCommand(command, out var noveCmd)
                 && noveCmd != null)
             {
+                _parser.ReadArgs(out args);
                 args ??= Array.Empty<string>();
 
-                return noveCmd.Invoke(args);
+                // Make System.CommandLine recognize this.
+                var listArgs = new List<string>(args.Length + 1);
+                listArgs.Add(command);
+                listArgs.AddRange(args);
+
+                return noveCmd.Invoke(listArgs.ToArray());
             }
 
             // NEXT: Get old commands
@@ -228,6 +234,8 @@ public class Shell
 
         ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "modules"));
         ModuleManager.InitializeModules();
+
+        NoveCommandManager.AddDefaults();
 
         // show date and time if allowed
         if (_settings.DisplayDateTimeOnStartup)

@@ -1,8 +1,6 @@
-﻿<!-- Copyright (C) NexusKrop & contributors 2023 -->
+<!-- Copyright (C) NexusKrop & contributors 2023 -->
 <!-- See "COPYING.txt" for licence -->
-
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -12,12 +10,10 @@
     <Authors>WithLithum</Authors>
     <Company>NexusKrop</Company>
     <Product>IceShell</Product>
-
     <VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
     <RepositoryUrl>https://github.com/NexusKrop/IceShell.git</RepositoryUrl>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Crayon" Version="2.0.69" />
     <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
@@ -29,7 +25,6 @@
     <PackageReference Include="ReadLine.Reboot" Version="3.4.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Exceptions\ER.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -42,7 +37,6 @@
       <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Exceptions\ER.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -53,5 +47,4 @@
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>
