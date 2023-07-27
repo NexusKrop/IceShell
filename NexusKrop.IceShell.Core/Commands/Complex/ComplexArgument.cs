@@ -8,6 +8,7 @@ using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 /// <summary>
 /// Provides parsing and definition service for complex command arguments.
@@ -24,6 +25,34 @@ public class ComplexArgument
     internal ComplexArgument(CommandParser parser)
     {
         _parser = parser;
+    }
+
+    internal string GetUsage(string cmdName)
+    {
+        var builder = new StringBuilder();
+        builder.Append(cmdName).Append(' ');
+
+        _valueDefinitions.ForEach(x =>
+        {
+            if (x.Required)
+            {
+                builder.Append('<').Append(x.Name).Append('>');
+            }
+            else
+            {
+                builder.Append('[').Append(x.Name).Append(']');
+            }
+
+            builder.Append(' ');
+        });
+
+        if (_optionDefinitions.Any())
+        {
+            // TODO output all switches and options so it looks like DOS
+            builder.Append("[options...]");
+        }
+
+        return builder.ToString();
     }
 
     public void AddOption(char name, bool hasValue, bool required = false)
