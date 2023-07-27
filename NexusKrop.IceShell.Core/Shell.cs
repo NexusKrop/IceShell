@@ -15,6 +15,7 @@ using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using ReadLineReboot;
 using System;
+using System.CommandLine;
 using System.Diagnostics;
 
 /// <summary>
@@ -37,6 +38,7 @@ public class Shell
         _settings = settings;
     }
 
+    public static NoveCommandManager NoveCommandManager { get; } = new();
     public static CommandManager CommandManager { get; } = new();
     public static ModuleManager ModuleManager { get; } = new();
 
@@ -156,6 +158,18 @@ public class Shell
 
                 return 0;
             }
+
+            // NEXT: Get new commands
+
+            if (NoveCommandManager.TryGetCommand(command, out var noveCmd)
+                && noveCmd != null)
+            {
+                args ??= Array.Empty<string>();
+
+                return noveCmd.Invoke(args);
+            }
+
+            // NEXT: Get old commands
 
             var type = CommandManager.GetComplex(command);
 

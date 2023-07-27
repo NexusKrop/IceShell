@@ -2,10 +2,7 @@
 // See "COPYING.txt" for licence
 
 using NexusKrop.IceCube.Settings;
-using NexusKrop.IceShell.Commands;
 using NexusKrop.IceShell.Core;
-
-Shell.ModuleManager.LoadModuleFrom(CommandsModule.Assembly);
 
 var userPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".iceShell");
 Directory.CreateDirectory(userPath);
