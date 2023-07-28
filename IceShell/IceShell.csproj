@@ -34,11 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NexusKrop.IceCube" Version="0.1.1-alpha" />
+    <PackageReference Include="NexusKrop.IceCube" Version="0.3.0-alpha" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NexusKrop.IceShell.Commands\NexusKrop.IceShell.Commands.csproj" />
     <ProjectReference Include="..\NexusKrop.IceShell.Core\NexusKrop.IceShell.Core.csproj" />
   </ItemGroup>
 

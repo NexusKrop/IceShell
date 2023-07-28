@@ -1,0 +1,3 @@
+[*.cs]
+charset = utf-8
+csharp_using_directive_placement = inside_namespace

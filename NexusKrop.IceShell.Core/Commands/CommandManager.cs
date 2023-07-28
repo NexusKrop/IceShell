@@ -34,7 +34,7 @@ public class CommandManager
         RegisterComplex(typeof(HelpCommandEx));
     }
 
-    public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform);
+    public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, string? Description);
 
     private readonly Dictionary<string, ComplexCommandEntry> _complexCommands = new();
 
@@ -115,6 +115,6 @@ public class CommandManager
             throw new ArgumentException(ER.ManagerInvalidAttribute, nameof(type));
         }
 
-        _complexCommands.Add(attribute.Name, new(type, platforms.ToArray()));
+        _complexCommands.Add(attribute.Name, new(type, platforms.ToArray(), attribute.Description));
     }
 }

@@ -117,7 +117,7 @@ public class Shell
             WorkingDirectory = Environment.CurrentDirectory
         };
 
-        args?.Iterate(x => startInfo.ArgumentList.Add(x));
+        args?.ForEach(x => startInfo.ArgumentList.Add(x));
 
         Process.Start(startInfo)?.WaitForExit();
 

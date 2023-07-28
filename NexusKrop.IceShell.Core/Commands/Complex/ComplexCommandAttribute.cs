@@ -10,10 +10,12 @@ using System;
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class ComplexCommandAttribute : Attribute
 {
-    public ComplexCommandAttribute(string name)
+    public ComplexCommandAttribute(string name, string? description = null)
     {
         Name = name;
+        Description = description;
     }
 
     public string Name { get; set; }
+    public string? Description { get; set; }
 }

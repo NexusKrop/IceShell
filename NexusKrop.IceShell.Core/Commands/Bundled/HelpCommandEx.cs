@@ -1,8 +1,12 @@
-using NexusKrop.IceShell.Core.Commands.Complex;
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
-[ComplexCommand("help")]
+using NexusKrop.IceShell.Core.Commands.Complex;
+using Spectre.Console;
+
+[ComplexCommand("help", "Get help for commands")]
 public class HelpCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)
@@ -24,6 +28,11 @@ public class HelpCommandEx : IComplexCommand
             return ExecuteSummary();
         }
 
+        return ExecuteDetailed(commandName);
+    }
+
+    private static int ExecuteDetailed(string commandName)
+    {
         var commandType = Shell.CommandManager.GetComplex(commandName);
 
         if (commandType == null)
@@ -52,7 +61,26 @@ public class HelpCommandEx : IComplexCommand
 
     private int ExecuteSummary()
     {
-        System.Console.WriteLine("TODO");
+        if (!Shell.CommandManager.CommandEntries.Any())
+        {
+            System.Console.WriteLine("No registered commands.");
+            return 0;
+        }
+
+        System.Console.WriteLine("For more information on a specific command, type \"help <command>\"");
+
+        var grid = new Grid();
+        grid.AddColumn();
+        grid.AddColumn();
+        grid.AddRow(" ", " ");
+
+        foreach (var item in Shell.CommandManager.CommandEntries)
+        {
+            grid.AddRow(item.Key, item.Value.Description ?? "No description available.");
+        }
+
+        AnsiConsole.Write(grid);
+
         return 0;
     }
 }
