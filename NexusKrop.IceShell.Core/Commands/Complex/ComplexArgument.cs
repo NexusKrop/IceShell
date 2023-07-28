@@ -16,6 +16,7 @@ using System.Text;
 public class ComplexArgument
 {
     public const char COMPLEX_OPTION_SYMBOL = '/';
+    public const char COMPLEX_END_OF_OPTION_SYMBOL = '-';
 
     private readonly CommandParser _parser;
 
@@ -85,30 +86,63 @@ public class ComplexArgument
         var options = new Dictionary<char, string?>();
         var values = new List<string?>();
 
-        var optionsBegun = false;
+        var endOfOptions = false;
+        var beginEndOfOptions = false;
+        var ignoreADash = false;
 
         while (_parser.CanRead())
         {
-            var delimiter = _parser.Peek(1);
+            var delimiter = _parser.Peek();
 
-            if (delimiter == COMPLEX_OPTION_SYMBOL)
+            // Step 1: Check end of options parser.
+            if (delimiter == COMPLEX_END_OF_OPTION_SYMBOL
+                && !endOfOptions)
             {
-                optionsBegun = true;
+                System.Console.WriteLine("End of options symbol.");
 
+                if (!beginEndOfOptions)
+                {
+                    beginEndOfOptions = true;
+                    continue;
+                }
+                else
+                {
+                    endOfOptions = true;
+                    beginEndOfOptions = false;
+                    _ = _parser.ReadUnquotedString();
+                    ignoreADash = true;
+                    continue;
+                }
+            }
+
+            // STEP 2: Is option symbol?
+            if (delimiter == COMPLEX_OPTION_SYMBOL && !endOfOptions)
+            {
                 var opt = ParseOption(out var name);
                 CheckOption(name, opt);
                 options.Add(name, opt);
             }
             else
             {
-                if (optionsBegun)
+                var toAdd = _parser.ReadString();
+
+#if EXT_DEBUG_INFO
+                System.Console.WriteLine("Decided to add value {0} (EOO {1}, DELIMITER {2})", toAdd, endOfOptions, delimiter);
+#endif
+
+                if (((toAdd == "-" || toAdd == "--") && (!endOfOptions || beginEndOfOptions || ignoreADash) // ignore dashes)
+                    || string.IsNullOrWhiteSpace(toAdd)))
                 {
-                    throw new CommandFormatException(ER.ComplexPreceedingOption);
+                    continue;
                 }
 
-                values.Add(_parser.ReadString());
+                values.Add(toAdd);
             }
         }
+
+#if EXT_DEBUG_INFO
+        values.ForEach(x => System.Console.WriteLine(x));
+#endif
 
         var liveCount = _valueDefinitions.Count(x => x.Required);
 
@@ -153,9 +187,14 @@ public class ComplexArgument
 
     private string? ParseOption(out char name)
     {
+        if (_parser.Read() != '/')
+        {
+            throw new CommandFormatException("Excepted delimiter");
+        }
+
         name = _parser.Read();
 
-        var delimiter = _parser.Read();
+        var delimiter = _parser.Peek();
 
         if (delimiter != ':')
         {
