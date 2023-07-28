@@ -23,6 +23,8 @@ public class ComplexArgument
     private readonly Dictionary<char, ComplexOptionDefinition> _optionDefinitions = new();
     private readonly List<ComplexValueDefinition> _valueDefinitions = new();
 
+    private bool _singleGreedy;
+
     internal ComplexArgument(CommandParser parser)
     {
         _parser = parser;
@@ -81,6 +83,12 @@ public class ComplexArgument
         _valueDefinitions.Add(definition);
     }
 
+    public ComplexArgument MakeGreedy()
+    {
+        _singleGreedy = true;
+        return this;
+    }
+
     public ComplexArgumentParseResult Parse()
     {
         var options = new Dictionary<char, string?>();
@@ -124,7 +132,16 @@ public class ComplexArgument
             }
             else
             {
-                var toAdd = _parser.ReadString();
+                string? toAdd;
+
+                if (_singleGreedy)
+                {
+                    toAdd = _parser.ReadToEnd();
+                }
+                else
+                {
+                    toAdd = _parser.ReadString();
+                }
 
 #if EXT_DEBUG_INFO
                 System.Console.WriteLine("Decided to add value {0} (EOO {1}, DELIMITER {2})", toAdd, endOfOptions, delimiter);

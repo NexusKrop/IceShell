@@ -15,6 +15,7 @@ public class EchoCommandEx : IComplexCommand
     public void Define(ComplexArgument argument)
     {
         argument.AddValue(new("message", true));
+        argument.MakeGreedy();
     }
 
     public int Execute(ComplexArgumentParseResult argument)

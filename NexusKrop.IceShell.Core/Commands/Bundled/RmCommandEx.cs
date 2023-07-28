@@ -14,6 +14,7 @@ public class RmCommandEx : IComplexCommand
     public void Define(ComplexArgument argument)
     {
         argument.AddValue(new("comment", false));
+        argument.MakeGreedy();
     }
 
     public int Execute(ComplexArgumentParseResult argument)
