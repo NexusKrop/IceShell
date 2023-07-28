@@ -15,6 +15,8 @@ public static class PathSearcher
 
     private static readonly IReadOnlySet<string> PATHS;
 
+    internal static bool UseCustomPathSystem { get; set; }
+
 #pragma warning disable S3963
     // This is a big chunk of complex code that unfortunealy SonarLint is too dumb, and cannot detect that.
     static PathSearcher()
@@ -90,7 +92,7 @@ public static class PathSearcher
 
     public static string SystemToShell(string path)
     {
-        if (OperatingSystem.IsWindows())
+        if (!UseCustomPathSystem || OperatingSystem.IsWindows())
         {
             return path;
         }
@@ -105,11 +107,26 @@ public static class PathSearcher
 
     public static string ShellToSystem(string path)
     {
+        if (!UseCustomPathSystem)
+        {
+            if (path == $"~{Path.DirectorySeparatorChar}")
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            }
+
+            return path;
+        }
+
         CheckPath(path);
 
         if (path == "~\\")
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        }
+
+        if (OperatingSystem.IsWindows())
+        {
+            return path;
         }
 
         if (OperatingSystem.IsLinux() && path.StartsWith("sys:\\"))
@@ -122,11 +139,6 @@ public static class PathSearcher
             var realDestination = path.Remove(0, 1);
             return ShellToSystem(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 realDestination));
-        }
-
-        if (OperatingSystem.IsWindows())
-        {
-            return path;
         }
 
         return path.Replace(SHELL_SEPARATOR, Path.DirectorySeparatorChar);

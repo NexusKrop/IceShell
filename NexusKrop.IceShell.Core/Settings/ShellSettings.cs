@@ -6,6 +6,7 @@ using IniParser.Model;
 public class ShellSettings
 {
     public bool DisplayDateTimeOnStartup { get; set; }
+    public bool UseCustomPathSystem { get; set; }
 
     public void Save(string file)
     {
@@ -13,6 +14,7 @@ public class ShellSettings
 
         var data = new IniData();
         data["Shell"]["DisplayDateTimeOnStartup"] = DisplayDateTimeOnStartup.ToString();
+        data["Shell"][nameof(UseCustomPathSystem)] = UseCustomPathSystem.ToString();
 
         parser.WriteFile(file, data);
     }
@@ -27,6 +29,7 @@ public class ShellSettings
 
         // Add data here
         result.DisplayDateTimeOnStartup = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]);
+        result.UseCustomPathSystem = bool.Parse(data["Shell"][nameof(UseCustomPathSystem)]);
 
         return result;
     }

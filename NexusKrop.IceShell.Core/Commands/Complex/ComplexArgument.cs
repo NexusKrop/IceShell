@@ -24,6 +24,7 @@ public class ComplexArgument
     private readonly List<ComplexValueDefinition> _valueDefinitions = new();
 
     private bool _singleGreedy;
+    private bool _variableValues;
 
     internal ComplexArgument(CommandParser parser)
     {
@@ -83,6 +84,22 @@ public class ComplexArgument
         _valueDefinitions.Add(definition);
     }
 
+    /// <summary>
+    /// Instructs the parsing routine that checks for required arguments will be done by the command rather than
+    /// the parsing routine, and the parsing routine should only check options.
+    /// </summary>
+    /// <returns>The current <see cref="ComplexArgument"/> instance.</returns>
+    public ComplexArgument MakeVarValues()
+    {
+        _variableValues = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Instructs the parsing routine that that the first variable will be a greedy string value, and all others
+    /// will not be parsed.
+    /// </summary>
+    /// <returns>The current <see cref="ComplexArgument"/> instance.</returns>
     public ComplexArgument MakeGreedy()
     {
         _singleGreedy = true;
@@ -161,11 +178,14 @@ public class ComplexArgument
         values.ForEach(x => System.Console.WriteLine(x));
 #endif
 
-        var liveCount = _valueDefinitions.Count(x => x.Required);
-
-        if (values.Count < liveCount)
+        if (!_variableValues)
         {
-            throw new CommandFormatException(string.Format(ER.MissingValues, _valueDefinitions.Count, values.Count));
+            var liveCount = _valueDefinitions.Count(x => x.Required);
+
+            if (values.Count < liveCount)
+            {
+                throw new CommandFormatException(string.Format(ER.MissingValues, _valueDefinitions.Count, values.Count));
+            }
         }
 
         foreach (var option in _optionDefinitions)
