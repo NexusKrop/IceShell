@@ -6,7 +6,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using Spectre.Console;
 
-[ComplexCommand("help", "Get help for commands")]
+[ComplexCommand("help", "Provides help information for IceShell commands.")]
 public class HelpCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-[ComplexCommand("mkdir")]
+[ComplexCommand("mkdir", "Creates a directory.")]
 public class MkdirCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

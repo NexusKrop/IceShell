@@ -10,7 +10,7 @@ using System;
 /// Defines a command that clears the console screen.
 /// </summary>
 /// <seealso cref="Console.Clear()"/>
-[ComplexCommand("cls")]
+[ComplexCommand("cls", "Clears the screen.")]
 public class ClsCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

@@ -11,7 +11,7 @@ using System.Reflection;
 /// <summary>
 /// Defines a command that shows the version of the operating system and the shell program.
 /// </summary>
-[ComplexCommand("ver")]
+[ComplexCommand("ver", "Displays the IceShell version.")]
 public class VerCommand : IComplexCommand
 {
 #if DEBUG

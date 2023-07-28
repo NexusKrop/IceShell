@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-[ComplexCommand("copy")]
+[ComplexCommand("copy", "Copies a file to another location.")]
 public class CopyCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

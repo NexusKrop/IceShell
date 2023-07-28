@@ -14,7 +14,7 @@ using System.Text;
 /// Defines a command that lists directories and files inside the current or otherwise specified
 /// directory.
 /// </summary>
-[ComplexCommand("dir")]
+[ComplexCommand("dir", "Displays a list of files and subdirectories in a directory.")]
 internal class DirCommandEx : IComplexCommand
 {
     private sealed record class DirTableRow(string ShortDateTime, string Size, string FileName);

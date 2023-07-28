@@ -8,7 +8,7 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 /// <summary>
 /// Defines a command that exits the shell.
 /// </summary>
-[ComplexCommand("exit")]
+[ComplexCommand("exit", "Quits the IceShell program.")]
 public class ExitCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

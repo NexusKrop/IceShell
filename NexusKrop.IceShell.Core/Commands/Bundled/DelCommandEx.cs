@@ -11,7 +11,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// <summary>
 /// Defines a command that deletes a file.
 /// </summary>
-[ComplexCommand("del")]
+[ComplexCommand("del", "Deletes a file.")]
 public class DelCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

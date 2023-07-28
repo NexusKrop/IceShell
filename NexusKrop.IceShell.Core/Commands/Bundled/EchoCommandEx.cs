@@ -9,7 +9,7 @@ using System;
 /// <summary>
 /// Defines a command that echoes or displays the specified text.
 /// </summary>
-[ComplexCommand("echo")]
+[ComplexCommand("echo", "Displays messages.")]
 public class EchoCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)
