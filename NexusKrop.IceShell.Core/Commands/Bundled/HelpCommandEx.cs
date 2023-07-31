@@ -74,9 +74,15 @@ public class HelpCommandEx : IComplexCommand
         grid.AddColumn();
         grid.AddRow(" ", " ");
 
-        foreach (var item in Shell.CommandManager.CommandEntries)
+        var keysEnumerable = Shell.CommandManager.CommandEntries.Keys;
+        var keys = new List<string>(keysEnumerable);
+        keys.Sort();
+
+        foreach (var x in keys)
         {
-            grid.AddRow(item.Key, item.Value.Description ?? "No description available.");
+            var item = Shell.CommandManager.CommandEntries[x];
+
+            grid.AddRow(x, item.Description ?? "No description available.");
         }
 
         AnsiConsole.Write(grid);

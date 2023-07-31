@@ -69,7 +69,7 @@ public class CommandManager
 
     public Type? GetComplex(string name)
     {
-        if (!_complexCommands.TryGetValue(name, out var x))
+        if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var x))
         {
             x = null;
         }
@@ -81,6 +81,7 @@ public class CommandManager
 
         return x?.Type;
     }
+
     public void RegisterComplex(Type type)
     {
         ArgumentNullException.ThrowIfNull(type);
@@ -116,6 +117,6 @@ public class CommandManager
             throw new ArgumentException(ER.ManagerInvalidAttribute, nameof(type));
         }
 
-        _complexCommands.Add(attribute.Name, new(type, platforms.ToArray(), attribute.Description));
+        _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), attribute.Description));
     }
 }
