@@ -32,6 +32,7 @@ public class CommandManager
         RegisterComplex(typeof(MkfileCommandEx));
         RegisterComplex(typeof(MoveCommandEx));
         RegisterComplex(typeof(HelpCommandEx));
+        RegisterComplex(typeof(TypeCommandEx));
     }
 
     public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, string? Description);

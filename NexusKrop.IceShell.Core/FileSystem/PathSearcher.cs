@@ -107,7 +107,7 @@ public static class PathSearcher
 
     public static string ShellToSystem(string path)
     {
-        if (!UseCustomPathSystem)
+        if (!UseCustomPathSystem && (!path.Contains('\\') && !path.StartsWith('@')))
         {
             if (path == $"~{Path.DirectorySeparatorChar}")
             {

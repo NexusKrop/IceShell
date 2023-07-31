@@ -17,7 +17,7 @@ public static class CommandChecks
     {
         if (!File.Exists(file))
         {
-            throw ExceptionHelper.WithName(Messages.BadFileGeneric, file);
+            throw ExceptionHelper.WithName(ER.ResourceManager.GetString("GenericFileNotFound")!, file);
         }
     }
 
