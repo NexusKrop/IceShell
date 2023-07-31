@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NexusKrop.IceShell.Core\NexusKrop.IceShell.Core.csproj" />
+    <ProjectReference Include="..\IceShell.Core\IceShell.Core.csproj" />
   </ItemGroup>
 
 </Project>
