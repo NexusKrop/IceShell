@@ -27,5 +27,5 @@ public interface IComplexCommand
     /// </summary>
     /// <param name="argument">The parsed argument.</param>
     /// <returns>The execution result code. If <c>0</c>, the command is considered success.</returns>
-    int Execute(ComplexArgumentParseResult argument);
+    int Execute(ComplexArgumentParseResult argument, Shell shell);
 }

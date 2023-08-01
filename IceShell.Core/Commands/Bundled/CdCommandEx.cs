@@ -19,7 +19,7 @@ public class CdCommandEx : IComplexCommand
         argument.AddValue(new("destination", false));
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         if (argument.Values.Count == 0)
         {

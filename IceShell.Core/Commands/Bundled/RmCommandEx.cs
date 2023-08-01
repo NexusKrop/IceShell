@@ -17,7 +17,7 @@ public class RmCommandEx : IComplexCommand
         argument.MakeGreedy();
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         return 0;
     }

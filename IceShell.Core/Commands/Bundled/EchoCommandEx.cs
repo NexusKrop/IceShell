@@ -18,7 +18,7 @@ public class EchoCommandEx : IComplexCommand
         argument.MakeGreedy();
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         Console.WriteLine(argument.Values[0]);
         return 0;

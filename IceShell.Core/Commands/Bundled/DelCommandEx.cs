@@ -34,7 +34,7 @@ public class DelCommandEx : IComplexCommand
         }
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         var pattern = argument.Values[0];
 

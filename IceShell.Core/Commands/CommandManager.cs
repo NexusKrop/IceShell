@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands;
 
+using global::IceShell.Core.Commands.Bundled;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -33,6 +34,7 @@ public class CommandManager
         RegisterComplex(typeof(MoveCommandEx));
         RegisterComplex(typeof(HelpCommandEx));
         RegisterComplex(typeof(TypeCommandEx));
+        RegisterComplex(typeof(PromptCommandEx));
     }
 
     public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, string? Description);

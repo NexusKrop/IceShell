@@ -18,7 +18,7 @@ public class ClsCommandEx : IComplexCommand
         // No arguments needed to be defined here.
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         Console.Clear();
         return 0;

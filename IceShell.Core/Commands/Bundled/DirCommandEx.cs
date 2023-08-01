@@ -205,7 +205,7 @@ internal class DirCommandEx : IComplexCommand
         argument.AddOption('h', false);
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         if (argument.Values.Count == 1)
         {

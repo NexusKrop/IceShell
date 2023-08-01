@@ -22,11 +22,15 @@ using System.Diagnostics;
 /// </summary>
 public class Shell
 {
+    public const string DefaultPrompt = "%P%G ";
+
     private readonly CommandParser _parser = new();
     private readonly ShellSettings _settings;
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
+
+    public string Prompt { get; set; }
 
     public Shell() : this(new())
     {
@@ -35,6 +39,7 @@ public class Shell
     public Shell(ShellSettings settings)
     {
         _settings = settings;
+        Prompt = DefaultPrompt;
     }
 
     public static CommandManager CommandManager { get; } = new();
@@ -183,7 +188,7 @@ public class Shell
                 var arg = new ComplexArgument(_parser);
 
                 ixcmd.Define(arg);
-                return ixcmd.Execute(arg.Parse());
+                return ixcmd.Execute(arg.Parse(), this);
             }
             else
             {
@@ -227,7 +232,11 @@ public class Shell
 
         while (!ExitShell)
         {
-            var input = ReadLine.Read(string.Format("{0}> ", PathSearcher.SystemToShell(Environment.CurrentDirectory)));
+            var prompt = this.Prompt.Replace("%P", PathSearcher.SystemToShell(Environment.CurrentDirectory), true, null)
+                .Replace("%G", ">", true, null)
+                .Replace("%L", "<", true, null);
+
+            var input = ReadLine.Read(prompt);
 
             if (string.IsNullOrWhiteSpace(input))
             {

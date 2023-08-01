@@ -17,7 +17,7 @@ public class TypeCommandEx : IComplexCommand
         argument.AddValue("file", true);
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         if (argument.Values.Count != 1)
         {

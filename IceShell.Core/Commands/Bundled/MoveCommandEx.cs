@@ -22,7 +22,7 @@ public class MoveCommandEx : IComplexCommand
         argument.AddOption('f', false);
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
         var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);

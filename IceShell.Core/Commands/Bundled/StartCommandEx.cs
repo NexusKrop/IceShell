@@ -20,7 +20,7 @@ public class StartCommandEx : IComplexCommand
         argument.AddValue(new("target", true));
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         var proc = argument.Values[0]!;
 

@@ -18,7 +18,7 @@ public class MkdirCommandEx : IComplexCommand
         argument.AddOption(new('i', false, false));
     }
 
-    public int Execute(ComplexArgumentParseResult argument)
+    public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         var dir = PathSearcher.ShellToSystem(argument.Values[0]!);
 
