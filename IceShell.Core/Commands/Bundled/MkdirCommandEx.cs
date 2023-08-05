@@ -1,5 +1,6 @@
 ﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -26,7 +27,7 @@ public class MkdirCommandEx : IComplexCommand
 
         if (File.Exists(dir))
         {
-            throw new CommandFormatException(Messages.MkdirFileExists);
+            throw new CommandFormatException(Languages.MakeDirFileExists(dir));
         }
 
         if (Directory.Exists(dir) && !argument.Options.ContainsKey('i'))

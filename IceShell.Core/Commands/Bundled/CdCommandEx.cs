@@ -34,7 +34,7 @@ public class CdCommandEx : IComplexCommand
 
         if (!Directory.Exists(target))
         {
-            throw new CommandFormatException(Messages.BadDirectory);
+            throw ExceptionHelper.BadDirectory(target);
         }
 
         Shell.ChangeDirectory(target);

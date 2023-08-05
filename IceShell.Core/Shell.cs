@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core;
 
 using global::IceShell.Core.CLI;
+using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core.Api;
@@ -158,7 +159,7 @@ public class Shell
 
                 if (!ExecuteOnDisk(command, args))
                 {
-                    ConsoleOutput.PrintShellError(Messages.BadFile);
+                    ConsoleOutput.PrintShellError(Languages.InvalidFile(command));
                     return 1;
                 }
 
@@ -177,7 +178,7 @@ public class Shell
                 if (!ExecuteOnPath(command, args))
                 {
                     // If no such path file, say bad command
-                    ConsoleOutput.PrintShellError(Messages.BadCommand);
+                    ConsoleOutput.PrintShellError(Languages.UnknownCommand(command));
                     return 1;
                 }
 
@@ -195,7 +196,7 @@ public class Shell
             }
             else
             {
-                ConsoleOutput.PrintShellError(Messages.BadCommand);
+                ConsoleOutput.PrintShellError(Languages.UnknownCommand(command));
             }
         }
         catch (CommandFormatException ex)

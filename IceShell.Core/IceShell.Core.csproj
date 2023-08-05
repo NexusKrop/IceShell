@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Crayon" Version="2.0.69" />
     <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
+    <PackageReference Include="Kajabity.Tools.Java" Version="0.3.8607.38728" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
@@ -37,6 +38,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CLI\Languages\*.properties" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Exceptions\ER.resx">

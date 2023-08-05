@@ -7,6 +7,7 @@ public class ShellSettings
 {
     public bool DisplayDateTimeOnStartup { get; set; }
     public bool UseCustomPathSystem { get; set; }
+    public string Language { get; set; } = "en";
 
     public void Save(string file)
     {
@@ -15,6 +16,7 @@ public class ShellSettings
         var data = new IniData();
         data["Shell"]["DisplayDateTimeOnStartup"] = DisplayDateTimeOnStartup.ToString();
         data["Shell"][nameof(UseCustomPathSystem)] = UseCustomPathSystem.ToString();
+        data["Shell"][nameof(Language)] = Language;
 
         parser.WriteFile(file, data);
     }
@@ -30,6 +32,7 @@ public class ShellSettings
         // Add data here
         result.DisplayDateTimeOnStartup = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]);
         result.UseCustomPathSystem = bool.Parse(data["Shell"][nameof(UseCustomPathSystem)]);
+        result.Language = data["Shell"][nameof(Language)];
 
         return result;
     }

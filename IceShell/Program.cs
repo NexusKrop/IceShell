@@ -1,6 +1,7 @@
 ﻿// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
+using IceShell.Core.CLI.Languages;
 using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core;
 using Spectre.Console;
@@ -43,4 +44,6 @@ if (sh == null)
     }
 }
 
+Languages.Instance.Load();
+Languages.SetInstanceConfig(sh);
 return new Shell(sh).RunInteractive();
