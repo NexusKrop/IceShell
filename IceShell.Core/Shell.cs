@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core;
 
+using global::IceShell.Core.CLI;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core.Api;
@@ -31,6 +32,8 @@ public class Shell
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
 
     public string Prompt { get; set; }
+
+    public ITerminal Terminal { get; set; } = new RealTerminal();
 
     public Shell() : this(new())
     {
@@ -236,6 +239,7 @@ public class Shell
                 .Replace("%G", ">", true, null)
                 .Replace("%L", "<", true, null);
 
+            // TODO reference the ReadLine code and use Terminal interface
             var input = ReadLine.Read(prompt);
 
             if (string.IsNullOrWhiteSpace(input))
@@ -248,5 +252,40 @@ public class Shell
         }
 
         return 0;
+    }
+
+    public void WriteLine()
+    {
+        Terminal.StandardOutput.WriteLine();
+    }
+
+    public void WriteLine(string? text)
+    {
+        Terminal.StandardOutput.WriteLine(text);
+    }
+
+    public void WriteLine(object? obj)
+    {
+        Terminal.StandardOutput.WriteLine(obj);
+    }
+
+    public void WriteLine(string text, params object[] args)
+    {
+        Terminal.StandardOutput.WriteLine(text, args);
+    }
+
+    public void Write(string text, params object[] args)
+    {
+        Terminal.StandardOutput.Write(text, args);
+    }
+
+    public void Write(object? obj)
+    {
+        Terminal.StandardOutput.Write(obj);
+    }
+
+    public void Write(string? text)
+    {
+        Terminal.StandardOutput.Write(text);
     }
 }

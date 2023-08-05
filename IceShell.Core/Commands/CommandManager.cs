@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands;
 
 using global::IceShell.Core.Commands.Bundled;
+using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -90,6 +91,7 @@ public class CommandManager
 
         var platforms = new List<string>();
 
+        // Step 1: Search command attributes
         var attributes = type.GetCustomAttributes(typeof(ComplexCommandAttribute), false);
 
         if (attributes.Length != 1)
@@ -97,6 +99,7 @@ public class CommandManager
             throw new ArgumentException(ER.ManagerMoreThanOneAttribute, nameof(type));
         }
 
+        // Step 2: Search platform attributes
         var platformAttr = type.GetCustomAttributes(typeof(SupportedOSPlatformAttribute), false);
 
         foreach (var attr in platformAttr)
@@ -107,6 +110,10 @@ public class CommandManager
             }
         }
 
+        // Step 3: Search alias attributes
+        var aliasAttr = type.GetCustomAttributes(typeof(CommandAliasAttribute), false);
+
+        // Now begin registering
         var intf = type.GetInterface("IComplexCommand");
 
         if (intf != typeof(IComplexCommand))
@@ -120,5 +127,14 @@ public class CommandManager
         }
 
         _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), attribute.Description));
+
+        // Register all of its aliases
+        foreach (var attr in aliasAttr)
+        {
+            if (attr is CommandAliasAttribute alias)
+            {
+                _complexCommands.Add(alias.Alias.ToUpperInvariant(), new(type, platforms.ToArray(), attribute.Description));
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -12,6 +13,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// directory.
 /// </summary>
 [ComplexCommand("cd", "Displays the name of or changes the current directory.")]
+[CommandAlias("chdir")]
 public class CdCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)

@@ -1,5 +1,6 @@
 ﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 [ComplexCommand("mkdir", "Creates a directory.")]
+[CommandAlias("md")]
 public class MkdirCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)
