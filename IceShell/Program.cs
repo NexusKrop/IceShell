@@ -3,6 +3,7 @@
 
 using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core;
+using Spectre.Console;
 
 var userPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".iceShell");
 Directory.CreateDirectory(userPath);
@@ -25,7 +26,9 @@ if (File.Exists(configPath))
         System.Console.WriteLine();
     }
 }
-else
+
+// Create if possible
+if (sh == null)
 {
     try
     {
@@ -34,12 +37,10 @@ else
     }
     catch (Exception ex)
     {
-        System.Console.WriteLine("Unable to save config file!");
-        System.Console.WriteLine(ex);
-        System.Console.WriteLine();
+        AnsiConsole.WriteLine("[red]Unable to create configuration![/]");
+        AnsiConsole.WriteException(ex);
+        sh = new();
     }
 }
-
-sh ??= new();
 
 return new Shell(sh).RunInteractive();
