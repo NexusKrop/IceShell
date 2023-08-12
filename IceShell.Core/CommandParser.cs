@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core;
 
+using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.Exceptions;
 using System.Text;
 
@@ -75,7 +76,7 @@ public class CommandParser
     {
         if (!CanRead())
         {
-            throw new CommandFormatException(ER.ExceptedString);
+            throw new CommandFormatException(Languages.Get("reader_excepts_string"));
         }
 
         var builder = new StringBuilder();
@@ -128,7 +129,7 @@ public class CommandParser
 
         if (Peek() != DOUBLE_QUOTE)
         {
-            throw new CommandFormatException(ER.ExceptedBeginOfQuote);
+            throw new CommandFormatException(Languages.Get("reader_excepts_begin_of_quote"));
         }
 
         var builder = new StringBuilder();
@@ -141,7 +142,7 @@ public class CommandParser
         {
             if (!CanRead())
             {
-                throw new CommandFormatException(ER.ExceptedEndOfQuote);
+                throw new CommandFormatException(Languages.Get("reader_quoted_string_never_ends"));
             }
 
             var c = Read();

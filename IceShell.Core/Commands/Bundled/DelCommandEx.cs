@@ -50,7 +50,7 @@ public class DelCommandEx : IComplexCommand
     {
         if (Targets == null || !Targets.Any())
         {
-            throw ExceptionHelper.WithName(ER.ComplexValueRequired, '0');
+            throw new CommandFormatException(Languages.RequiresValue(0));
         }
 
         string searchDir;

@@ -6,7 +6,6 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using global::IceShell.Core;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 
 /// <summary>
 /// Defines a command that prints out the contents of a file.
@@ -19,19 +18,9 @@ public class TypeCommandEx : IComplexCommand
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
-        if (ArgFile == null)
-        {
-            throw ExceptionHelper.WithName(ER.ComplexValueRequired, "file");
-        }
+        CommandChecks.FileExists(ArgFile!);
 
-        if (string.IsNullOrWhiteSpace(ArgFile))
-        {
-            throw ExceptionHelper.WithName(ER.ComplexValueRequired, "file");
-        }
-
-        CommandChecks.FileExists(ArgFile);
-
-        System.Console.WriteLine(File.ReadAllText(ArgFile));
+        System.Console.WriteLine(File.ReadAllText(ArgFile!));
         return 0;
     }
 }

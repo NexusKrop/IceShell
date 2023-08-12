@@ -89,4 +89,5 @@ public class Languages
     public static string DelPrompt(string file) => string.Format(Get("del_prompt"), file);
 
     public static string UnauthorizedFile(string file) => string.Format(Get("generic_unauthorized_file"), file);
+    public static string RequiresValue(int value) => string.Format(Get("generic_requires_value"), value);
 }
