@@ -16,6 +16,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// </summary>
 [ComplexCommand("cd", "Displays the name of or changes the current directory.")]
 [CommandAlias("chdir")]
+[GreedyString]
 public class CdCommandEx : IComplexCommand
 {
     [Value("value", position: 0)]
