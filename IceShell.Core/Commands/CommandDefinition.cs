@@ -2,6 +2,7 @@ namespace IceShell.Core.Commands;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
+using Spectre.Console;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,9 +16,58 @@ public class CommandDefinition
     public bool VariableValues { get; set; }
     public bool GreedyString { get; set; }
 
+    public string Description { get; set; } = "No description provided.";
+
     public PropertyInfo? VariableValueBuffer { get; set; }
 
     public string? CustomUsage { get; set; }
+
+    public void PrintHelp(string cmdName)
+    {
+        Console.WriteLine(Description);
+        Console.WriteLine();
+        Console.WriteLine(GetUsage(cmdName));
+
+        if (Values.Any())
+        {
+            Console.WriteLine();
+
+            // Values
+            Console.WriteLine("Values: ");
+            Console.WriteLine();
+
+            var grid = new Grid();
+            grid.AddColumn();
+            grid.AddColumn();
+
+            foreach (var value in Values)
+            {
+                grid.AddRow(value.Name, "not implemented - help message");
+            }
+
+            AnsiConsole.Write(grid);
+        }
+
+        if (Options.Any())
+        {
+            Console.WriteLine();
+
+            // Options
+            Console.WriteLine("Options: ");
+            Console.WriteLine();
+
+            var grid = new Grid();
+            grid.AddColumn();
+            grid.AddColumn();
+
+            foreach (var option in Options)
+            {
+                grid.AddRow(option.Value.HasValue ? $"/{option.Key}" : $"/{option.Key}:<value>", "not implemented - help message");
+            }
+
+            AnsiConsole.Write(grid);
+        }
+    }
 
     /// <summary>
     /// Creates a string that describes this command definition in a user-friendly way.

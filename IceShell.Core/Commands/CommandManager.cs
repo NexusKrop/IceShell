@@ -176,6 +176,11 @@ public class CommandManager
             definition.CustomUsage = commandAttr.CustomUsage;
         }
 
+        if (!string.IsNullOrWhiteSpace(commandAttr.Description))
+        {
+            definition.Description = commandAttr.Description;
+        }
+
         if (type.GetCustomAttribute<GreedyStringAttribute>() != null)
         {
             definition.Greedy();

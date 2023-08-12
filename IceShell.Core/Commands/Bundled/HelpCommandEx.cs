@@ -43,7 +43,7 @@ public class HelpCommandEx : IComplexCommand
 
         var def = commandType.Definition;
 
-        System.Console.WriteLine("Usage: {0}", def.GetUsage(commandName));
+        def.PrintHelp(commandName);
         return 0;
     }
 
