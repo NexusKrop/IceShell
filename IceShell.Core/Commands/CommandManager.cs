@@ -190,6 +190,11 @@ public class CommandManager
                         throw new InvalidOperationException("A value cannot be option and value at the same time!");
                     }
 
+                    if (!optAttr.HasValue && property.PropertyType != typeof(bool))
+                    {
+                        throw new InvalidOperationException($"Attempting to register property {property.Name} without value and property is not boolean");
+                    }
+
                     definition.Option(optAttr.Character, optAttr.HasValue, property, optAttr.Required);
                 }
             });

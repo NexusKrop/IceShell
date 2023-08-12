@@ -36,14 +36,34 @@ public class CommandDispatcher
     {
         var instance = (IComplexCommand)Activator.CreateInstance(command.Command.Type)!;
 
-        foreach (var option in command.Command.Definition.Options)
+        foreach (var option in command.Command.Definition.Options.Select(x => x.Value))
         {
-            option.Value.Property.SetValue(instance, command.ArgumentParseResult.Options[option.Value]);
+            if (!command.ArgumentParseResult.Options.TryGetValue(option, out var obj))
+            {
+                if (!option.HasValue)
+                {
+                    option.Property.SetValue(instance, false);
+                }
+
+                continue;
+            }
+
+            if (!option.HasValue)
+            {
+                option.Property.SetValue(instance, true);
+            }
+
+            option.Property.SetValue(instance, obj);
         }
 
         foreach (var value in command.Command.Definition.Values)
         {
-            value.Property.SetValue(instance, command.ArgumentParseResult.Values[value]);
+            if (!command.ArgumentParseResult.Values.TryGetValue(value, out var obj))
+            {
+                continue;
+            }
+
+            value.Property.SetValue(instance, obj);
         }
 
         return instance.Execute(command.ArgumentParseResult, _shell);

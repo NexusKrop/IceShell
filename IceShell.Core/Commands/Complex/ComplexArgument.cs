@@ -129,7 +129,7 @@ public class ComplexArgument
         values.ForEach(x => System.Console.WriteLine(x));
 #endif
 
-        if (!_definition.VariableValues && (requiredArgCount == 0 || result.Values.Count < requiredArgCount))
+        if (!_definition.VariableValues && (requiredArgCount != 0 && valueNum <= requiredArgCount))
         {
             throw new CommandFormatException(Languages.ArgumentLowerThanCount(valueNum, requiredArgCount));
         }
