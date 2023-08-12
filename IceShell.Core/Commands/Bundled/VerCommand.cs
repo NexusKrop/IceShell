@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 using System.Diagnostics;
@@ -23,10 +24,10 @@ public class VerCommand : IComplexCommand
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
-        Console.WriteLine(Messages.VerLine1, PRODUCT_VERSION);
-        Console.WriteLine(Messages.VerLine2, Environment.OSVersion.VersionString);
+        Console.WriteLine(Languages.Get("ver_line_0"), PRODUCT_VERSION);
+        Console.WriteLine(Languages.Get("ver_line_1"), Environment.OSVersion.VersionString);
         Console.WriteLine();
-        Console.WriteLine(Messages.VerLine3);
+        Console.WriteLine(Languages.Get("ver_line_2"));
 
         return 0;
     }

@@ -40,7 +40,7 @@ public class ComplexArgument
 
         var result = new ComplexArgumentParseResult();
 
-        var valueNum = 0;
+        var valueIndex = 0;
 
         while (_parser.CanRead())
         {
@@ -113,15 +113,15 @@ public class ComplexArgument
 
                 // Check value definition existence
 
-                if (requiredArgCount != 0 && valueNum >= requiredArgCount)
+                if (requiredArgCount != 0 && (valueIndex >= _definition.Values.Count))
                 {
-                    throw new CommandFormatException(Languages.ArgumentSurpassingCount(valueNum, _definition.Values.Count));
+                    throw new CommandFormatException(Languages.ArgumentSurpassingCount(valueIndex + 1, _definition.Values.Count));
                 }
 
-                var def = _definition.Values[valueNum];
+                var def = _definition.Values[valueIndex];
                 result.Value(def, toAdd);
 
-                valueNum++;
+                valueIndex++;
             }
         }
 
@@ -129,9 +129,9 @@ public class ComplexArgument
         values.ForEach(x => System.Console.WriteLine(x));
 #endif
 
-        if (!_definition.VariableValues && (requiredArgCount != 0 && valueNum <= requiredArgCount))
+        if (!_definition.VariableValues && (requiredArgCount != 0 && valueIndex < requiredArgCount))
         {
-            throw new CommandFormatException(Languages.ArgumentLowerThanCount(valueNum, requiredArgCount));
+            throw new CommandFormatException(Languages.ArgumentLowerThanCount(valueIndex, requiredArgCount));
         }
 
         return result;

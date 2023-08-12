@@ -17,6 +17,8 @@ public class CommandDefinition
 
     public PropertyInfo? VariableValueBuffer { get; set; }
 
+    public string? CustomUsage { get; set; }
+
     /// <summary>
     /// Creates a string that describes this command definition in a user-friendly way.
     /// </summary>
@@ -24,6 +26,11 @@ public class CommandDefinition
     /// <returns>The command usage definition string.</returns>
     public string GetUsage(string cmdName)
     {
+        if (CustomUsage != null)
+        {
+            return $"{cmdName} {CustomUsage}";
+        }
+
         var builder = new StringBuilder();
         builder.Append(cmdName).Append(' ');
 

@@ -1,6 +1,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -11,8 +12,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 [ComplexCommand("copy", "Copies a file to another location.")]
+[VariableValue]
 public class CopyCommandEx : IComplexCommand
 {
+    [VariableValueBuffer]
+    public IReadOnlyList<string>? Buffer { get; set; }
+
     //public void Define(ComplexArgument argument)
     //{
     //    argument.AddValue("source", true);

@@ -11,7 +11,7 @@ using Spectre.Console;
 [ComplexCommand("help", "Provides help information for IceShell commands.")]
 public class HelpCommandEx : IComplexCommand
 {
-    [Value("command", position: 0)]
+    [Value("command", false, position: 0)]
     public string? CommandName { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)

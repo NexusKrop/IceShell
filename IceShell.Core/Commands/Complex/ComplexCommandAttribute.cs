@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Complex;
@@ -18,4 +18,5 @@ public sealed class ComplexCommandAttribute : Attribute
 
     public string Name { get; set; }
     public string? Description { get; set; }
+    public string? CustomUsage { get; set; }
 }

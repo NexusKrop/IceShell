@@ -44,9 +44,19 @@ public class Languages
         }
     }
 
+    public static string Get(string messageName)
+    {
+        return Instance.Current().Get(messageName);
+    }
+
     public static string UnknownCommand(string command)
     {
         return Instance.Current().UnknownCommand(command);
+    }
+
+    public static string FormatMessage(string messageName, params object[] args)
+    {
+        return string.Format(Instance.Current().Get(messageName), args);
     }
 
     public static string InvalidFile(string fileName)
@@ -73,4 +83,10 @@ public class Languages
     {
         return string.Format(Instance.Current().Get("argument_lower_than_count"), current, max);
     }
+
+    public static string DirDirectoryOf(string directory) => FormatMessage("dir_directory_of", directory);
+
+    public static string DelPrompt(string file) => string.Format(Get("del_prompt"), file);
+
+    public static string UnauthorizedFile(string file) => string.Format(Get("generic_unauthorized_file"), file);
 }

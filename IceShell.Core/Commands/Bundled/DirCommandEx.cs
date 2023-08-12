@@ -4,6 +4,8 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -126,7 +128,7 @@ internal class DirCommandEx : IComplexCommand
     private void Execute(bool revealHidden)
     {
         // Print DOS-like table title, sans the volume information (too complex).
-        Console.WriteLine(Messages.DirDirectory, PathSearcher.SystemToShell(_dir));
+        Console.WriteLine(Languages.Get("dir_directory_of"), PathSearcher.SystemToShell(_dir));
         Console.WriteLine();
 
         var windows = OperatingSystem.IsWindows();
@@ -198,43 +200,38 @@ internal class DirCommandEx : IComplexCommand
         Console.WriteLine("{0} files, {1} directories", _fileCount, _dirCount);
     }
 
-    //public void Define(ComplexArgument argument)
-    //{
-    //    argument.AddValue(new("directory", false));
-    //    argument.AddOption(new('d', true, false));
-    //    argument.AddOption(new('t', true, false));
-    //    argument.AddOption('h', false);
-    //}
+    [Value("directory", required: false, position: 0)]
+    public string? TargetDir { get; set; }
+
+    [Option('d', true)]
+    public string? DateFormat { get; set; }
+
+    [Option('t', true)]
+    public string? TimeFormat { get; set; }
+
+    [Option('h', false)]
+    public bool RevealHidden { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         // All chunked out ones need fix
 
-        //if (argument.Values.Count == 1)
-        //{
-        //    var targetDir = argument.Values[0];
+        if (!string.IsNullOrWhiteSpace(TargetDir) && Directory.Exists(TargetDir))
+        {
+            _dir = TargetDir;
+        }
 
-        //    if (string.IsNullOrWhiteSpace(targetDir) || !Directory.Exists(targetDir))
-        //    {
-        //        throw new CommandFormatException(ER.DirBadDirectory);
-        //    }
+        if (!string.IsNullOrWhiteSpace(DateFormat))
+        {
+            _dateFormat = DateFormat;
+        }
 
-        //    _dir = targetDir;
-        //}
+        if (!string.IsNullOrWhiteSpace(TimeFormat))
+        {
+            _timeFormat = TimeFormat;
+        }
 
-        //if (argument.Options.TryGetValue('d', out var dateFormat)
-        //    && !string.IsNullOrWhiteSpace(dateFormat))
-        //{
-        //    _dateFormat = dateFormat;
-        //}
-
-        //if (argument.Options.TryGetValue('t', out var timeFormat)
-        //    && !string.IsNullOrWhiteSpace(timeFormat))
-        //{
-        //    _timeFormat = timeFormat;
-        //}
-
-        //Execute(argument.OptionPresents('h'));
+        Execute(RevealHidden);
 
         return 0;
     }

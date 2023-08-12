@@ -169,6 +169,12 @@ public class CommandManager
     private static CommandDefinition GetDefine(Type type)
     {
         var definition = new CommandDefinition();
+        var commandAttr = type.GetCustomAttribute<ComplexCommandAttribute>()!;
+
+        if (!string.IsNullOrWhiteSpace(commandAttr.CustomUsage))
+        {
+            definition.CustomUsage = commandAttr.CustomUsage;
+        }
 
         if (type.GetCustomAttribute<GreedyStringAttribute>() != null)
         {

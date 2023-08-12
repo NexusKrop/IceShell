@@ -4,11 +4,14 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Attributes;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Exceptions;
+using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -16,34 +19,50 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// <summary>
 /// Defines a command that deletes a file.
 /// </summary>
-[ComplexCommand("del", "Deletes a file.")]
+[ComplexCommand("del", "Deletes one or more files.")]
+[VariableValue]
 public class DelCommandEx : IComplexCommand
 {
-    [Value("target", position: 0)]
-    public string? Target { get; set; }
+    [VariableValueBuffer]
+    public IReadOnlyList<string>? Targets { get; set; }
 
-    private static void DeleteFileCommit(string file)
+    [Option('P', false)]
+    public bool Prompt { get; set; }
+
+    private void DeleteFileCommit(string file)
     {
         try
         {
+            if (Prompt && !ConsoleAsk.YesNo(Languages.DelPrompt(file)))
+            {
+                return;
+            }
+
             File.Delete(file);
         }
         catch (UnauthorizedAccessException)
         {
-            throw new CommandFormatException(Messages.FileUnauthorized);
+            throw new CommandFormatException(Languages.UnauthorizedFile(file));
         }
     }
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
-        var pattern = Target;
-
-        if (string.IsNullOrWhiteSpace(pattern))
+        if (Targets == null || !Targets.Any())
         {
             throw ExceptionHelper.WithName(ER.ComplexValueRequired, '0');
         }
 
-        var searchDir = Path.GetDirectoryName(PathSearcher.ShellToSystem(pattern!));
+        string searchDir;
+
+        if (Targets.Count == 1)
+        {
+            searchDir = Path.GetDirectoryName(PathSearcher.ShellToSystem(Targets[0]))!;
+        }
+        else
+        {
+            searchDir = Directory.GetCurrentDirectory();
+        }
 
         if (string.IsNullOrWhiteSpace(searchDir))
         {
@@ -54,7 +73,8 @@ public class DelCommandEx : IComplexCommand
 
         // Match via file glob
         var matcher = new Matcher();
-        matcher.AddInclude(PathSearcher.ShellToSystem(pattern));
+
+        Targets.ForEach(x => matcher.AddInclude(PathSearcher.ShellToSystem(x)));
 
         var matchingResult = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(searchDir ?? Environment.CurrentDirectory)));
 
@@ -67,11 +87,7 @@ public class DelCommandEx : IComplexCommand
 
         if (!targets.Any())
         {
-            System.Console.WriteLine("No files found for pattern \"{0}\".", PathSearcher.ShellToSystem(pattern));
-
-#if DEBUG
-            System.Console.WriteLine(pattern);
-#endif
+            Console.WriteLine("No files found for the selected patterns");
 
             return 1;
         }
