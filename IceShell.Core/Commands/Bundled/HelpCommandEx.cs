@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using Spectre.Console;
@@ -13,7 +14,7 @@ public class HelpCommandEx : IComplexCommand
     [Value("command", position: 0)]
     public string? CommandName { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         if (argument.Values.Count == 0)
         {

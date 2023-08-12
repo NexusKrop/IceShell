@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using global::IceShell.Core.Commands.Attributes;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
@@ -33,7 +34,7 @@ public class DelCommandEx : IComplexCommand
         }
     }
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         var pattern = Target;
 

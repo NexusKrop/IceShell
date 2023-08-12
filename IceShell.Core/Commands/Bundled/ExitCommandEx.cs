@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
 /// <summary>
@@ -11,9 +12,9 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 [ComplexCommand("exit", "Quits the IceShell program.")]
 public class ExitCommandEx : IComplexCommand
 {
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
-        Shell.Quit();
+        shell.Quit();
         return 0;
     }
 }

@@ -1,5 +1,6 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -19,7 +20,7 @@ public class CopyCommandEx : IComplexCommand
     //    argument.AddOption('f', false);
     //}
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         // TODO fix
 

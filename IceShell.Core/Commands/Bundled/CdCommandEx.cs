@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -20,7 +21,7 @@ public class CdCommandEx : IComplexCommand
     [Value("value", position: 0)]
     public string? Destination { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         if (argument.Values.Count == 0)
         {

@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ public class VerCommand : IComplexCommand
     private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Environment.ProcessPath ?? "NexusKrop.IceShell.exe").ProductVersion ?? "unknown";
 #endif
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         Console.WriteLine(Messages.VerLine1, PRODUCT_VERSION);
         Console.WriteLine(Messages.VerLine2, Environment.OSVersion.VersionString);

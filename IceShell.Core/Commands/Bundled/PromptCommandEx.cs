@@ -14,7 +14,7 @@ public class PromptCommandEx : IComplexCommand
     [Value("prompt", false, 0)]
     public string? Prompt { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         var prompt = Prompt;
 

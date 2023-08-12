@@ -1,5 +1,6 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -22,7 +23,7 @@ public class MkdirCommandEx : IComplexCommand
         //argument.AddOption(new('i', false, false));
     }
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         //var dir = PathSearcher.ShellToSystem(argument.Values[0]!);
 

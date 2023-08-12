@@ -15,6 +15,8 @@ public class CommandDefinition
     public bool VariableValues { get; set; }
     public bool GreedyString { get; set; }
 
+    public PropertyInfo? VariableValueBuffer { get; set; }
+
     /// <summary>
     /// Creates a string that describes this command definition in a user-friendly way.
     /// </summary>

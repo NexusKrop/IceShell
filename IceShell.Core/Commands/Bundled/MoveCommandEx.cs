@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -23,7 +24,7 @@ public class MoveCommandEx : IComplexCommand
     //    argument.AddOption('f', false);
     //}
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         //var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
         //var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);

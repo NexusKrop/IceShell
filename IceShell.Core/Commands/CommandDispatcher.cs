@@ -15,9 +15,9 @@ using System.Windows.Input;
 
 public class CommandDispatcher
 {
-    private readonly Shell _shell;
+    private readonly IShell _shell;
 
-    public CommandDispatcher(Shell shell)
+    public CommandDispatcher(IShell shell)
     {
         _shell = shell;
     }
@@ -35,6 +35,12 @@ public class CommandDispatcher
     public int Execute(ParsedCommand command)
     {
         var instance = (IComplexCommand)Activator.CreateInstance(command.Command.Type)!;
+
+        if (command.Command.Definition.VariableValues &&
+            command.Command.Definition.VariableValueBuffer != null)
+        {
+            command.Command.Definition.VariableValueBuffer.SetValue(instance, command.ArgumentParseResult.VariableValues.AsReadOnly());
+        }
 
         foreach (var option in command.Command.Definition.Options.Select(x => x.Value))
         {

@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 
@@ -13,7 +14,7 @@ using System;
 [ComplexCommand("cls", "Clears the screen.")]
 public class ClsCommandEx : IComplexCommand
 {
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         Console.Clear();
         return 0;

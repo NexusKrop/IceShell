@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core;
@@ -12,7 +12,7 @@ public class CommandParser
     public const char DOUBLE_QUOTE = '"';
     public const char ESCAPE = '\\';
 
-    internal CommandParser()
+    public CommandParser()
     {
     }
 
@@ -38,7 +38,7 @@ public class CommandParser
         Position = 0;
     }
 
-    internal void SetLine(string line)
+    public void SetLine(string line)
     {
         Clear();
         Line = line;

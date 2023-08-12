@@ -17,7 +17,7 @@ See [BUILDING](BUILDING.md) file.
 
 **Starting from 2023/8/12 +08:00, All dependencies, referenced packages, assemblies, projects must conform to NexusKrop [Dependency Guidelines](https://github.com/NexusKrop/.github/blob/main/docs/dependencies.md). Any contribution introducing dependencies (or newer/updated versions of existing dependencies) not conforming to any of the above will be refused, and PR/Issue closed as not planned, with or without explanation.**
 
-**To Moq authors: Suit yourself. I don't care what you want.**
+**To dependency authors who dare to include S-poon-Link: Suit yourself. I don't care what you want.**
 
 For code contributions, pull requests are welcome. For major changes, please open an issue first to discuss what
 you like to change.

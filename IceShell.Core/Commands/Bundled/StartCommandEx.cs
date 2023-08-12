@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -19,7 +20,7 @@ public class StartCommandEx : IComplexCommand
     [Value("target", position: 0)]
     public string? Target { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, Shell shell)
+    public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
         if (!File.Exists(Target))
         {

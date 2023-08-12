@@ -3,6 +3,8 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Complex;
 
+using global::IceShell.Core;
+
 /// <summary>
 /// Defines a complex command, with variable amount of arguments, and with support of option and value arguments.
 /// </summary>
@@ -21,5 +23,5 @@ public interface IComplexCommand
     /// </summary>
     /// <param name="argument">The parsed argument.</param>
     /// <returns>The execution result code. If <c>0</c>, the command is considered success.</returns>
-    int Execute(ComplexArgumentParseResult argument, Shell shell);
+    int Execute(ComplexArgumentParseResult argument, IShell shell);
 }

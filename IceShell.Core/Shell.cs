@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core;
 
+using global::IceShell.Core;
 using global::IceShell.Core.CLI;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
@@ -23,7 +24,7 @@ using System.Diagnostics;
 /// <summary>
 /// Represents the command-line interactive shell, the core of IceShell.
 /// </summary>
-public class Shell
+public class Shell : IShell
 {
     public const string DefaultPrompt = "%P%G ";
 
@@ -68,10 +69,15 @@ public class Shell
         Directory.SetCurrentDirectory(target);
     }
 
+    public void Quit()
+    {
+        Shell.QuitStatic();
+    }
+
     /// <summary>
     /// Tasks all shell instances to exit after executing their next (or last, if currently executing) command or user input.
     /// </summary>
-    public static void Quit()
+    public static void QuitStatic()
     {
         ExitShell = true;
     }

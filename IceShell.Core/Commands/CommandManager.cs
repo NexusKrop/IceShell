@@ -20,7 +20,7 @@ using System.Runtime.Versioning;
 
 public class CommandManager
 {
-    internal CommandManager()
+    public CommandManager()
     {
         CommandEntries = new ReadOnlyDictionary<string, ComplexCommandEntry>(_complexCommands);
 
@@ -134,6 +134,13 @@ public class CommandManager
         // Step 4: Create definitions
         var definition = GetDefine(type);
 
+        // Step 5: Verify definition
+        if (definition.VariableValues && (definition.VariableValueBuffer == null
+            || !definition.VariableValueBuffer.PropertyType.IsAssignableFrom(typeof(ReadOnlyCollection<string>))))
+        {
+            throw new InvalidOperationException($"Command type {type} is a variable values command but does not have a buffer for that, or buffer is invalid");
+        }
+
         // Now begin registering
         var intf = type.GetInterface("IComplexCommand");
 
@@ -168,11 +175,22 @@ public class CommandManager
             definition.Greedy();
         }
 
+        if (type.GetCustomAttribute<VariableValueAttribute>() != null)
+        {
+            definition.VarValues();
+        }
+
         foreach (var property in type.GetProperties())
         {
             property.GetCustomAttributes().ForEach(x =>
             {
                 var isValue = false;
+
+                if (x is VariableValueBufferAttribute)
+                {
+                    definition.VariableValueBuffer = property;
+                    return true;
+                }
 
                 // Register values first
                 if (x is ValueAttribute valAttr)
@@ -197,6 +215,8 @@ public class CommandManager
 
                     definition.Option(optAttr.Character, optAttr.HasValue, property, optAttr.Required);
                 }
+
+                return true;
             });
         }
 
