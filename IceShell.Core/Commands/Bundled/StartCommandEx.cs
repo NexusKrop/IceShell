@@ -1,8 +1,9 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -15,23 +16,19 @@ using System.ComponentModel;
 [ComplexCommand("start")]
 public class StartCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue(new("target", true));
-    }
+    [Value("target", position: 0)]
+    public string? Target { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        var proc = argument.Values[0]!;
-
-        if (!File.Exists(proc))
+        if (!File.Exists(Target))
         {
             throw new CommandFormatException(Messages.BadFileGeneric);
         }
 
         try
         {
-            IceCube.Util.Shell.ShellExecute(argument.Values[0]!);
+            IceCube.Util.Shell.ShellExecute(Target);
         }
         catch (Win32Exception x) when (x.NativeErrorCode == 1155)
         {

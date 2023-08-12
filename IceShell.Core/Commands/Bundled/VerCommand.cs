@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
@@ -19,11 +19,6 @@ public class VerCommand : IComplexCommand
 #else
     private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Environment.ProcessPath ?? "NexusKrop.IceShell.exe").ProductVersion ?? "unknown";
 #endif
-
-    public void Define(ComplexArgument argument)
-    {
-        // No arguments
-    }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {

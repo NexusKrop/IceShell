@@ -63,4 +63,14 @@ public class Languages
     {
         return string.Format(Instance.Current().Get("mkdir_file_exists"), file);
     }
+
+    public static string ArgumentSurpassingCount(int current, int max)
+    {
+        return string.Format(Instance.Current().Get("argument_surpassing_count"), current, max);
+    }
+
+    public static string ArgumentLowerThanCount(int current, int max)
+    {
+        return string.Format(Instance.Current().Get("argument_lower_than_count"), current, max);
+    }
 }

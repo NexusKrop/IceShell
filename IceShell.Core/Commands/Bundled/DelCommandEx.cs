@@ -1,8 +1,9 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Attributes;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using NexusKrop.IceCube;
@@ -17,10 +18,8 @@ using NexusKrop.IceShell.Core.FileSystem;
 [ComplexCommand("del", "Deletes a file.")]
 public class DelCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue("target", true);
-    }
+    [Value("target", position: 0)]
+    public string? Target { get; set; }
 
     private static void DeleteFileCommit(string file)
     {
@@ -36,7 +35,7 @@ public class DelCommandEx : IComplexCommand
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        var pattern = argument.Values[0];
+        var pattern = Target;
 
         if (string.IsNullOrWhiteSpace(pattern))
         {

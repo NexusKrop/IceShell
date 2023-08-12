@@ -1,8 +1,11 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Complex;
 
+using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
+using IceShell.Core.Commands;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
@@ -19,101 +22,25 @@ public class ComplexArgument
     public const char COMPLEX_END_OF_OPTION_SYMBOL = '-';
 
     private readonly CommandParser _parser;
+    private readonly CommandDefinition _definition;
 
-    private readonly Dictionary<char, ComplexOptionDefinition> _optionDefinitions = new();
-    private readonly List<ComplexValueDefinition> _valueDefinitions = new();
-
-    private bool _singleGreedy;
-    private bool _variableValues;
-
-    internal ComplexArgument(CommandParser parser)
+    internal ComplexArgument(CommandParser parser, CommandDefinition definition)
     {
         _parser = parser;
-    }
-
-    internal string GetUsage(string cmdName)
-    {
-        var builder = new StringBuilder();
-        builder.Append(cmdName).Append(' ');
-
-        _valueDefinitions.ForEach(x =>
-        {
-            if (x.Required)
-            {
-                builder.Append('<').Append(x.Name).Append('>');
-            }
-            else
-            {
-                builder.Append('[').Append(x.Name).Append(']');
-            }
-
-            builder.Append(' ');
-        });
-
-        if (_optionDefinitions.Any())
-        {
-            // TODO output all switches and options so it looks like DOS
-            builder.Append("[options...]");
-        }
-
-        return builder.ToString();
-    }
-
-    public void AddOption(char name, bool hasValue, bool required = false)
-    {
-        AddOption(new(name, hasValue, required));
-    }
-
-    public void AddOption(ComplexOptionDefinition option)
-    {
-        _optionDefinitions.Add(option.ShortName, option);
-    }
-
-    public void AddValue(string name, bool required = false)
-    {
-        AddValue(new(name, required));
-    }
-
-    public void AddValue(ComplexValueDefinition definition)
-    {
-        if (!_valueDefinitions.IsEmpty() && !_valueDefinitions.Last().Required && definition.Required)
-        {
-            throw new ArgumentException(ER.ComplexArgumentOrderFailure);
-        }
-
-        _valueDefinitions.Add(definition);
-    }
-
-    /// <summary>
-    /// Instructs the parsing routine that checks for required arguments will be done by the command rather than
-    /// the parsing routine, and the parsing routine should only check options.
-    /// </summary>
-    /// <returns>The current <see cref="ComplexArgument"/> instance.</returns>
-    public ComplexArgument MakeVarValues()
-    {
-        _variableValues = true;
-        return this;
-    }
-
-    /// <summary>
-    /// Instructs the parsing routine that that the first variable will be a greedy string value, and all others
-    /// will not be parsed.
-    /// </summary>
-    /// <returns>The current <see cref="ComplexArgument"/> instance.</returns>
-    public ComplexArgument MakeGreedy()
-    {
-        _singleGreedy = true;
-        return this;
+        _definition = definition;
     }
 
     public ComplexArgumentParseResult Parse()
     {
-        var options = new Dictionary<char, string?>();
-        var values = new List<string?>();
-
         var endOfOptions = false;
         var beginEndOfOptions = false;
         var ignoreADash = false;
+
+        var requiredArgCount = _definition.Values.Count(x => x.Required);
+
+        var result = new ComplexArgumentParseResult();
+
+        var valueNum = 0;
 
         while (_parser.CanRead())
         {
@@ -144,14 +71,21 @@ public class ComplexArgument
             if (delimiter == COMPLEX_OPTION_SYMBOL && !endOfOptions)
             {
                 var opt = ParseOption(out var name);
-                CheckOption(name, opt);
-                options.Add(name, opt);
+                CheckOption(name, opt, out var definition);
+
+                if (definition == null)
+                {
+                    throw new InvalidOperationException("Passed check, but no definition");
+                }
+
+                result.Option(definition, opt);
             }
             else
             {
+                // Begin parsing non variable
                 string? toAdd;
 
-                if (_singleGreedy)
+                if (_definition.GreedyString)
                 {
                     toAdd = _parser.ReadToEnd();
                 }
@@ -170,7 +104,24 @@ public class ComplexArgument
                     continue;
                 }
 
-                values.Add(toAdd);
+                // Variable values support
+                if (_definition.VariableValues)
+                {
+                    result.VariableValues.Add(toAdd);
+                    continue;
+                }
+
+                // Check value definition existence
+
+                if (requiredArgCount != 0 && valueNum >= requiredArgCount)
+                {
+                    throw new CommandFormatException(Languages.ArgumentSurpassingCount(valueNum, _definition.Values.Count));
+                }
+
+                var def = _definition.Values[valueNum];
+                result.Value(def, toAdd);
+
+                valueNum++;
             }
         }
 
@@ -178,31 +129,21 @@ public class ComplexArgument
         values.ForEach(x => System.Console.WriteLine(x));
 #endif
 
-        if (!_variableValues)
+        if (!_definition.VariableValues && (requiredArgCount == 0 || result.Values.Count < requiredArgCount))
         {
-            var liveCount = _valueDefinitions.Count(x => x.Required);
-
-            if (values.Count < liveCount)
-            {
-                throw new CommandFormatException(string.Format(ER.MissingValues, _valueDefinitions.Count, values.Count));
-            }
+            throw new CommandFormatException(Languages.ArgumentLowerThanCount(valueNum, requiredArgCount));
         }
 
-        foreach (var option in _optionDefinitions)
-        {
-            if (!options.ContainsKey(option.Key) && option.Value.Required)
-            {
-                throw ExceptionHelper.WithName(ER.ComplexMissingRequiredOption, option.Key);
-            }
-        }
-
-        return new(options, values);
+        return result;
     }
 
-    private void CheckOption(char name, string? value)
+    private void CheckOption(char name, string? value, out ComplexOptionDefinition? definition)
     {
-        if (!_optionDefinitions.TryGetValue(name, out var def))
+        definition = null;
+
+        if (!_definition.Options.TryGetValue(name, out var def))
         {
+            definition = def;
             throw ExceptionHelper.WithName(ER.ComplexNonExistingOption, name);
         }
 
@@ -219,7 +160,7 @@ public class ComplexArgument
 
     public bool OptionPresents(char name)
     {
-        return _optionDefinitions.ContainsKey(name);
+        return _definition.Options.ContainsKey(name);
     }
 
     private string? ParseOption(out char name)

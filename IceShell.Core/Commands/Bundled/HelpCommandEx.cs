@@ -3,16 +3,15 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using Spectre.Console;
 
 [ComplexCommand("help", "Provides help information for IceShell commands.")]
 public class HelpCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue("command");
-    }
+    [Value("command", position: 0)]
+    public string? CommandName { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
@@ -21,7 +20,7 @@ public class HelpCommandEx : IComplexCommand
             return ExecuteSummary();
         }
 
-        var commandName = argument.Values[0];
+        var commandName = CommandName;
 
         if (string.IsNullOrWhiteSpace(commandName))
         {
@@ -33,7 +32,7 @@ public class HelpCommandEx : IComplexCommand
 
     private static int ExecuteDetailed(string commandName)
     {
-        var commandType = Shell.CommandManager.GetComplex(commandName);
+        var commandType = Shell.CommandManager.GetDefinition(commandName);
 
         if (commandType == null)
         {
@@ -41,19 +40,7 @@ public class HelpCommandEx : IComplexCommand
             return 1;
         }
 
-        var def = new ComplexArgument(new CommandParser());
-
-        try
-        {
-            var instance = (IComplexCommand)Activator.CreateInstance(commandType)!;
-            instance.Define(def);
-        }
-        catch (Exception ex)
-        {
-            System.Console.WriteLine("Failed to create help definition for command {0}", commandName);
-            System.Console.WriteLine(ex);
-            return 2;
-        }
+        var def = commandType.Definition;
 
         System.Console.WriteLine("Usage: {0}", def.GetUsage(commandName));
         return 0;

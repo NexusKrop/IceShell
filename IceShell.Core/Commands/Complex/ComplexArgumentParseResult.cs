@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Complex;
@@ -9,17 +9,23 @@ using System.Collections.Generic;
 /// </summary>
 public sealed class ComplexArgumentParseResult
 {
-    internal ComplexArgumentParseResult(IReadOnlyDictionary<char, string?> options, IReadOnlyList<string?> values)
+    internal ComplexArgumentParseResult()
     {
-        Options = options;
-        Values = values;
     }
 
-    public IReadOnlyDictionary<char, string?> Options { get; set; }
-    public IReadOnlyList<string?> Values { get; set; }
+    public IDictionary<ComplexOptionDefinition, string?> Options { get; } = new Dictionary<ComplexOptionDefinition, string?>();
+    public IDictionary<ComplexValueDefinition, string?> Values { get; } = new Dictionary<ComplexValueDefinition, string?>();
+    public IList<string?> VariableValues { get; } = new List<string?>();
 
-    public bool OptionPresents(char option)
+    public ComplexArgumentParseResult Option(ComplexOptionDefinition option, string? value)
     {
-        return Options.ContainsKey(option);
+        Options[option] = value;
+        return this;
+    }
+
+    public ComplexArgumentParseResult Value(ComplexValueDefinition value, string? obj)
+    {
+        Values[value] = obj;
+        return this;
     }
 }

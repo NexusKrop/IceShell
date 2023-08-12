@@ -3,32 +3,24 @@
 
 namespace IceShell.Core.Commands.Bundled;
 
+using IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
 [ComplexCommand("prompt", "Changes the IceShell command prompt.")]
+[GreedyString]
 public class PromptCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue("prompt", false);
-    }
+    [Value("prompt", false, 0)]
+    public string? Prompt { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        if (argument.Values.Count != 1)
-        {
-            // Reset prompt to default prompt
-
-            shell.Prompt = Shell.DefaultPrompt;
-            return 0;
-        }
-
-        var prompt = argument.Values[0];
+        var prompt = Prompt;
 
         if (string.IsNullOrWhiteSpace(prompt))
         {
-            // Let's do the same
+            // Reset prompt.
 
             shell.Prompt = Shell.DefaultPrompt;
             return 0;

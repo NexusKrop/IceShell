@@ -1,4 +1,4 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -12,35 +12,37 @@ using System.Threading.Tasks;
 [ComplexCommand("copy", "Copies a file to another location.")]
 public class CopyCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue("source", true);
-        argument.AddValue("destination", true);
-        argument.AddOption('f', false);
-    }
+    //public void Define(ComplexArgument argument)
+    //{
+    //    argument.AddValue("source", true);
+    //    argument.AddValue("destination", true);
+    //    argument.AddOption('f', false);
+    //}
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
-        var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);
-        var force = argument.OptionPresents('f');
+        // TODO fix
 
-        CommandChecks.FileExists(realSource);
-        CommandChecks.DirectoryNotExists(realDest);
+        //var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
+        //var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);
+        //var force = argument.OptionPresents('f');
 
-        if (File.Exists(realDest) && !force)
-        {
-            throw ExceptionHelper.WithName(Messages.MkdirFileExists, realDest);
-        }
+        //CommandChecks.FileExists(realSource);
+        //CommandChecks.DirectoryNotExists(realDest);
 
-        try
-        {
-            File.Copy(realSource, realDest, force);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            throw new CommandFormatException(Messages.FileUnauthorized);
-        }
+        //if (File.Exists(realDest) && !force)
+        //{
+        //    throw ExceptionHelper.WithName(Messages.MkdirFileExists, realDest);
+        //}
+
+        //try
+        //{
+        //    File.Copy(realSource, realDest, force);
+        //}
+        //catch (UnauthorizedAccessException)
+        //{
+        //    throw new CommandFormatException(Messages.FileUnauthorized);
+        //}
 
         return 0;
     }

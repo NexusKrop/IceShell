@@ -1,4 +1,4 @@
-﻿namespace NexusKrop.IceShell.Core.Commands.Bundled;
+namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Complex;
@@ -17,32 +17,33 @@ public class MkdirCommandEx : IComplexCommand
 {
     public void Define(ComplexArgument argument)
     {
-        argument.AddValue(new("path", true));
-        argument.AddOption(new('i', false, false));
+        // TODO redefine
+        //argument.AddValue(new("path", true));
+        //argument.AddOption(new('i', false, false));
     }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        var dir = PathSearcher.ShellToSystem(argument.Values[0]!);
+        //var dir = PathSearcher.ShellToSystem(argument.Values[0]!);
 
-        if (File.Exists(dir))
-        {
-            throw new CommandFormatException(Languages.MakeDirFileExists(dir));
-        }
+        //if (File.Exists(dir))
+        //{
+        //    throw new CommandFormatException(Languages.MakeDirFileExists(dir));
+        //}
 
-        if (Directory.Exists(dir) && !argument.Options.ContainsKey('i'))
-        {
-            throw new CommandFormatException(Messages.MkdirDirectoryAlreadyExists);
-        }
+        //if (Directory.Exists(dir) && !argument.Options.ContainsKey('i'))
+        //{
+        //    throw new CommandFormatException(Messages.MkdirDirectoryAlreadyExists);
+        //}
 
-        try
-        {
-            Directory.CreateDirectory(dir);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            throw new CommandFormatException(Messages.FileUnauthorizedCreate);
-        }
+        //try
+        //{
+        //    Directory.CreateDirectory(dir);
+        //}
+        //catch (UnauthorizedAccessException)
+        //{
+        //    throw new CommandFormatException(Messages.FileUnauthorizedCreate);
+        //}
 
         return 0;
     }

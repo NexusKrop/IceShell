@@ -1,7 +1,10 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Complex;
+
+using System.Reflection;
+
 /// <summary>
 /// Defines a complex command option argument.
 /// </summary>
@@ -18,4 +21,4 @@ namespace NexusKrop.IceShell.Core.Commands.Complex;
 /// <param name="ShortName">The name of the option.</param>
 /// <param name="HasValue">Whether or not this option has value.</param>
 /// <param name="Required">Whether or not this option is required.</param>
-public record struct ComplexOptionDefinition(char ShortName, bool HasValue, bool Required = false);
+public record ComplexOptionDefinition(char ShortName, bool HasValue, PropertyInfo Property, bool Required = false);

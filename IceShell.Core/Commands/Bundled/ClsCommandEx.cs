@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
@@ -13,11 +13,6 @@ using System;
 [ComplexCommand("cls", "Clears the screen.")]
 public class ClsCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        // No arguments needed to be defined here.
-    }
-
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         Console.Clear();

@@ -1,15 +1,16 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core;
 
 using global::IceShell.Core.CLI;
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
+using IceShell.Core.Commands;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core.Api;
 using NexusKrop.IceShell.Core.CLI;
-using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Completion;
 using NexusKrop.IceShell.Core.Completion.Cache;
@@ -28,6 +29,7 @@ public class Shell
 
     private readonly CommandParser _parser = new();
     private readonly ShellSettings _settings;
+    private readonly CommandDispatcher _dispatcher;
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
@@ -44,6 +46,7 @@ public class Shell
     {
         _settings = settings;
         Prompt = DefaultPrompt;
+        _dispatcher = new(this);
     }
 
     public static CommandManager CommandManager { get; } = new();
@@ -94,7 +97,7 @@ public class Shell
             WorkingDirectory = Environment.CurrentDirectory
         };
 
-        args?.Iterate(x => startInfo.ArgumentList.Add(x));
+        args?.ForEach(startInfo.ArgumentList.Add);
 
         if (!FileUtil.IsExecutable(actual))
         {
@@ -126,7 +129,7 @@ public class Shell
             WorkingDirectory = Environment.CurrentDirectory
         };
 
-        args?.ForEach(x => startInfo.ArgumentList.Add(x));
+        args?.ForEach(startInfo.ArgumentList.Add);
 
         Process.Start(startInfo)?.WaitForExit();
 
@@ -185,19 +188,8 @@ public class Shell
                 return 0;
             }
 
-            var instance = Activator.CreateInstance(type);
-
-            if (instance is IComplexCommand ixcmd)
-            {
-                var arg = new ComplexArgument(_parser);
-
-                ixcmd.Define(arg);
-                return ixcmd.Execute(arg.Parse(), this);
-            }
-            else
-            {
-                ConsoleOutput.PrintShellError(Languages.UnknownCommand(command));
-            }
+            var parsed = CommandDispatcher.Parse(command, _parser);
+            _dispatcher.Execute(parsed);
         }
         catch (CommandFormatException ex)
         {

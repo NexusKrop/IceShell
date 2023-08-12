@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.FileSystem;
@@ -105,19 +105,21 @@ public static class PathSearcher
         return path.Replace(Path.DirectorySeparatorChar, SHELL_SEPARATOR);
     }
 
-    public static string ShellToSystem(string path)
+    public static string ShellToSystem(string? path)
     {
-        if (!UseCustomPathSystem && (!path.Contains('\\') && !path.StartsWith('@')))
+        var actualPath = path ?? "";
+
+        if (!UseCustomPathSystem && (!actualPath.Contains('\\') && !actualPath.StartsWith('@')))
         {
             if (path == $"~{Path.DirectorySeparatorChar}")
             {
                 return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             }
 
-            return path;
+            return actualPath;
         }
 
-        CheckPath(path);
+        CheckPath(actualPath);
 
         if (path == "~\\")
         {
@@ -126,22 +128,22 @@ public static class PathSearcher
 
         if (OperatingSystem.IsWindows())
         {
-            return path;
+            return actualPath;
         }
 
-        if (OperatingSystem.IsLinux() && path.StartsWith("sys:\\"))
+        if (OperatingSystem.IsLinux() && actualPath.StartsWith("sys:\\"))
         {
-            return ShellToSystem(path.Remove(0, 4));
+            return ShellToSystem(actualPath.Remove(0, 4));
         }
 
-        if (path.StartsWith('~'))
+        if (actualPath.StartsWith('~'))
         {
-            var realDestination = path.Remove(0, 1);
+            var realDestination = actualPath.Remove(0, 1);
             return ShellToSystem(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 realDestination));
         }
 
-        return path.Replace(SHELL_SEPARATOR, Path.DirectorySeparatorChar);
+        return actualPath.Replace(SHELL_SEPARATOR, Path.DirectorySeparatorChar);
     }
 
     public static string GetSystemExecutableName(string name)

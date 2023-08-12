@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
@@ -197,41 +197,43 @@ internal class DirCommandEx : IComplexCommand
         Console.WriteLine("{0} files, {1} directories", _fileCount, _dirCount);
     }
 
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue(new("directory", false));
-        argument.AddOption(new('d', true, false));
-        argument.AddOption(new('t', true, false));
-        argument.AddOption('h', false);
-    }
+    //public void Define(ComplexArgument argument)
+    //{
+    //    argument.AddValue(new("directory", false));
+    //    argument.AddOption(new('d', true, false));
+    //    argument.AddOption(new('t', true, false));
+    //    argument.AddOption('h', false);
+    //}
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        if (argument.Values.Count == 1)
-        {
-            var targetDir = argument.Values[0];
+        // All chunked out ones need fix
 
-            if (string.IsNullOrWhiteSpace(targetDir) || !Directory.Exists(targetDir))
-            {
-                throw new CommandFormatException(ER.DirBadDirectory);
-            }
+        //if (argument.Values.Count == 1)
+        //{
+        //    var targetDir = argument.Values[0];
 
-            _dir = targetDir;
-        }
+        //    if (string.IsNullOrWhiteSpace(targetDir) || !Directory.Exists(targetDir))
+        //    {
+        //        throw new CommandFormatException(ER.DirBadDirectory);
+        //    }
 
-        if (argument.Options.TryGetValue('d', out var dateFormat)
-            && !string.IsNullOrWhiteSpace(dateFormat))
-        {
-            _dateFormat = dateFormat;
-        }
+        //    _dir = targetDir;
+        //}
 
-        if (argument.Options.TryGetValue('t', out var timeFormat)
-            && !string.IsNullOrWhiteSpace(timeFormat))
-        {
-            _timeFormat = timeFormat;
-        }
+        //if (argument.Options.TryGetValue('d', out var dateFormat)
+        //    && !string.IsNullOrWhiteSpace(dateFormat))
+        //{
+        //    _dateFormat = dateFormat;
+        //}
 
-        Execute(argument.OptionPresents('h'));
+        //if (argument.Options.TryGetValue('t', out var timeFormat)
+        //    && !string.IsNullOrWhiteSpace(timeFormat))
+        //{
+        //    _timeFormat = timeFormat;
+        //}
+
+        //Execute(argument.OptionPresents('h'));
 
         return 0;
     }

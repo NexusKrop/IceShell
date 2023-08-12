@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
@@ -11,11 +11,6 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 [ComplexCommand("exit", "Quits the IceShell program.")]
 public class ExitCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        // no arguments
-    }
-
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
         Shell.Quit();

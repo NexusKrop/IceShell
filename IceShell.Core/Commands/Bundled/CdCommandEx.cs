@@ -1,8 +1,9 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -16,10 +17,8 @@ using NexusKrop.IceShell.Core.FileSystem;
 [CommandAlias("chdir")]
 public class CdCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue(new("destination", false));
-    }
+    [Value("value", position: 0)]
+    public string? Destination { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
@@ -30,7 +29,7 @@ public class CdCommandEx : IComplexCommand
             return 0;
         }
 
-        var target = PathSearcher.ShellToSystem(argument.Values[0]!);
+        var target = PathSearcher.ShellToSystem(Destination ?? "");
 
         if (!Directory.Exists(target))
         {

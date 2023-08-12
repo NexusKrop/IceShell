@@ -1,8 +1,9 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -14,14 +15,12 @@ using System;
 [ComplexCommand("mkfile")]
 public class MkfileCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue("name", true);
-    }
+    [Value("value", position: 0)]
+    public string? Name { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        var actual = PathSearcher.ShellToSystem(argument.Values[0]!);
+        var actual = PathSearcher.ShellToSystem(Name);
 
         CommandChecks.FileNotExists(actual);
         CommandChecks.DirectoryNotExists(actual);

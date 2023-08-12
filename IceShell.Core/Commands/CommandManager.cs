@@ -1,8 +1,10 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands;
 
+using global::IceShell.Core.Commands;
+using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Bundled;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceCube;
@@ -13,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Versioning;
 
 public class CommandManager
@@ -38,7 +41,7 @@ public class CommandManager
         RegisterComplex(typeof(PromptCommandEx));
     }
 
-    public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, string? Description);
+    public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, CommandDefinition Definition, string? Description = null);
 
     private readonly Dictionary<string, ComplexCommandEntry> _complexCommands = new();
 
@@ -68,6 +71,21 @@ public class CommandManager
         }
 
         return list.ToArray();
+    }
+
+    public ComplexCommandEntry? GetDefinition(string name)
+    {
+        if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var x))
+        {
+            x = null;
+        }
+
+        if (x != null && !x.OSPlatform.IsEmpty() && !x.OSPlatform.Any(platform => OperatingSystem.IsOSPlatform(platform)))
+        {
+            return null;
+        }
+
+        return x;
     }
 
     public Type? GetComplex(string name)
@@ -113,6 +131,9 @@ public class CommandManager
         // Step 3: Search alias attributes
         var aliasAttr = type.GetCustomAttributes(typeof(CommandAliasAttribute), false);
 
+        // Step 4: Create definitions
+        var definition = GetDefine(type);
+
         // Now begin registering
         var intf = type.GetInterface("IComplexCommand");
 
@@ -126,15 +147,54 @@ public class CommandManager
             throw new ArgumentException(ER.ManagerInvalidAttribute, nameof(type));
         }
 
-        _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), attribute.Description));
+        _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
 
         // Register all of its aliases
         foreach (var attr in aliasAttr)
         {
             if (attr is CommandAliasAttribute alias)
             {
-                _complexCommands.Add(alias.Alias.ToUpperInvariant(), new(type, platforms.ToArray(), attribute.Description));
+                _complexCommands.Add(alias.Alias.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
             }
         }
+    }
+
+    private static CommandDefinition GetDefine(Type type)
+    {
+        var definition = new CommandDefinition();
+
+        if (type.GetCustomAttribute<GreedyStringAttribute>() != null)
+        {
+            definition.Greedy();
+        }
+
+        foreach (var property in type.GetProperties())
+        {
+            property.GetCustomAttributes().ForEach(x =>
+            {
+                var isValue = false;
+
+                // Register values first
+                if (x is ValueAttribute valAttr)
+                {
+                    isValue = true;
+                    definition.Value(new(valAttr.Name, property, valAttr.Required), valAttr.Position);
+                }
+
+                // Register options
+                if (x is OptionAttribute optAttr)
+                {
+                    // If is already defined as value, throw
+                    if (isValue)
+                    {
+                        throw new InvalidOperationException("A value cannot be option and value at the same time!");
+                    }
+
+                    definition.Option(optAttr.Character, optAttr.HasValue, property, optAttr.Required);
+                }
+            });
+        }
+
+        return definition;
     }
 }

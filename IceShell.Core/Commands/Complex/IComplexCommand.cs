@@ -1,4 +1,4 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Commands.Complex;
@@ -16,12 +16,6 @@ namespace NexusKrop.IceShell.Core.Commands.Complex;
 /// </remarks>
 public interface IComplexCommand
 {
-    /// <summary>
-    /// Defines the arguments of this command. This method is called every time before execution.
-    /// </summary>
-    /// <param name="argument">The argument parsing service.</param>
-    void Define(ComplexArgument argument);
-
     /// <summary>
     /// Executes this command.
     /// </summary>

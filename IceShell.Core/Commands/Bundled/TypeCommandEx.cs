@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
+using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 
@@ -12,28 +13,24 @@ using NexusKrop.IceShell.Core.Exceptions;
 [ComplexCommand("type", "Displays the contents of a text file.")]
 public class TypeCommandEx : IComplexCommand
 {
-    public void Define(ComplexArgument argument)
-    {
-        argument.AddValue("file", true);
-    }
+    [Value("file", position: 0)]
+    public string? ArgFile { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, Shell shell)
     {
-        if (argument.Values.Count != 1)
+        if (ArgFile == null)
         {
             throw ExceptionHelper.WithName(ER.ComplexValueRequired, "file");
         }
 
-        var val = argument.Values[0];
-
-        if (string.IsNullOrWhiteSpace(val))
+        if (string.IsNullOrWhiteSpace(ArgFile))
         {
             throw ExceptionHelper.WithName(ER.ComplexValueRequired, "file");
         }
 
-        CommandChecks.FileExists(val);
+        CommandChecks.FileExists(ArgFile);
 
-        System.Console.WriteLine(File.ReadAllText(val));
+        System.Console.WriteLine(File.ReadAllText(ArgFile));
         return 0;
     }
 }
