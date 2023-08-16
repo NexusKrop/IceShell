@@ -23,6 +23,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --property:VersionPrefix=72.72.${{ github.run_number }} --version-suffix cibuild --configuration Debug
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Package Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: build-bin
+        path: IceShell/bin/Debug/net7.0
+        if-no-files-found: warn
