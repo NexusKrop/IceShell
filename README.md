@@ -1,6 +1,8 @@
 # IceShell
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/NexusKrop/IceShell/dotnet.yml?style=flat-square&logo=github)
+[![GitHub issues](https://img.shields.io/github/issues/NexusKrop/IceShell?style=flat-square)](https://github.com/NexusKrop/IceShell/issues)
+[![Trello](https://img.shields.io/badge/-trello-gray?style=flat-square&logo=trello)](https://trello.com/b/eeBRukuy/iceshell)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/NexusKrop/IceShell?style=flat-square)
 [![License](https://img.shields.io/github/license/NexusKrop/IceShell?style=flat-square)](COPYING.txt)
 
@@ -10,7 +12,7 @@ An alternative, cross-platform shell written in C#, and inspired by DOS.
 
 ### Prebuilt Binaries
 
-Prebuilt binaries are _not available_ in this stage of development. Once they are available, they
+Prebuilt binaries are _not yet available_ in this stage of development. Once they are available, they
 can be seen in [the releases page](https://github.com/NexusKrop/IceShell/releases).
 
 ### Build from Source
