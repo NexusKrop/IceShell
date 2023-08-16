@@ -27,7 +27,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Package Artifact
-      uses: actions/upload-artifact@v2.0.0
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: build-bin
         path: ${{ env.GITHUB_WORKSPACE }}/build_output
