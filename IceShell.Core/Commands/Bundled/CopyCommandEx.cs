@@ -1,7 +1,10 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Attributes;
+using Microsoft.Extensions.FileSystemGlobbing;
+using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
@@ -11,44 +14,63 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-[ComplexCommand("copy", "Copies a file to another location.")]
+[ComplexCommand("copy", "Copies a file to another location.", CustomUsage = "<sources...> <destination>")]
 [VariableValue]
 public class CopyCommandEx : IComplexCommand
 {
     [VariableValueBuffer]
     public IReadOnlyList<string>? Buffer { get; set; }
 
-    //public void Define(ComplexArgument argument)
-    //{
-    //    argument.AddValue("source", true);
-    //    argument.AddValue("destination", true);
-    //    argument.AddOption('f', false);
-    //}
+    [Option('f', false)]
+    public bool Force { get; set; }
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
-        // TODO fix
+        string? destination = null;
 
-        //var realSource = PathSearcher.ShellToSystem(argument.Values[0]!);
-        //var realDest = PathSearcher.ShellToSystem(argument.Values[1]!);
-        //var force = argument.OptionPresents('f');
+        if (Buffer == null || Buffer.Count < 2)
+        {
+            throw new CommandFormatException(Languages.RequiresValue(0));
+        }
 
-        //CommandChecks.FileExists(realSource);
-        //CommandChecks.DirectoryNotExists(realDest);
+        var matcher = new Matcher();
 
-        //if (File.Exists(realDest) && !force)
-        //{
-        //    throw ExceptionHelper.WithName(Messages.MkdirFileExists, realDest);
-        //}
+        for (int i = 0; i < Buffer.Count; i++)
+        {
+            var str = PathSearcher.ShellToSystem(Buffer[i]);
 
-        //try
-        //{
-        //    File.Copy(realSource, realDest, force);
-        //}
-        //catch (UnauthorizedAccessException)
-        //{
-        //    throw new CommandFormatException(Messages.FileUnauthorized);
-        //}
+            if (i == Buffer.Count - 1)
+            {
+                destination = PathSearcher.ShellToSystem(str);
+                continue;
+            }
+
+            matcher.AddInclude(str);
+        }
+
+        var destIsDir = Directory.Exists(destination) || destination.EndsWith(Path.DirectorySeparatorChar);
+
+        var realFiles = matcher.GetResultsInFullPath(Directory.GetCurrentDirectory());
+        var toCopy = new Dictionary<string, string>();
+
+        foreach (var file in realFiles)
+        {
+            if (destIsDir)
+            {
+                toCopy.Add(file, Path.Combine(destination, Path.GetFileName(file)));
+            }
+            else
+            {
+                toCopy.Add(file, destination);
+            }
+        }
+
+        if (!Directory.Exists(destination) && toCopy.Count > 2)
+        {
+            throw new CommandFormatException(Languages.CopyIsFileMore());
+        }
+
+        toCopy.ForEach(x => File.Copy(x.Key, x.Value));
 
         return 0;
     }

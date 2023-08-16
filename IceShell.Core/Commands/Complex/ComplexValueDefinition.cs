@@ -14,4 +14,4 @@ using System.Reflection;
 /// </remarks>
 /// <param name="Name">The name for reference.</param>
 /// <param name="Required">Whether or not the argument is required.</param>
-public record struct ComplexValueDefinition(string Name, PropertyInfo Property, bool Required = false);
+public record ComplexValueDefinition(string Name, PropertyInfo Property, bool Required = false);

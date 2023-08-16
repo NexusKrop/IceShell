@@ -90,4 +90,5 @@ public class Languages
 
     public static string UnauthorizedFile(string file) => string.Format(Get("generic_unauthorized_file"), file);
     public static string RequiresValue(int value) => string.Format(Get("generic_requires_value"), value);
+    public static string CopyIsFileMore() => Get("copy_destination_file_more");
 }
