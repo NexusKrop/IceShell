@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "trunk" ]
 
+env:
+  BUILD_OUT_PATH: ${{ env.GITHUB_WORKSPACE }}/build_output
+
 jobs:
   build:
 
@@ -23,6 +26,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --property:VersionPrefix=72.72.${{ github.run_number }} --version-suffix cibuild --output ${{ env.BUILD_OUT_PATH }}
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Package Artifact
+      uses: actions/upload-artifact@v2.0.0
+      with:
+        name: build-bin
+        path: ${{ env.BUILD_OUT_PATH }}
+        if-no-files-found: warn
