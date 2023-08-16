@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -22,9 +23,14 @@ public class StartCommandEx : IComplexCommand
 
     public int Execute(ComplexArgumentParseResult argument, IShell shell)
     {
+        if (Target == null)
+        {
+            throw new CommandFormatException(Languages.RequiresValue(0));
+        }
+
         if (!File.Exists(Target))
         {
-            throw new CommandFormatException(Messages.BadFileGeneric);
+            throw new CommandFormatException(Languages.InvalidFile(Target!));
         }
 
         try
@@ -33,7 +39,7 @@ public class StartCommandEx : IComplexCommand
         }
         catch (Win32Exception x) when (x.NativeErrorCode == 1155)
         {
-            throw new CommandFormatException(Messages.BadFileHandler);
+            throw new CommandFormatException(Languages.Get("start_bad_assoc"));
         }
 
         return 0;

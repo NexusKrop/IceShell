@@ -1,5 +1,6 @@
-﻿namespace NexusKrop.IceShell.Core.Api;
+namespace NexusKrop.IceShell.Core.Api;
 
+using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Completion.Cache;
 using System;
@@ -70,7 +71,7 @@ public class ModuleManager
             }
             catch (Exception ex)
             {
-                ConsoleOutput.WriteLineColour(string.Format(Messages.ModuleInitFail, module.GetType().Name), ConsoleColor.Red);
+                ConsoleOutput.WriteLineColour(string.Format(Languages.Get("init_module_fail"), module.GetType().Name), ConsoleColor.Red);
                 ConsoleOutput.PrintShellError(ex.ToString());
             }
         }

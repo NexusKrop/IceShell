@@ -107,7 +107,7 @@ public class Shell : IShell
 
         if (!FileUtil.IsExecutable(actual))
         {
-            throw new CommandFormatException(Messages.FileNotExecutable);
+            throw new CommandFormatException(string.Format(Languages.Get("shell_not_executable"), actual));
         }
 
         Process.Start(startInfo)?.WaitForExit();
@@ -157,7 +157,7 @@ public class Shell : IShell
 
             if (string.IsNullOrWhiteSpace(command))
             {
-                ConsoleOutput.PrintShellError(Messages.EmptyCommand);
+                ConsoleOutput.PrintShellError(Languages.Get("shell_empty_command"));
                 return 1;
             }
 

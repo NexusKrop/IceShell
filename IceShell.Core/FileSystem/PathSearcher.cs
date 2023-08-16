@@ -32,8 +32,11 @@ public static class PathSearcher
             // Doing so will cause the shell cannot find anything in PATH because
             // there was no PATH.
 
-            ConsoleOutput.WriteLineColour(Messages.NoPathWarning1, ConsoleColor.Yellow);
+            ConsoleOutput.WriteLineColour(Languages.Get("shell_no_path"), ConsoleColor.Yellow);
             Console.WriteLine();
+
+            // 2023/08/17, WithLithum - not sure what I was doing here but
+            // I'll keep this comment in case I remember.
 
             // We will still set PATHS to a
         }

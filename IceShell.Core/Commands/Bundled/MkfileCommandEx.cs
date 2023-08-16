@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -33,7 +34,7 @@ public class MkfileCommandEx : IComplexCommand
         }
         catch (UnauthorizedAccessException)
         {
-            throw new CommandFormatException(Messages.FileUnauthorizedCreate);
+            throw new CommandFormatException(Languages.Get("generic_unauthorized_write"));
         }
 
         return 0;
