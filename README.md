@@ -10,10 +10,16 @@ An alternative, cross-platform shell written in C#, and inspired by DOS.
 
 ## Installation
 
-### Prebuilt Binaries
+### Stable Binaries
 
-Prebuilt binaries are _not yet available_ in this stage of development. Once they are available, they
+Stable binaries are _not yet available_ in this stage of development. Once they are available, they
 can be seen in [the releases page](https://github.com/NexusKrop/IceShell/releases).
+
+### CI Binaries
+
+CI build binaries can be found at [the Actions page](https://github.com/NexusKrop/IceShell/actions). Click the latest workflow run and scroll down, you'll see a `build-bin` artifact available for download.
+
+- Windows: To run, extract and run `dotnet iceshell.dll`.
 
 ### Build from Source
 

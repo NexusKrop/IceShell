@@ -1,5 +1,6 @@
-﻿namespace NexusKrop.IceShell.Core.Commands;
+namespace NexusKrop.IceShell.Core.Commands;
 
+using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,18 @@ public static class CommandChecks
     {
         if (!File.Exists(file))
         {
-            throw ExceptionHelper.WithName(ER.ResourceManager.GetString("GenericFileNotFound")!, file);
+            throw ExceptionHelper.WithName(Languages.Get("generic_file_not_found"), file);
         }
+    }
+
+    /// <summary>
+    /// Throws a <see cref="CommandFormatException"/> if a file or directory with the specified name exists.
+    /// </summary>
+    /// <param name="name"></param>
+    public static void NothingExists(string name)
+    {
+        FileNotExists(name);
+        DirectoryNotExists(name);
     }
 
     /// <summary>
@@ -29,7 +40,7 @@ public static class CommandChecks
     {
         if (File.Exists(file))
         {
-            throw ExceptionHelper.WithName(Messages.MkdirFileExists, file);
+            throw ExceptionHelper.WithName(Languages.Get("generic_file_exists"), file);
         }
     }
 
@@ -37,7 +48,7 @@ public static class CommandChecks
     {
         if (Directory.Exists(dir))
         {
-            throw ExceptionHelper.WithName(Messages.DirectoryExists, dir);
+            throw ExceptionHelper.WithName(Languages.Get("generic_directory_exists"), dir);
         }
     }
 }

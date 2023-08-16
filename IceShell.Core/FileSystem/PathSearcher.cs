@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.FileSystem;
 
+using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Exceptions;
 using System;
@@ -53,7 +54,7 @@ public static class PathSearcher
     {
         if (path.Contains('/'))
         {
-            throw new FormatException(ER.InvalidPath);
+            throw new FormatException(Languages.Get("generic_path_invalid"));
         }
     }
 
@@ -84,7 +85,7 @@ public static class PathSearcher
         {
             if (path.Contains(chara))
             {
-                throw new FormatException(ER.InvalidPath);
+                throw new FormatException(Languages.Get("generic_path_invalid"));
             }
         }
 #pragma warning restore S3267

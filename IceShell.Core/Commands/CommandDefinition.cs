@@ -125,7 +125,7 @@ public class CommandDefinition
     {
         if (Values.Any() && !Values.Last().Required && definition.Required)
         {
-            throw new ArgumentException(ER.ComplexArgumentOrderFailure);
+            throw new ArgumentException("Required complex argument values cannot have preceding optional options.");
         }
 
         if (position > 0)

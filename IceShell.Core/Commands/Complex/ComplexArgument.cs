@@ -144,17 +144,17 @@ public class ComplexArgument
         if (!_definition.Options.TryGetValue(name, out var def))
         {
             definition = def;
-            throw ExceptionHelper.WithName(ER.ComplexNonExistingOption, name);
+            throw ExceptionHelper.WithName(Languages.Get("argument_no_such_option"), name);
         }
 
         if (!def.HasValue && value != null)
         {
-            throw ExceptionHelper.WithName(ER.ComplexNoValueAllowed, name);
+            throw ExceptionHelper.WithName(Languages.Get("argument_option_no_value"), name);
         }
 
         if (def.HasValue && value == null)
         {
-            throw ExceptionHelper.WithName(ER.ComplexValueRequired, name);
+            throw ExceptionHelper.WithName(Languages.Get("argument_value_required"), name);
         }
     }
 

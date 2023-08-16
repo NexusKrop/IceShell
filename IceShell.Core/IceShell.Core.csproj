@@ -28,11 +28,6 @@
     <PackageReference Include="Spectre.Console" Version="0.47.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Exceptions\ER.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ER.resx</DependentUpon>
-    </Compile>
     <Compile Update="Messages.Designer.cs">
       <DependentUpon>Messages.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -43,10 +38,6 @@
     <None Include="CLI\Languages\*.properties" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Exceptions\ER.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ER.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Messages.resx">
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>

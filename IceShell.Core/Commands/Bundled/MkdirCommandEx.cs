@@ -24,10 +24,7 @@ public class MkdirCommandEx : IComplexCommand
     {
         var dir = PathSearcher.ShellToSystem(DirectoryName);
 
-        if (File.Exists(dir))
-        {
-            throw new CommandFormatException(Languages.MakeDirFileExists(dir));
-        }
+        CommandChecks.NothingExists(dir);
 
         try
         {
@@ -35,7 +32,7 @@ public class MkdirCommandEx : IComplexCommand
         }
         catch (UnauthorizedAccessException)
         {
-            throw new CommandFormatException(Messages.FileUnauthorizedCreate);
+            throw ExceptionHelper.UnauthorizedWrite();
         }
 
         return 0;

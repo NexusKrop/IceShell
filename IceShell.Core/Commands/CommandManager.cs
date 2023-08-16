@@ -3,6 +3,7 @@
 
 namespace NexusKrop.IceShell.Core.Commands;
 
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Bundled;
@@ -114,7 +115,7 @@ public class CommandManager
 
         if (attributes.Length != 1)
         {
-            throw new ArgumentException(ER.ManagerMoreThanOneAttribute, nameof(type));
+            throw new ArgumentException(Languages.FormatMessage("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName), nameof(type));
         }
 
         // Step 2: Search platform attributes
@@ -138,7 +139,7 @@ public class CommandManager
         if (definition.VariableValues && (definition.VariableValueBuffer == null
             || !definition.VariableValueBuffer.PropertyType.IsAssignableFrom(typeof(ReadOnlyCollection<string>))))
         {
-            throw new InvalidOperationException($"Command type {type} is a variable values command but does not have a buffer for that, or buffer is invalid");
+            throw new InvalidOperationException(string.Format(Languages.Get("api_var_values_no_buffer"), type.FullName));
         }
 
         // Now begin registering
@@ -146,12 +147,12 @@ public class CommandManager
 
         if (intf != typeof(IComplexCommand))
         {
-            throw new ArgumentException(ER.ManagerTypeNotCommand, nameof(type));
+            throw ExceptionHelper.CommandNoInterface(type, nameof(IComplexCommand));
         }
 
         if (attributes[0] is not ComplexCommandAttribute attribute)
         {
-            throw new ArgumentException(ER.ManagerInvalidAttribute, nameof(type));
+            throw new ArgumentException(string.Format(Languages.Get("api_command_invalid_attribute"), type.FullName), nameof(type));
         }
 
         _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
