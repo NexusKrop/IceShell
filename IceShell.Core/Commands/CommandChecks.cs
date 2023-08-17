@@ -23,6 +23,19 @@ public static class CommandChecks
     }
 
     /// <summary>
+    /// Throws a <see cref="CommandFormatException"/> if the specified directory does not exist.
+    /// </summary>
+    /// <param name="file">The file to check.</param>
+    public static void DirectoryExists(string directory)
+    {
+        if (!Directory.Exists(directory))
+        {
+            throw ExceptionHelper.WithName(Languages.Get("generic_directory_not_found"), directory);
+        }
+    }
+
+
+    /// <summary>
     /// Throws a <see cref="CommandFormatException"/> if a file or directory with the specified name exists.
     /// </summary>
     /// <param name="name"></param>

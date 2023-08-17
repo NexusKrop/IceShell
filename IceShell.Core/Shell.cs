@@ -118,10 +118,10 @@ public class Shell : IShell
     /// <summary>
     /// Executes an executable located in <c>PATH</c>.
     /// </summary>
-    /// <param name="fileName">The name of the executable. Subdirectorys are prohibited.</param>
+    /// <param name="fileName">The name of the executable. Subdirectories are prohibited.</param>
     /// <param name="args">The arguments to pass to the executable.</param>
     /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
-    public bool ExecuteOnPath(string fileName, string[]? args)
+    public static bool ExecuteOnPath(string fileName, string[]? args)
     {
         var actual = PathSearcher.SearchExecutable(fileName);
 
