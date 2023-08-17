@@ -113,7 +113,7 @@ public class ComplexArgument
 
                 // Check value definition existence
 
-                if (requiredArgCount != 0 && (valueIndex >= _definition.Values.Count))
+                if (valueIndex >= _definition.Values.Count)
                 {
                     throw new CommandFormatException(Languages.ArgumentSurpassingCount(valueIndex + 1, _definition.Values.Count));
                 }
