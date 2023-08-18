@@ -4,5 +4,5 @@ public interface ICommandExecutor
 {
     bool SupportsJump { get; }
 
-    void Jump(int line);
+    void Jump(string label);
 }

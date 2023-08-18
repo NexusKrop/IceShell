@@ -143,7 +143,7 @@ public class CommandManager
         }
 
         // Now begin registering
-        var intf = type.GetInterface("IComplexCommand");
+        var intf = type.GetInterface(nameof(ICommand));
 
         if (intf != typeof(ICommand))
         {

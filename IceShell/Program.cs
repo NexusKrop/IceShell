@@ -1,9 +1,11 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
+using IceShell.Batching;
 using IceShell.Core.CLI.Languages;
 using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core;
+using NexusKrop.IceShell.Core.Api;
 using Spectre.Console;
 
 var userPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".iceShell");
@@ -46,4 +48,9 @@ if (sh == null)
 
 Languages.Instance.Load();
 Languages.SetInstanceConfig(sh);
-return new Shell(sh).RunInteractive();
+
+var shell = new Shell(sh);
+
+Shell.ModuleManager.AddModule(new BatchingModule());
+    
+return shell.RunInteractive();

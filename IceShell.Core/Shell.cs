@@ -290,7 +290,7 @@ public class Shell : IShell
         Terminal.StandardOutput.Write(text);
     }
 
-    public void Jump(int line)
+    public void Jump(string label)
     {
         throw new NotSupportedException();
     }

@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IceShell.Batching\IceShell.Batching.csproj" />
     <ProjectReference Include="..\IceShell.Core\IceShell.Core.csproj" />
   </ItemGroup>
 
