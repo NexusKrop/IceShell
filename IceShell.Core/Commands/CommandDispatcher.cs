@@ -32,9 +32,9 @@ public class CommandDispatcher
         return new(parsedArgs, type);
     }
 
-    public int Execute(ParsedCommand command)
+    public int Execute(ParsedCommand command, ICommandExecutor executor)
     {
-        var instance = (IComplexCommand)Activator.CreateInstance(command.Command.Type)!;
+        var instance = (NexusKrop.IceShell.Core.Commands.Complex.ICommand)Activator.CreateInstance(command.Command.Type)!;
 
         if (command.Command.Definition.VariableValues &&
             command.Command.Definition.VariableValueBuffer != null)
@@ -72,6 +72,6 @@ public class CommandDispatcher
             value.Property.SetValue(instance, obj);
         }
 
-        return instance.Execute(command.ArgumentParseResult, _shell);
+        return instance.Execute(_shell, executor);
     }
 }

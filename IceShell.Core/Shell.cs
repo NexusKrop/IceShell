@@ -59,6 +59,8 @@ public class Shell : IShell
     /// </summary>
     public static bool ExitShell { get; set; }
 
+    public bool SupportsJump => false;
+
     /// <summary>
     /// Changes the current directory of this process.
     /// </summary>
@@ -195,7 +197,7 @@ public class Shell : IShell
             }
 
             var parsed = CommandDispatcher.Parse(command, _parser);
-            _dispatcher.Execute(parsed);
+            _dispatcher.Execute(parsed, this);
         }
         catch (CommandFormatException ex)
         {
@@ -286,5 +288,10 @@ public class Shell : IShell
     public void Write(string? text)
     {
         Terminal.StandardOutput.Write(text);
+    }
+
+    public void Jump(int line)
+    {
+        throw new NotSupportedException();
     }
 }

@@ -5,6 +5,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
@@ -21,7 +22,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// </summary>
 [ComplexCommand("del", "Deletes one or more files.")]
 [VariableValue]
-public class DelCommandEx : IComplexCommand
+public class DelCommandEx : ICommand
 {
     [VariableValueBuffer]
     public IReadOnlyList<string>? Targets { get; set; }
@@ -46,7 +47,7 @@ public class DelCommandEx : IComplexCommand
         }
     }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         if (Targets == null || !Targets.Any())
         {
@@ -69,7 +70,7 @@ public class DelCommandEx : IComplexCommand
             searchDir = Directory.GetCurrentDirectory();
         }
 
-        var targets = new List<string>(argument.Values.Count);
+        var targets = new List<string>(Targets.Count);
 
         // Match via file glob
         var matcher = new Matcher();

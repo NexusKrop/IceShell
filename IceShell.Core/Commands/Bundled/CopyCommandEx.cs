@@ -6,7 +6,7 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 
 [ComplexCommand("copy", "Copies a file to another location.", CustomUsage = "<sources...> <destination>")]
 [VariableValue]
-public class CopyCommandEx : DestinationFileCommandBase, IComplexCommand
+public class CopyCommandEx : DestinationFileCommandBase, ICommand
 {
     public override void DoOperation(string source, string destination)
     {

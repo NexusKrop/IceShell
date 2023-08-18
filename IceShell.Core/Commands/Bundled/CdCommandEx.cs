@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -17,14 +18,14 @@ using NexusKrop.IceShell.Core.FileSystem;
 [ComplexCommand("cd", "Displays the name of or changes the current directory.")]
 [CommandAlias("chdir")]
 [GreedyString]
-public class CdCommandEx : IComplexCommand
+public class CdCommandEx : ICommand
 {
-    [Value("value", position: 0)]
+    [Value("destination", position: 0)]
     public string? Destination { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
-        if (argument.Values.Count == 0)
+        if (string.IsNullOrWhiteSpace(Destination))
         {
             // Print current directory if no current directory is provided
             Console.WriteLine(PathSearcher.SystemToShell(Environment.CurrentDirectory));

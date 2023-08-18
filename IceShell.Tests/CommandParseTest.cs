@@ -12,12 +12,12 @@ public class CommandParseTest
 {
     [VariableValue]
     [ComplexCommand("mocker", "Mock command")]
-    internal class VarValues_MockCommand : IComplexCommand
+    internal class VarValues_MockCommand : ICommand
     {
         [VariableValueBuffer]
         public IReadOnlyList<string>? Buffer { get; set; }
 
-        public int Execute(ComplexArgumentParseResult argument, IShell shell)
+        public int Execute(IShell shell, ICommandExecutor executor)
         {
             Assert.That(Buffer, Is.EqualTo(new string[] { "abc", "efg", "123" }));
             return 0;
@@ -33,6 +33,7 @@ public class CommandParseTest
 
         Shell.CommandManager.RegisterComplex(typeof(VarValues_MockCommand));
 
-        Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("mocker", parser)));
+        Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("mocker", parser),
+            Substitute.For<ICommandExecutor>()));
     }
 }

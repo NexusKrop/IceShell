@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
@@ -13,12 +14,12 @@ using System;
 /// </summary>
 [ComplexCommand("echo", "Displays messages.")]
 [GreedyString]
-public class EchoCommandEx : IComplexCommand
+public class EchoCommandEx : ICommand
 {
     [Value("message", position: 0)]
     public string? Message { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         Console.WriteLine(Message);
         return 0;

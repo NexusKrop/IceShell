@@ -1,6 +1,8 @@
 namespace IceShell.Core;
 
-public interface IShell
+using IceShell.Core.Commands;
+
+public interface IShell : ICommandExecutor
 {
     string Prompt { get; set; }
 

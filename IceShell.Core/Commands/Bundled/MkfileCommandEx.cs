@@ -5,6 +5,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -15,12 +16,12 @@ using System;
 /// Defines a command that creates an empty file.
 /// </summary>
 [ComplexCommand("mkfile")]
-public class MkfileCommandEx : IComplexCommand
+public class MkfileCommandEx : ICommand
 {
     [Value("value", position: 0)]
     public string? Name { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         var actual = PathSearcher.ShellToSystem(Name);
 

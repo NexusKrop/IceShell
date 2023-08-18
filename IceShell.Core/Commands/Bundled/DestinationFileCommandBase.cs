@@ -26,7 +26,7 @@ public abstract class DestinationFileCommandBase
 
     public abstract void DoOperation(string source, string destination);
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         string? destination = null;
 

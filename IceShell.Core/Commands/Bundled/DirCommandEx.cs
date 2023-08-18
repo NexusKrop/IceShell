@@ -5,6 +5,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
@@ -18,7 +19,7 @@ using System.Text;
 /// directory.
 /// </summary>
 [ComplexCommand("dir", "Displays a list of files and subdirectories in a directory.")]
-internal class DirCommandEx : IComplexCommand
+internal class DirCommandEx : ICommand
 {
     private sealed record class DirTableRow(string ShortDateTime, string Size, string FileName);
 
@@ -212,7 +213,7 @@ internal class DirCommandEx : IComplexCommand
     [Option('h', false)]
     public bool RevealHidden { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         // All chunked out ones need fix
 

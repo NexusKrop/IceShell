@@ -145,9 +145,9 @@ public class CommandManager
         // Now begin registering
         var intf = type.GetInterface("IComplexCommand");
 
-        if (intf != typeof(IComplexCommand))
+        if (intf != typeof(ICommand))
         {
-            throw ExceptionHelper.CommandNoInterface(type, nameof(IComplexCommand));
+            throw ExceptionHelper.CommandNoInterface(type, nameof(ICommand));
         }
 
         if (attributes[0] is not ComplexCommandAttribute attribute)

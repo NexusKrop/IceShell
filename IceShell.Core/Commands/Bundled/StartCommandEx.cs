@@ -5,6 +5,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceCube;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -16,12 +17,12 @@ using System.ComponentModel;
 /// opening it through an associated program.
 /// </summary>
 [ComplexCommand("start")]
-public class StartCommandEx : IComplexCommand
+public class StartCommandEx : ICommand
 {
     [Value("target", position: 0)]
     public string? Target { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         if (Target == null)
         {

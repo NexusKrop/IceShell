@@ -9,12 +9,12 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 
 [ComplexCommand("prompt", "Changes the IceShell command prompt.")]
 [GreedyString]
-public class PromptCommandEx : IComplexCommand
+public class PromptCommandEx : ICommand
 {
     [Value("prompt", false, 0)]
     public string? Prompt { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         var prompt = Prompt;
 

@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
@@ -12,12 +13,12 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 /// </summary>
 [ComplexCommand("rm")]
 [GreedyString]
-public class RmCommandEx : IComplexCommand
+public class RmCommandEx : ICommand
 {
     [Value("comment", position: 0)]
     public string? Comment { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         return 0;
     }

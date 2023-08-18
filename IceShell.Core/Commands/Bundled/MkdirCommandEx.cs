@@ -2,6 +2,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -15,12 +16,12 @@ using System.Threading.Tasks;
 
 [ComplexCommand("mkdir", "Creates a directory.")]
 [CommandAlias("md")]
-public class MkdirCommandEx : IComplexCommand
+public class MkdirCommandEx : ICommand
 {
     [Value("directory", true, 0)]
     public string? DirectoryName { get; set; }
 
-    public int Execute(ComplexArgumentParseResult argument, IShell shell)
+    public int Execute(IShell shell, ICommandExecutor executor)
     {
         var dir = PathSearcher.ShellToSystem(DirectoryName);
 
