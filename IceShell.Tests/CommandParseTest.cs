@@ -3,10 +3,9 @@ namespace IceShell.Tests;
 using IceShell.Core;
 using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
+using Moq;
 using NexusKrop.IceShell.Core;
-using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NSubstitute;
 
 public class CommandParseTest
 {
@@ -27,13 +26,13 @@ public class CommandParseTest
     [Test]
     public void VarValuesTest()
     {
-        var dispatcher = new CommandDispatcher(Substitute.For<IShell>());
+        var dispatcher = new CommandDispatcher(Mock.Of<IShell>());
         var parser = new CommandParser();
         parser.SetLine("abc efg 123");
 
         Shell.CommandManager.RegisterComplex(typeof(VarValues_MockCommand));
 
         Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("mocker", parser),
-            Substitute.For<ICommandExecutor>()));
+            Mock.Of<ICommandExecutor>()));
     }
 }

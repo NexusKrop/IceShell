@@ -147,10 +147,10 @@ public class Shell : IShell
     /// <summary>
     /// Parses and then executes the specified user input.
     /// </summary>
-    /// <param name="input">The input.</param>
-    public int Execute(string input)
+    /// <param name="line">The input.</param>
+    public int Execute(string line, ICommandExecutor? actualExecutor = null)
     {
-        _parser.SetLine(input);
+        _parser.SetLine(line);
         var command = _parser.ReadString();
 
         try
@@ -197,7 +197,7 @@ public class Shell : IShell
             }
 
             var parsed = CommandDispatcher.Parse(command, _parser);
-            _dispatcher.Execute(parsed, this);
+            return _dispatcher.Execute(parsed, actualExecutor ?? this);
         }
         catch (CommandFormatException ex)
         {
@@ -248,7 +248,7 @@ public class Shell : IShell
                 continue;
             }
 
-            Execute(input);
+            Execute(input, null);
             Console.WriteLine();
         }
 

@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageReference Include="NSubstitute" Version="5.0.0" />
+    <PackageReference Include="NexusKrop.Moq" Version="4.20.100" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
     <PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IceShell.Batching\IceShell.Batching.csproj" />
     <ProjectReference Include="..\IceShell.Core\IceShell.Core.csproj" />
   </ItemGroup>
 
