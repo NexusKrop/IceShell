@@ -8,6 +8,13 @@ using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.Api;
 using Spectre.Console;
 
+if (args.Length > 1)
+{
+    Console.WriteLine("Invalid arguments for IceShell launcher");
+    Console.WriteLine("Usage: iceshell [command]");
+    return 2;
+}
+
 var userPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".iceShell");
 Directory.CreateDirectory(userPath);
 
@@ -52,5 +59,15 @@ Languages.SetInstanceConfig(sh);
 var shell = new Shell(sh);
 
 Shell.ModuleManager.AddModule(new BatchingModule());
-    
-return shell.RunInteractive();
+
+if (args.Length == 0)
+{
+    return shell.RunInteractive();
+}
+else if (args.Length == 1)
+{
+    Shell.ModuleManager.InitializeModules();
+    shell.Execute(args[0]);
+}
+
+return -255;
