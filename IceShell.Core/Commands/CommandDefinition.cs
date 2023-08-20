@@ -1,5 +1,6 @@
 namespace IceShell.Core.Commands;
 
+using IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.Exceptions;
 using Spectre.Console;
@@ -28,6 +29,8 @@ public class CommandDefinition
         Console.WriteLine();
         Console.WriteLine(GetUsage(cmdName));
 
+        var noDescText = Languages.Get("help_no_description");
+
         if (Values.Any())
         {
             Console.WriteLine();
@@ -42,7 +45,7 @@ public class CommandDefinition
 
             foreach (var value in Values)
             {
-                grid.AddRow(value.Name, "not implemented - help message");
+                grid.AddRow(value.Name, value.Description ?? noDescText);
             }
 
             AnsiConsole.Write(grid);
@@ -62,7 +65,8 @@ public class CommandDefinition
 
             foreach (var option in Options)
             {
-                grid.AddRow(option.Value.HasValue ? $"/{option.Key}" : $"/{option.Key}:<value>", "not implemented - help message");
+                grid.AddRow(option.Value.HasValue ? $"/{option.Key}" : $"/{option.Key}:<value>",
+                    option.Value.Description ?? noDescText);
             }
 
             AnsiConsole.Write(grid);
@@ -84,6 +88,11 @@ public class CommandDefinition
         var builder = new StringBuilder();
         builder.Append(cmdName).Append(' ');
 
+        if (Options.Any())
+        {
+            builder.Append("[options...]");
+        }
+
         Values.ForEach(x =>
         {
             if (x.Required)
@@ -97,12 +106,6 @@ public class CommandDefinition
 
             builder.Append(' ');
         });
-
-        if (Options.Any())
-        {
-            // TODO output all switches and options so it looks like DOS
-            builder.Append("[options...]");
-        }
 
         return builder.ToString();
     }

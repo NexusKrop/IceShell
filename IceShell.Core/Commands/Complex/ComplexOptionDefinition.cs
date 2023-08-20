@@ -21,4 +21,4 @@ using System.Reflection;
 /// <param name="ShortName">The name of the option.</param>
 /// <param name="HasValue">Whether or not this option has value.</param>
 /// <param name="Required">Whether or not this option is required.</param>
-public record ComplexOptionDefinition(char ShortName, bool HasValue, PropertyInfo Property, bool Required = false);
+public record ComplexOptionDefinition(char ShortName, bool HasValue, PropertyInfo Property, bool Required = false, string? Description = null);
