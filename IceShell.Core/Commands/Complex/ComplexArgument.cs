@@ -85,7 +85,7 @@ public class ComplexArgument
                 // Begin parsing non variable
                 string? toAdd;
 
-                if (_definition.GreedyString)
+                if (_definition.GreedyString && valueIndex == _definition.Values.Count - 1)
                 {
                     toAdd = _parser.ReadToEnd();
                 }

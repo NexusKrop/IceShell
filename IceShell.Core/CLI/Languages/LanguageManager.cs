@@ -26,6 +26,12 @@ public class Languages
         Instance._shellSettings = settings;
     }
 
+    public void Reload()
+    {
+        LanguageFiles.Clear();
+        Load();
+    }
+
     public void Load()
     {
         var targetPath = Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,

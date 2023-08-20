@@ -1,6 +1,7 @@
 namespace IceShell.Tests;
 
 using IceShell.Core;
+using IceShell.Core.CLI.Languages;
 using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
 using Moq;
@@ -9,8 +10,14 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 
 public class CommandParseTest
 {
+    [SetUp]
+    public void Setup()
+    {
+        Languages.Instance.Reload();
+    }
+
     [VariableValue]
-    [ComplexCommand("mocker", "Mock command")]
+    [ComplexCommand("varvaltest", "Mock command")]
     internal class VarValues_MockCommand : ICommand
     {
         [VariableValueBuffer]
@@ -23,6 +30,37 @@ public class CommandParseTest
         }
     }
 
+    [ComplexCommand("greedytest", "Mock command")]
+    [GreedyString]
+    internal class Greedy_MockCommand : ICommand
+    {
+        [Value("string", true, 0)]
+        public string? String { get; set; }
+
+        [Value("greedy", true, 1)]
+        public string? Greedy { get; set; }
+
+        public int Execute(IShell shell, ICommandExecutor executor)
+        {
+            Assert.That(String, Is.EqualTo("abc"));
+            Assert.That(Greedy, Is.EqualTo("efg triathlon i do not know!!!"));
+            return 0;
+        }
+    }
+
+    [Test]
+    public void GreedyValue_LastIsGreedy()
+    {
+        var dispatcher = new CommandDispatcher(Mock.Of<IShell>());
+        var parser = new CommandParser();
+        parser.SetLine("abc efg triathlon i do not know!!!");
+
+        Shell.CommandManager.RegisterComplex(typeof(Greedy_MockCommand));
+
+        Assert.That(dispatcher.Execute(CommandDispatcher.Parse("greedytest", parser),
+            Mock.Of<ICommandExecutor>()), Is.EqualTo(0));
+    }
+
     [Test]
     public void VarValuesTest()
     {
@@ -32,7 +70,7 @@ public class CommandParseTest
 
         Shell.CommandManager.RegisterComplex(typeof(VarValues_MockCommand));
 
-        Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("mocker", parser),
+        Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("varvaltest", parser),
             Mock.Of<ICommandExecutor>()));
     }
 }
