@@ -3,7 +3,7 @@
 
 using IceShell.Batching;
 using IceShell.Core.CLI.Languages;
-using NexusKrop.IceCube.Settings;
+using IceShell.Settings;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.Api;
 using Spectre.Console;

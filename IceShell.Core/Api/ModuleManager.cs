@@ -1,3 +1,6 @@
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
 namespace NexusKrop.IceShell.Core.Api;
 
 using global::IceShell.Core.CLI.Languages;

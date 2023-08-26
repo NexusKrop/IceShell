@@ -1,8 +1,11 @@
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
 namespace IceShell.Core.CLI.Languages;
 
 using System.Reflection;
 using Kajabity.Tools.Java;
-using NexusKrop.IceCube.Settings;
+using global::IceShell.Settings;
 
 public class Languages
 {

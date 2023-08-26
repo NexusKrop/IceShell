@@ -1,4 +1,7 @@
-﻿namespace NexusKrop.IceShell.Core.Api;
+﻿// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
+namespace NexusKrop.IceShell.Core.Api;
 
 using NexusKrop.IceShell.Core.Commands;
 using System;

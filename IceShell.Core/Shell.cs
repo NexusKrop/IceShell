@@ -7,9 +7,9 @@ using global::IceShell.Core;
 using global::IceShell.Core.CLI;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
+using global::IceShell.Settings;
 using IceShell.Core.Commands;
 using NexusKrop.IceCube;
-using NexusKrop.IceCube.Settings;
 using NexusKrop.IceShell.Core.Api;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -71,6 +71,9 @@ public class Shell : IShell
         Directory.SetCurrentDirectory(target);
     }
 
+    /// <summary>
+    /// Quits this instance.
+    /// </summary>
     public void Quit()
     {
         Shell.QuitStatic();
@@ -148,6 +151,7 @@ public class Shell : IShell
     /// Parses and then executes the specified user input.
     /// </summary>
     /// <param name="line">The input.</param>
+    /// <param name="actualExecutor">The executor to pass to commands (or have this instance to act on behalf of). If <see langword="null"/>, the Shell will run commands on its own behalf.</param>
     public int Execute(string line, ICommandExecutor? actualExecutor = null)
     {
         _parser.SetLine(line);
@@ -213,7 +217,8 @@ public class Shell : IShell
     }
 
     /// <summary>
-    /// Runs the shell interactively.
+    /// Starts the interactive shell process and logic on the current thread, and returns after the current
+    /// shell instance have exited.
     /// </summary>
     /// <returns>The exit code.</returns>
     public int RunInteractive()
