@@ -12,20 +12,56 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
+/// <summary>
+/// Represents a model that defines a command and its parameters.
+/// </summary>
+/// <remarks>
+/// Command definitions does not know about the name of the command, and this behaviour is intentional. Commands can have aliases,
+/// and is up to the developer to determine the name of the command to display in help messages, etc.
+/// </remarks>
 public class CommandDefinition
 {
     internal Dictionary<char, ComplexOptionDefinition> Options { get; } = new();
     internal List<ComplexValueDefinition> Values { get; } = new();
 
+    /// <summary>
+    /// Gets or sets whether the command uses variable values.
+    /// </summary>
     public bool VariableValues { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the last value provided will be a greedy string.
+    /// </summary>
     public bool GreedyString { get; set; }
 
+    /// <summary>
+    /// Gets or sets the description of the command.
+    /// </summary>
     public string Description { get; set; } = "No description provided.";
 
+    /// <summary>
+    /// Gets or sets the variable value buffer of the command.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Commands with a variable amount of values cannot accept values in regular properties, instead, it requires a 
+    /// list that is able to put the values into.
+    /// </para>
+    /// <para>
+    /// Attempting to register a variable value command that does not have a variable value buffer will result in an exception. 
+    /// </para>
+    /// </remarks>
     public PropertyInfo? VariableValueBuffer { get; set; }
 
+    /// <summary>
+    /// Gets or sets the custom usage string of the command. It will be appended after the command name.
+    /// </summary>
     public string? CustomUsage { get; set; }
 
+    /// <summary>
+    /// Prints help message of the command.
+    /// </summary>
+    /// <param name="cmdName">The command name to use in the help message.</param>
     public void PrintHelp(string cmdName)
     {
         Console.WriteLine(Description);

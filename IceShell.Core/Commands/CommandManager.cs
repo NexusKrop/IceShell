@@ -19,35 +19,60 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 
+/// <summary>
+/// Provides services for the registraton and lookup for the registered commands.
+/// </summary>
 public class CommandManager
 {
-    public CommandManager()
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandManager"/> class.
+    /// </summary>
+    /// <param name="registerDefaults">If <see langword="true"/>, registers the bundled commands.</param>
+    public CommandManager(bool registerDefaults = true)
     {
         CommandEntries = new ReadOnlyDictionary<string, ComplexCommandEntry>(_complexCommands);
 
-        RegisterComplex(typeof(DirCommandEx));
-        RegisterComplex(typeof(EchoCommandEx));
-        RegisterComplex(typeof(ExitCommandEx));
-        RegisterComplex(typeof(CdCommandEx));
-        RegisterComplex(typeof(CopyCommandEx));
-        RegisterComplex(typeof(VerCommand));
-        RegisterComplex(typeof(StartCommandEx));
-        RegisterComplex(typeof(ClsCommandEx));
-        RegisterComplex(typeof(MkdirCommandEx));
-        RegisterComplex(typeof(DelCommandEx));
-        RegisterComplex(typeof(MkfileCommandEx));
-        RegisterComplex(typeof(MoveCommandEx));
-        RegisterComplex(typeof(HelpCommandEx));
-        RegisterComplex(typeof(TypeCommandEx));
-        RegisterComplex(typeof(PromptCommandEx));
+        if (registerDefaults)
+        {
+            RegisterComplex(typeof(DirCommandEx));
+            RegisterComplex(typeof(EchoCommandEx));
+            RegisterComplex(typeof(ExitCommandEx));
+            RegisterComplex(typeof(CdCommandEx));
+            RegisterComplex(typeof(CopyCommandEx));
+            RegisterComplex(typeof(VerCommand));
+            RegisterComplex(typeof(StartCommandEx));
+            RegisterComplex(typeof(ClsCommandEx));
+            RegisterComplex(typeof(MkdirCommandEx));
+            RegisterComplex(typeof(DelCommandEx));
+            RegisterComplex(typeof(MkfileCommandEx));
+            RegisterComplex(typeof(MoveCommandEx));
+            RegisterComplex(typeof(HelpCommandEx));
+            RegisterComplex(typeof(TypeCommandEx));
+            RegisterComplex(typeof(PromptCommandEx));
+        }
     }
 
+    /// <summary>
+    /// Represents a command registration entry.
+    /// </summary>
+    /// <param name="Type">The type containing the implementation of the command.</param>
+    /// <param name="OSPlatform">The platform that the command explicitly supports. If empty, the command is considered to work on all platforms.</param>
+    /// <param name="Definition">The command definition.</param>
+    /// <param name="Description">The description to show in help messages.</param>
     public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, CommandDefinition Definition, string? Description = null);
 
     private readonly Dictionary<string, ComplexCommandEntry> _complexCommands = new();
 
+    /// <summary>
+    /// Gets the registered command entries.
+    /// </summary>
     public IReadOnlyDictionary<string, ComplexCommandEntry> CommandEntries { get; }
 
+    /// <summary>
+    /// Returns a list of the command names that begins with the specified characters.
+    /// </summary>
+    /// <param name="begin">The characters to search for completion.</param>
+    /// <returns>The list of command names.</returns>
     public string[] CompleteCommand(string begin)
     {
         if (string.IsNullOrWhiteSpace(begin))
@@ -74,6 +99,11 @@ public class CommandManager
         return list.ToArray();
     }
 
+    /// <summary>
+    /// Gets a command definition based on the name of the command.
+    /// </summary>
+    /// <param name="name">The name of the command. Can be an alias.</param>
+    /// <returns>If found, the command entry; otherwise, <see langword="null"/>.</returns>
     public ComplexCommandEntry? GetDefinition(string name)
     {
         if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var x))
@@ -89,6 +119,11 @@ public class CommandManager
         return x;
     }
 
+    /// <summary>
+    /// Gets a command implementation type.
+    /// </summary>
+    /// <param name="name">The name of the command. Can be an alias.</param>
+    /// <returns>The command implementation type, if found; otherwise, <see langword="null"/>.</returns>
     public Type? GetComplex(string name)
     {
         if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var x))
@@ -104,6 +139,18 @@ public class CommandManager
         return x?.Type;
     }
 
+    /// <summary>
+    /// Registers a command.
+    /// </summary>
+    /// <param name="type">The command implementation type.</param>
+    /// <exception cref="ArgumentException">The command implementation type or its set of attributes are invalid.</exception>
+    /// <exception cref="InvalidOperationException">The command implementation type is invalid.</exception>
+    /// <remarks>
+    /// <para>
+    /// You will need to add a correct set of attributes to the properties and the type itself in order for it to correctly register and function.
+    /// For more information, consult the documentation or the IceShell source code.
+    /// </para>
+    /// </remarks>
     public void RegisterComplex(Type type)
     {
         ArgumentNullException.ThrowIfNull(type);

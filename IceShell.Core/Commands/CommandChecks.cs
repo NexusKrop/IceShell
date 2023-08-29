@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Provides methods to throw exceptions when certain conditions are met or are not met.
+/// </summary>
 public static class CommandChecks
 {
     /// <summary>
@@ -26,9 +29,9 @@ public static class CommandChecks
     }
 
     /// <summary>
-    /// Throws a <see cref="CommandFormatException"/> if the specified directory does not exist.
+    /// Throws a <see cref="CommandFormatException"/> if the specified directory does exist.
     /// </summary>
-    /// <param name="file">The file to check.</param>
+    /// <param name="directory">The directory to check.</param>
     public static void DirectoryExists(string directory)
     {
         if (!Directory.Exists(directory))
@@ -60,11 +63,15 @@ public static class CommandChecks
         }
     }
 
-    public static void DirectoryNotExists(string dir)
+    /// <summary>
+    /// Throws a <see cref="CommandFormatException"/> if the specified directory does not exist.
+    /// </summary>
+    /// <param name="directory">The directory to check.</param>
+    public static void DirectoryNotExists(string directory)
     {
-        if (Directory.Exists(dir))
+        if (Directory.Exists(directory))
         {
-            throw ExceptionHelper.WithName(Languages.Get("generic_directory_exists"), dir);
+            throw ExceptionHelper.WithName(Languages.Get("generic_directory_exists"), directory);
         }
     }
 }

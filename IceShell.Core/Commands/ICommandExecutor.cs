@@ -3,9 +3,19 @@
 
 namespace IceShell.Core.Commands;
 
+/// <summary>
+/// Represents a service that can act as the executor and context provider of commands.
+/// </summary>
 public interface ICommandExecutor
 {
+    /// <summary>
+    /// Gets whether this instance supports skipping through lines.
+    /// </summary>
     bool SupportsJump { get; }
 
+    /// <summary>
+    /// Skips to the specified label.
+    /// </summary>
+    /// <param name="label">The label to skip to.</param>
     void Jump(string label);
 }
