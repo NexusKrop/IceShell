@@ -14,6 +14,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Provides module management interface and service for shell environments.
+/// </summary>
 public class ModuleManager
 {
     private readonly List<IModule> _modules = new();
@@ -46,11 +49,22 @@ public class ModuleManager
         }
     }
 
+    /// <summary>
+    /// Registers the specified module.
+    /// </summary>
+    /// <param name="module">The module to register.</param>
     public void AddModule(IModule module)
     {
         _modules.Add(module);
     }
 
+    /// <summary>
+    /// Attempts to create the instance of the specified module, and then registers the module.
+    /// </summary>
+    /// <param name="type">The type of the module to register.</param>
+    /// <remarks>
+    /// This method fails silently if the type specified is not a module.
+    /// </remarks>
     public void AddModule(Type type)
     {
         var moduleI = type.GetInterface(nameof(IModule));
@@ -64,6 +78,9 @@ public class ModuleManager
         AddModule(module);
     }
 
+    /// <summary>
+    /// Initializes a modules. This finalizes the process of module startups.
+    /// </summary>
     public void InitializeModules()
     {
         foreach (var module in _modules)
@@ -80,6 +97,10 @@ public class ModuleManager
         }
     }
 
+    /// <summary>
+    /// Loads all modules in the specified assembly.
+    /// </summary>
+    /// <param name="assembly">The assembly.</param>
     public void LoadModuleFrom(Assembly assembly)
     {
         foreach (var type in assembly.GetTypes())
@@ -93,7 +114,7 @@ public class ModuleManager
     /// </summary>
     /// <param name="file">The file.</param>
     /// <remarks>
-    /// This method throws same exceptions as of <see cref="Assembly.LoadFrom(string)(string)"/>.
+    /// This method throws same exceptions as of <see cref="Assembly.LoadFrom(string)"/>.
     /// </remarks>
     public void LoadModuleFrom(string file)
     {

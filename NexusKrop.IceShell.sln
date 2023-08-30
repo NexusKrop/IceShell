@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceShell.Tests", "IceShell.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceShell.Batching", "IceShell.Batching\IceShell.Batching.csproj", "{D3F17E62-0153-47CE-921C-83E5CC25D1F6}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "IceShell.Docs", "IceShell.Docs\IceShell.Docs.shfbproj", "{0AC32953-6432-4720-8D5A-8BEF6296E875}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,10 +40,6 @@ Global
 		{D3F17E62-0153-47CE-921C-83E5CC25D1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3F17E62-0153-47CE-921C-83E5CC25D1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3F17E62-0153-47CE-921C-83E5CC25D1F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0AC32953-6432-4720-8D5A-8BEF6296E875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AC32953-6432-4720-8D5A-8BEF6296E875}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0AC32953-6432-4720-8D5A-8BEF6296E875}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0AC32953-6432-4720-8D5A-8BEF6296E875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

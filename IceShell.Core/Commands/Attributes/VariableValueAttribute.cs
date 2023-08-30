@@ -9,7 +9,7 @@ using System;
 /// </summary>
 /// <remarks>
 /// <note type="warning">
-/// A command that accepts variable amounts of values must also have a property of the <see cref="IList{T}"/> type, and the type of the list
+/// A command that accepts variable amounts of values must also have a property that can accept <see cref="List{T}" /> of <see cref="string"/>, and the type of the list
 /// must be <see cref="string"/>, and the property must also have the <see cref="VariableValueBufferAttribute"/> attribute.
 /// </note>
 /// <para>

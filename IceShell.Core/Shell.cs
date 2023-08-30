@@ -26,6 +26,9 @@ using System.Diagnostics;
 /// </summary>
 public class Shell : IShell
 {
+    /// <summary>
+    /// The default prompt string of the interactive shell.
+    /// </summary>
     public const string DefaultPrompt = "%P%G ";
 
     private readonly CommandParser _parser = new();
@@ -35,14 +38,20 @@ public class Shell : IShell
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
     private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
 
+    /// <inheritdoc />
     public string Prompt { get; set; }
 
-    public ITerminal Terminal { get; set; } = new RealTerminal();
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Shell"/> class, with the default settings.
+    /// </summary>
     public Shell() : this(new())
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Shell"/> class.
+    /// </summary>
+    /// <param name="settings">The settings.</param>
     public Shell(ShellSettings settings)
     {
         _settings = settings;
@@ -50,15 +59,26 @@ public class Shell : IShell
         _dispatcher = new(this);
     }
 
+    // TODO replace those global stuff with interfaces and instance properties
+
+    /// <summary>
+    /// Gets the global <see cref="CommandManager"/>.
+    /// </summary>
     public static CommandManager CommandManager { get; } = new();
+
+    /// <summary>
+    /// Gets the global <see cref="ModuleManager"/>.
+    /// </summary>
     public static ModuleManager ModuleManager { get; } = new();
 
+    // TODO exit via IShell not this
     /// <summary>
     /// Gets or sets whether all shells will exit after executing their next command, or
     /// evaluated their next user input.
     /// </summary>
     public static bool ExitShell { get; set; }
 
+    /// <inheritdoc />
     public bool SupportsJump => false;
 
     /// <summary>
@@ -260,41 +280,11 @@ public class Shell : IShell
         return 0;
     }
 
-    public void WriteLine()
-    {
-        Terminal.StandardOutput.WriteLine();
-    }
-
-    public void WriteLine(string? text)
-    {
-        Terminal.StandardOutput.WriteLine(text);
-    }
-
-    public void WriteLine(object? obj)
-    {
-        Terminal.StandardOutput.WriteLine(obj);
-    }
-
-    public void WriteLine(string text, params object[] args)
-    {
-        Terminal.StandardOutput.WriteLine(text, args);
-    }
-
-    public void Write(string text, params object[] args)
-    {
-        Terminal.StandardOutput.Write(text, args);
-    }
-
-    public void Write(object? obj)
-    {
-        Terminal.StandardOutput.Write(obj);
-    }
-
-    public void Write(string? text)
-    {
-        Terminal.StandardOutput.Write(text);
-    }
-
+    /// <summary>
+    /// Throws <see cref="NotSupportedException"/> as interactive shells should never support skipping through lines.
+    /// </summary>
+    /// <param name="label">The label to skip to. Ignored.</param>
+    /// <exception cref="NotSupportedException">The action is not supported.</exception>
     public void Jump(string label)
     {
         throw new NotSupportedException();
