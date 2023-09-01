@@ -29,12 +29,10 @@ public class Shell : IShell
     /// </summary>
     public const string DefaultPrompt = "%P%G ";
 
-    private readonly CommandParser _parser = new();
     private readonly ShellSettings _settings;
     private readonly CommandDispatcher _dispatcher;
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
-    private static readonly string WORKINGDIR_EXECUTABLE_DELIMITER = ".\\";
 
     /// <inheritdoc />
     public string Prompt { get; set; }
@@ -112,6 +110,7 @@ public class Shell : IShell
     /// <param name="args">The arguments.</param>
     /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="CommandFormatException">The specified file was not executable.</exception>
+    [Obsolete("Shell disk execution is no longer supported. Use CommandDispatcher to execute instead.")]
     public bool ExecuteOnDisk(string fileName, string[]? args)
     {
         var actual = PathSearcher.GetSystemExecutableName(Path.Combine(Environment.CurrentDirectory, fileName));
@@ -172,58 +171,15 @@ public class Shell : IShell
     /// <param name="actualExecutor">The executor to pass to commands (or have this instance to act on behalf of). If <see langword="null"/>, the Shell will run commands on its own behalf.</param>
     public int Execute(string line, ICommandExecutor? actualExecutor = null)
     {
-        _parser.SetLine(line);
-        var command = _parser.ReadString();
-
         try
         {
-            string[]? args = null;
+            var batchLine = _dispatcher.ParseLine(line);
 
-            if (string.IsNullOrWhiteSpace(command))
-            {
-                ConsoleOutput.PrintShellError(Languages.Get("shell_empty_command"));
-                return 1;
-            }
-
-            // If starts with "dot limiter" (.\ etc) explicitly execute it in working dir
-            if (command.StartsWith(WORKINGDIR_EXECUTABLE_DELIMITER))
-            {
-                _parser.ReadArgs(out args);
-
-                if (!ExecuteOnDisk(command, args))
-                {
-                    ConsoleOutput.PrintShellError(Languages.InvalidFile(command));
-                    return 1;
-                }
-
-                return 0;
-            }
-
-            var type = CommandManager.GetComplex(command);
-
-            // If no such complex command either
-            if (type == null)
-            {
-                // Reads the arguments out
-                _parser.ReadArgs(out args);
-
-                // Executes them on path
-                if (!ExecuteOnPath(command, args))
-                {
-                    // If no such path file, say bad command
-                    ConsoleOutput.PrintShellError(Languages.UnknownCommand(command));
-                    return 1;
-                }
-
-                return 0;
-            }
-
-            var parsed = CommandDispatcher.Parse(command, _parser);
-            return _dispatcher.Execute(parsed, actualExecutor ?? this);
+            _dispatcher.Execute(batchLine, this);
         }
         catch (CommandFormatException ex)
         {
-            ConsoleOutput.PrintShellError(string.Format("{0}: {1}", command, ex.Message));
+            ConsoleOutput.PrintShellError(string.Format("{0}", ex.Message));
         }
         catch (Exception ex)
         {
@@ -263,7 +219,6 @@ public class Shell : IShell
                 .Replace("%G", ">", true, null)
                 .Replace("%L", "<", true, null);
 
-            // TODO reference the ReadLine code and use Terminal interface
             var input = ReadLine.Read(prompt);
 
             if (string.IsNullOrWhiteSpace(input))

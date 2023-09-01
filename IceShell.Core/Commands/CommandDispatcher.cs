@@ -24,7 +24,6 @@ using OldCommandParser = NexusKrop.IceShell.Core.CommandParser;
 public class CommandDispatcher
 {
     private readonly IShell _shell;
-    private readonly LineParser _lineParser = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandDispatcher"/> class.
@@ -42,7 +41,7 @@ public class CommandDispatcher
     /// <returns>The parsed BatchLine.</returns>
     public BatchLine ParseLine(string line)
     {
-        var statements = _lineParser.ParseLine(line);
+        var statements = new LineParser().ParseLine(line);
         // If there is no such command, the batch line is parsed as calling for an executable.
         var cmdName = statements[0].Content;
         var definition = Shell.CommandManager.GetDefinition(cmdName);
@@ -70,6 +69,7 @@ public class CommandDispatcher
     /// <param name="parser">The current command parser. Must be located after the name of the command.</param>
     /// <returns>The parsed command ready to execute.</returns>
     /// <exception cref="CommandFormatException">The command format is invalid.</exception>
+    [Obsolete("Use ParseLine instead.")]
     public static ParsedCommand Parse(string commandName, OldCommandParser parser)
     {
         var type = Shell.CommandManager.GetDefinition(commandName)
@@ -105,12 +105,17 @@ public class CommandDispatcher
             }
 
             var cmdName = line.Statements[0].Content;
-            var searchResult = PathSearcher.SearchExecutable(cmdName)
-                ?? throw new CommandFormatException(Languages.UnknownCommand(cmdName));
+            var searchResult = PathSearcher.GetSystemExecutableName(Path.Combine(Environment.CurrentDirectory, cmdName));
+
+            if (searchResult == null || !File.Exists(searchResult))
+            {
+                throw new CommandFormatException(Languages.UnknownCommand(cmdName));
+            }
 
             var processInfo = new ProcessStartInfo(searchResult);
             args.ForEach(processInfo.ArgumentList.Add);
             processInfo.UseShellExecute = false;
+            processInfo.WorkingDirectory = Environment.CurrentDirectory;
 
             var process = Process.Start(processInfo);
 
