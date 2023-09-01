@@ -3,7 +3,7 @@ namespace IceShell.Parsing;
 /// <summary>
 /// Represents a command syntax statement, the basis for all command arguments (options, values, etc.).
 /// </summary>
-public readonly record struct SyntaxStatement
+public record SyntaxStatement
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SyntaxStatement"/> class.
