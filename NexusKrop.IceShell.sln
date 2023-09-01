@@ -18,6 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceShell.Tests", "IceShell.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceShell.Batching", "IceShell.Batching\IceShell.Batching.csproj", "{D3F17E62-0153-47CE-921C-83E5CC25D1F6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev Settings", "Dev Settings", "{E5FEEB9B-9887-4FAF-B446-7D71DD8EAA26}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

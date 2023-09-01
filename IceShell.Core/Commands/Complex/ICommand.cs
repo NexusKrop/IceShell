@@ -17,12 +17,15 @@ using global::IceShell.Core.Commands;
 /// were simple commands are ported to use complex command system.
 /// </para>
 /// </remarks>
+/// <seealso cref="CommandManager"/>
+/// <seealso cref="ComplexCommandAttribute"/>
 public interface ICommand
 {
     /// <summary>
     /// Executes this command.
     /// </summary>
-    /// <param name="argument">The parsed argument.</param>
+    /// <param name="shell">The shell that this command was executed with.</param>
+    /// <param name="executor">The executor that this command was executed by.</param>
     /// <returns>The execution result code. If <c>0</c>, the command is considered success.</returns>
     int Execute(IShell shell, ICommandExecutor executor);
 }

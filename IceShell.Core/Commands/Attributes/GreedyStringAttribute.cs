@@ -14,7 +14,7 @@ using System;
 /// <code language="none">
 /// greedy arg1 arg2 arg3 and spaces
 /// </code>
-/// The arguments will be parsed to this:
+/// The arguments will be parsed to:
 /// <list type="bullet">
 ///     <item>arg1</item>
 ///     <item>arg2</item>

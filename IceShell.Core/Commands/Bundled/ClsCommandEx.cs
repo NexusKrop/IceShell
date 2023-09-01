@@ -9,12 +9,13 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 
 /// <summary>
-/// Defines a command that clears the console screen.
+/// Clears the screen.
 /// </summary>
 /// <seealso cref="Console.Clear()"/>
 [ComplexCommand("cls", "Clears the screen.")]
 public class ClsCommandEx : ICommand
 {
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         Console.Clear();

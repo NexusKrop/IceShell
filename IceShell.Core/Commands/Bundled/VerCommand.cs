@@ -23,6 +23,7 @@ public class VerCommand : ICommand
     private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Environment.ProcessPath ?? "NexusKrop.IceShell.exe").ProductVersion ?? "unknown";
 #endif
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         Console.WriteLine(Languages.Get("ver_line_0"), PRODUCT_VERSION);

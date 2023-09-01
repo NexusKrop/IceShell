@@ -5,8 +5,16 @@ namespace NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Reflection.PortableExecutable;
 
+/// <summary>
+/// Provides utilities for file formats and types.
+/// </summary>
 public static class FileUtil
 {
+    /// <summary>
+    /// Determines whether the specified file is an executable.
+    /// </summary>
+    /// <param name="file">The file.</param>
+    /// <returns><see langword="true" /> if the specified file is an executable; otherwise, <see langword="false"/>. </returns>
     public static bool IsExecutable(string file)
     {
         if (OperatingSystem.IsWindows())

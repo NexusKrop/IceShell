@@ -7,21 +7,23 @@ using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
-using NexusKrop.IceCube;
+using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using System.ComponentModel;
 
 /// <summary>
-/// Defines a command that starts the specified file, either by executing it as as executable, or
-/// opening it through an associated program.
+/// Starts the specified file or executable program.
 /// </summary>
-[ComplexCommand("start")]
+[ComplexCommand("start", "Starts the specified file or executable program.")]
 public class StartCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the executable or the file to start.
+    /// </summary>
     [Value("target", position: 0)]
     public string? Target { get; set; }
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         if (Target == null)

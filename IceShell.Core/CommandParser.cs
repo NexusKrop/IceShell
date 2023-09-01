@@ -4,7 +4,7 @@
 namespace NexusKrop.IceShell.Core;
 
 using global::IceShell.Core.CLI.Languages;
-using NexusKrop.IceShell.Core.Exceptions;
+using global::IceShell.Core.Exceptions;
 using System.Text;
 
 /// <summary>
@@ -12,8 +12,19 @@ using System.Text;
 /// </summary>
 public class CommandParser
 {
+    /// <summary>
+    /// The whitespace character.
+    /// </summary>
     public const char WHITESPACE = ' ';
+
+    /// <summary>
+    /// The double-quote character.
+    /// </summary>
     public const char DOUBLE_QUOTE = '"';
+
+    /// <summary>
+    /// The escape (backward-slash) character.
+    /// </summary>
     public const char ESCAPE = '\\';
 
     /// <summary>

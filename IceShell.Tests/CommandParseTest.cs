@@ -17,7 +17,7 @@ public class CommandParseTest
     }
 
     [VariableValue]
-    [ComplexCommand("varvaltest", "Mock command")]
+    [ComplexCommand("vault", "Mock command")]
     internal class VarValues_MockCommand : ICommand
     {
         [VariableValueBuffer]
@@ -30,7 +30,7 @@ public class CommandParseTest
         }
     }
 
-    [ComplexCommand("greedytest", "Mock command")]
+    [ComplexCommand("greed", "Mock command")]
     [GreedyString]
     internal class Greedy_MockCommand : ICommand
     {
@@ -57,7 +57,7 @@ public class CommandParseTest
 
         Shell.CommandManager.RegisterComplex(typeof(Greedy_MockCommand));
 
-        Assert.That(dispatcher.Execute(CommandDispatcher.Parse("greedytest", parser),
+        Assert.That(dispatcher.Execute(CommandDispatcher.Parse("greed", parser),
             Mock.Of<ICommandExecutor>()), Is.EqualTo(0));
     }
 
@@ -70,7 +70,7 @@ public class CommandParseTest
 
         Shell.CommandManager.RegisterComplex(typeof(VarValues_MockCommand));
 
-        Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("varvaltest", parser),
+        Assert.DoesNotThrow(() => dispatcher.Execute(CommandDispatcher.Parse("vault", parser),
             Mock.Of<ICommandExecutor>()));
     }
 }

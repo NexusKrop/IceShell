@@ -4,8 +4,8 @@ using IceShell.Core;
 using IceShell.Core.CLI.Languages;
 using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
+using IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 
 [ComplexCommand("goto", Description = "In a batch file, jump to the specified label.")]
 public class GotoCommand : ICommand

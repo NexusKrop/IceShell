@@ -4,26 +4,28 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
-using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
+using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-[ComplexCommand("mkdir", "Creates a directory.")]
+/// <summary>
+/// Creates a directory, or a tree of directories.
+/// </summary>
+[ComplexCommand("mkdir", "Creates a directory, or a tree of directories.")]
 [CommandAlias("md")]
 public class MkdirCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the name of the directory or that path syntax that represents the directory tree to create.
+    /// </summary>
     [Value("directory", true, 0)]
     public string? DirectoryName { get; set; }
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         var dir = PathSearcher.ShellToSystem(DirectoryName);

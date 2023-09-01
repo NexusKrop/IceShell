@@ -3,14 +3,13 @@
 
 namespace IceShell.Core.Commands.Bundled;
 using IceShell.Core.CLI.Languages;
+using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
+using IceShell.Core.Exceptions;
 using Microsoft.Extensions.FileSystemGlobbing;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Exceptions;
-using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
-
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Collections.Generic;
@@ -18,17 +17,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Provides a base class for file operation commands that involves multiple sources and a single destination.
+/// </summary>
 [VariableValue]
-public abstract class DestinationFileCommandBase
+public abstract class DestinationFileCommandBase : ICommand
 {
+    /// <summary>
+    /// Gets or sets the buffer to store values.
+    /// </summary>
     [VariableValueBuffer]
     public IReadOnlyList<string>? Buffer { get; set; }
 
+    /// <summary>
+    /// Gets or sets whether to execute the operation regardless of the existence of existing files at the destination.
+    /// </summary>
     [Option('f', false)]
     public bool Force { get; set; }
 
+    /// <summary>
+    /// Performs the operation.
+    /// </summary>
+    /// <param name="source">The file to operate.</param>
+    /// <param name="destination">The calculated destination of the specified file.</param>
     public abstract void DoOperation(string source, string destination);
 
+    /// <summary>
+    /// Executes this command.
+    /// </summary>
+    /// <param name="shell">The shell that the executor have executed this command with.</param>
+    /// <param name="executor">The executor that have executed this command.</param>
+    /// <returns>The return code. If <c>0</c>, this command was successful.</returns>
+    /// <exception cref="CommandFormatException">Invalid arguments.</exception>
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         string? destination = null;

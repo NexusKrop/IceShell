@@ -1,7 +1,7 @@
 // Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
-namespace NexusKrop.IceShell.Core.Api;
+namespace IceShell.Core.Api;
 
 /// <summary>
 /// Defines a module implementation.

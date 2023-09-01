@@ -9,12 +9,22 @@ using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using Spectre.Console;
 
+/// <summary>
+/// Provides help information for IceShell commands.
+/// </summary>
 [ComplexCommand("help", "Provides help information for IceShell commands.")]
 public class HelpCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the name of the command that the user wants help information.
+    /// </summary>
+    /// <value>
+    /// The name of the command that the user wants help information. If <see langword="null"/>, prints a list of commands.
+    /// </value>
     [Value("command", false, position: 0)]
     public string? CommandName { get; set; }
 
+    /// <inheritdoc/>
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         var commandName = CommandName;

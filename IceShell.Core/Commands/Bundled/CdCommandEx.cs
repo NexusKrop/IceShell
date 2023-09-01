@@ -7,22 +7,29 @@ using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
+using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 
 /// <summary>
-/// Defines a command that changes the current directory to the specified
-/// directory.
+/// Displays the name of or changes the current directory.
 /// </summary>
 [ComplexCommand("cd", "Displays the name of or changes the current directory.")]
 [CommandAlias("chdir")]
 [GreedyString]
 public class CdCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the directory to change the current directory to.
+    /// </summary>
+    /// <value>
+    /// The directory to change the current directory to. If <see langword="null"/>, displays the name of the
+    /// current directory.
+    /// </value>
     [Value("destination", position: 0)]
     public string? Destination { get; set; }
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         if (string.IsNullOrWhiteSpace(Destination))

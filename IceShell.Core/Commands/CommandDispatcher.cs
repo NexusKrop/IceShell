@@ -4,9 +4,9 @@
 namespace IceShell.Core.Commands;
 
 using IceShell.Core.CLI.Languages;
+using IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

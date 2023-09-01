@@ -1,8 +1,8 @@
 namespace IceShell.Batching;
 
 using IceShell.Batching.Commands;
+using IceShell.Core.Api;
 using NexusKrop.IceShell.Core;
-using NexusKrop.IceShell.Core.Api;
 
 public class BatchingModule : IModule
 {

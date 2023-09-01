@@ -10,18 +10,25 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 
 /// <summary>
-/// Defines a command that echoes or displays the specified text.
+/// Displays messages.
 /// </summary>
 [ComplexCommand("echo", "Displays messages.")]
 [GreedyString]
 public class EchoCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the message to display.
+    /// </summary>
+    /// <value>
+    /// The message to display. If <see langword="null"/>, displays a blank new line.
+    /// </value>
     [Value("message", position: 0)]
     public string? Message { get; set; }
 
+    /// <inheritdoc/>
     public int Execute(IShell shell, ICommandExecutor executor)
     {
-        Console.WriteLine(Message);
+        Console.WriteLine(Message ?? Environment.NewLine);
         return 0;
     }
 }

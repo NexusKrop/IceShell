@@ -7,6 +7,7 @@ using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
+using global::IceShell.Core.Exceptions;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
@@ -14,19 +15,24 @@ using NexusKrop.IceCube;
 using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 
 /// <summary>
-/// Defines a command that deletes a file.
+/// Deletes one or more files.
 /// </summary>
 [ComplexCommand("del", "Deletes one or more files.")]
 [VariableValue]
 public class DelCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the list of the targets.
+    /// </summary>
     [VariableValueBuffer]
     public IReadOnlyList<string>? Targets { get; set; }
 
+    /// <summary>
+    /// Gets or sets whether to require confirmation for each file.
+    /// </summary>
     [Option('P', false)]
     public bool Prompt { get; set; }
 
@@ -47,6 +53,7 @@ public class DelCommandEx : ICommand
         }
     }
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         if (Targets == null || !Targets.Any())

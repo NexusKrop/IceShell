@@ -8,15 +8,13 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 /// <summary>
-/// Defines a command that lists directories and files inside the current or otherwise specified
-/// directory.
+/// Displays a list of files and subdirectories in a directory.
 /// </summary>
 [ComplexCommand("dir", "Displays a list of files and subdirectories in a directory.")]
 internal class DirCommandEx : ICommand

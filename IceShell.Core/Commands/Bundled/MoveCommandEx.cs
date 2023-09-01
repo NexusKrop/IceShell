@@ -11,7 +11,6 @@ using Microsoft.Extensions.FileSystemGlobbing;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 
 /// <summary>
@@ -21,6 +20,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 [VariableValue]
 public class MoveCommandEx : DestinationFileCommandBase, ICommand
 {
+    /// <inheritdoc />
     public override void DoOperation(string source, string destination)
     {
         File.Move(source, destination);

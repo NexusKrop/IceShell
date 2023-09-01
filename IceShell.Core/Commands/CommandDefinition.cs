@@ -5,7 +5,6 @@ namespace IceShell.Core.Commands;
 
 using IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using NexusKrop.IceShell.Core.Exceptions;
 using Spectre.Console;
 using System.Collections.Generic;
 using System.Linq;

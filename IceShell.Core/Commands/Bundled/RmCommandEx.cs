@@ -15,9 +15,13 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 [GreedyString]
 public class RmCommandEx : ICommand
 {
+    /// <summary>
+    /// Gets or sets the content of the comment.
+    /// </summary>
     [Value("comment", position: 0)]
     public string? Comment { get; set; }
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         return 0;

@@ -7,6 +7,9 @@ using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
+/// <summary>
+/// Copies a file to another location.
+/// </summary>
 [ComplexCommand("copy", "Copies a file to another location.", CustomUsage = "<sources...> <destination>")]
 [VariableValue]
 public class CopyCommandEx : DestinationFileCommandBase, ICommand

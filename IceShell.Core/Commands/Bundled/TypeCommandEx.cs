@@ -14,9 +14,13 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 [ComplexCommand("type", "Displays the contents of a text file.")]
 public class TypeCommandEx : ICommand
 {
+    /// <summary>
+    /// The file to display.
+    /// </summary>
     [Value("file", position: 0)]
     public string? ArgFile { get; set; }
 
+    /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         CommandChecks.FileExists(ArgFile!);

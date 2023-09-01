@@ -5,13 +5,18 @@ namespace NexusKrop.IceShell.Core.FileSystem;
 
 using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.CLI;
-using NexusKrop.IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
+/// <summary>
+/// Provides utilities for a custom path system.
+/// </summary>
 public static class PathSearcher
 {
+    /// <summary>
+    /// The shell path seperator.
+    /// </summary>
     public const char SHELL_SEPARATOR = '\\';
 
     private static readonly IReadOnlySet<string> PATHS;
@@ -19,7 +24,7 @@ public static class PathSearcher
     internal static bool UseCustomPathSystem { get; set; }
 
 #pragma warning disable S3963
-    // This is a big chunk of complex code that unfortunealy SonarLint is too dumb, and cannot detect that.
+    // This is a big chunk of complex code that SonarLint is too dumb to detect.
     static PathSearcher()
 #pragma warning restore S3963
     {
@@ -53,6 +58,11 @@ public static class PathSearcher
         PATHS = result.ToImmutableHashSet();
     }
 
+    /// <summary>
+    /// Ensures that the specified shell path is invalid.
+    /// </summary>
+    /// <param name="path">The path to check.</param>
+    /// <exception cref="FormatException">The shell path is invalid.</exception>
     public static void CheckPath(string path)
     {
         if (path.Contains('/'))
@@ -61,6 +71,12 @@ public static class PathSearcher
         }
     }
 
+    /// <summary>
+    /// Determines whether the specified shell path points to the root of a drive or the file system
+    /// (depending on the operating system).
+    /// </summary>
+    /// <param name="path">The path to check.</param>
+    /// <returns><see langword="true"/> if the specified shell path points to the root of a drive or the file system; otherwise, <see langword="false"/>.</returns>
     public static bool IsRootedShell(string path)
     {
         if (OperatingSystem.IsWindows())
@@ -84,9 +100,9 @@ public static class PathSearcher
 
 #pragma warning disable S3267
         // I do not see if LINQ is here anywhere near clear and concise.
-        foreach (var chara in Path.GetInvalidFileNameChars())
+        foreach (var ch in Path.GetInvalidFileNameChars())
         {
-            if (path.Contains(chara))
+            if (path.Contains(ch))
             {
                 throw new FormatException(Languages.Get("generic_path_invalid"));
             }
@@ -94,6 +110,11 @@ public static class PathSearcher
 #pragma warning restore S3267
     }
 
+    /// <summary>
+    /// Converts a platform-dependent system path to its shell path equivalent.
+    /// </summary>
+    /// <param name="path">The system path to convert from.</param>
+    /// <returns>The shell path equivalent of the specified system path.</returns>
     public static string SystemToShell(string path)
     {
         if (!UseCustomPathSystem || OperatingSystem.IsWindows())
@@ -109,6 +130,11 @@ public static class PathSearcher
         return path.Replace(Path.DirectorySeparatorChar, SHELL_SEPARATOR);
     }
 
+    /// <summary>
+    /// Converts a shell path to its platform-dependent equivalent.
+    /// </summary>
+    /// <param name="path">The shell path to convert from.</param>
+    /// <returns>The platform-dependent equivalent of the specified shell path.</returns>
     public static string ShellToSystem(string? path)
     {
         var actualPath = path ?? "";
@@ -150,6 +176,11 @@ public static class PathSearcher
         return actualPath.Replace(SHELL_SEPARATOR, Path.DirectorySeparatorChar);
     }
 
+    /// <summary>
+    /// Gets the name of the executable file of the specified name.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <returns>The name of the executable file.</returns>
     public static string GetSystemExecutableName(string name)
     {
         if (OperatingSystem.IsWindows() && !Path.HasExtension(name))
@@ -160,6 +191,11 @@ public static class PathSearcher
         return name;
     }
 
+    /// <summary>
+    /// Searches for an executable in <c>PATH</c>.
+    /// </summary>
+    /// <param name="name">The name of the executable to search.</param>
+    /// <returns>The first executable found.</returns>
     public static string? SearchExecutable(string name)
     {
         CheckFileName(name);

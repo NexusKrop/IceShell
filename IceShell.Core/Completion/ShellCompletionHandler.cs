@@ -8,7 +8,7 @@ using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Completion.Cache;
 using ReadLineReboot;
 
-public class ShellCompletionHandler : IAutoCompleteHandler
+internal class ShellCompletionHandler : IAutoCompleteHandler
 {
     internal ShellCompletionHandler(CommandManager manager, DirCache cache)
     {

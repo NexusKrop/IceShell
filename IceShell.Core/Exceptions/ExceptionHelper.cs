@@ -1,9 +1,9 @@
 // Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
-namespace NexusKrop.IceShell.Core.Exceptions;
+namespace IceShell.Core.Exceptions;
 using System;
-using global::IceShell.Core.CLI.Languages;
+using IceShell.Core.CLI.Languages;
 
 internal static class ExceptionHelper
 {

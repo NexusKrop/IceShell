@@ -5,7 +5,6 @@ using IceShell.Batching;
 using IceShell.Core.CLI.Languages;
 using IceShell.Settings;
 using NexusKrop.IceShell.Core;
-using NexusKrop.IceShell.Core.Api;
 using Spectre.Console;
 
 if (args.Length > 1)

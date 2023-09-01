@@ -1,10 +1,10 @@
 // Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
-namespace NexusKrop.IceShell.Core.Commands;
+namespace IceShell.Core.Commands;
 
-using global::IceShell.Core.CLI.Languages;
-using NexusKrop.IceShell.Core.Exceptions;
+using IceShell.Core.CLI.Languages;
+using IceShell.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

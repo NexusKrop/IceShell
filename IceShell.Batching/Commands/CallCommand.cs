@@ -4,7 +4,6 @@ using IceShell.Core;
 using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
 using Microsoft.Extensions.FileSystemGlobbing;
-using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
 [ComplexCommand("call", description: "Calls a batch file.")]

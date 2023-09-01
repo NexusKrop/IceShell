@@ -53,12 +53,13 @@ public class ShellSettings
 
         var data = parser.ReadFile(file);
 
-        var result = new ShellSettings();
-
-        // Add data here
-        result.DisplayDateTimeOnStartup = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]);
-        result.UseCustomPathSystem = bool.Parse(data["Shell"][nameof(UseCustomPathSystem)]);
-        result.Language = data["Shell"][nameof(Language)];
+        var result = new ShellSettings
+        {
+            // Add data here
+            DisplayDateTimeOnStartup = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]),
+            UseCustomPathSystem = bool.Parse(data["Shell"][nameof(UseCustomPathSystem)]),
+            Language = data["Shell"][nameof(Language)]
+        };
 
         return result;
     }
