@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using LegacyCommandParser = CommandParser;
+
 /// <summary>
 /// Provides parsing and definition service for complex command arguments.
 /// </summary>
@@ -21,16 +23,16 @@ public class ComplexArgument
     public const char COMPLEX_OPTION_SYMBOL = '/';
     public const char COMPLEX_END_OF_OPTION_SYMBOL = '-';
 
-    private readonly CommandParser _parser;
+    private readonly LegacyCommandParser _parser;
     private readonly CommandDefinition _definition;
 
-    internal ComplexArgument(CommandParser parser, CommandDefinition definition)
+    internal ComplexArgument(LegacyCommandParser parser, CommandDefinition definition)
     {
         _parser = parser;
         _definition = definition;
     }
 
-    public ComplexArgumentParseResult Parse()
+    public ArgumentParseResult Parse()
     {
         var endOfOptions = false;
         var beginEndOfOptions = false;
@@ -38,7 +40,7 @@ public class ComplexArgument
 
         var requiredArgCount = _definition.Values.Count(x => x.Required);
 
-        var result = new ComplexArgumentParseResult();
+        var result = new ArgumentParseResult();
 
         var valueIndex = 0;
 
