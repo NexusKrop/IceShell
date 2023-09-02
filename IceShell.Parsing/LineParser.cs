@@ -91,6 +91,11 @@ public class LineParser
     /// <returns>The statements parsed from the line.</returns>
     public SyntaxStatement[] ParseLine(ReadOnlySpan<char> line)
     {
+        if (line.IsEmpty || line.IsWhiteSpace())
+        {
+            return Array.Empty<SyntaxStatement>();
+        }
+
         // Go through every character.
         for (int i = 0; i < line.Length; i++)
         {

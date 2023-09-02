@@ -37,6 +37,9 @@ public class Shell : IShell
     /// <inheritdoc />
     public string Prompt { get; set; }
 
+    /// <inheritdoc />
+    public CommandDispatcher Dispatcher => _dispatcher;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Shell"/> class, with the default settings.
     /// </summary>
@@ -188,6 +191,12 @@ public class Shell : IShell
 
         // Fallback = fails
         return 1;
+    }
+
+    /// <inheritdoc />
+    public int Execute(BatchLine line, ICommandExecutor? actualExecutor = null)
+    {
+        return _dispatcher.Execute(line, actualExecutor ?? this);
     }
 
     /// <summary>

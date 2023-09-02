@@ -26,6 +26,12 @@ public static class CommandParser
         var ignoreNextValue = false;
         var endOfOptions = false;
 
+        if (!statements.Any())
+        {
+            name = string.Empty;
+            return new(name, options, values);
+        }
+
         for (int i = 0; i < statements.Length; i++)
         {
             var statement = statements[i];

@@ -18,7 +18,7 @@ public class CallCommand : ICommand
 
         CommandChecks.FileExists(full);
 
-        BatchFile.Parse(File.ReadAllLines(full)).RunBatch(shell);
+        BatchFile.Parse(File.ReadAllLines(full), shell.Dispatcher).RunBatch(shell);
         return 0;
     }
 }

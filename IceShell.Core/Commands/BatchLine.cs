@@ -9,6 +9,15 @@ using System.Collections.Generic;
 public record BatchLine
 {
     /// <summary>
+    /// Initializes a new intance of the <see cref="BatchLine"/> record.
+    /// </summary>
+    public BatchLine()
+    {
+        IsCommand = false;
+        Name = string.Empty;
+    }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BatchLine"/> record, with a parsed internal command.
     /// </summary>
     /// <param name="parsedCommand">The parsed internal command.</param>

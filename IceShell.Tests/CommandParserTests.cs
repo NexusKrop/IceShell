@@ -34,6 +34,18 @@ public class CommandParserTests
     }
 
     [Test]
+    public void ParseCommand_Empty()
+    {
+        var retVal = CommandParser.ParseSingleCommand(Array.Empty<SyntaxStatement>());
+        Assert.Multiple(() =>
+        {
+            Assert.That(retVal.Name, Is.EqualTo(string.Empty));
+            Assert.That(retVal.Options, Is.Empty);
+            Assert.That(retVal.Values, Is.Empty);
+        });
+    }
+
+    [Test]
     public void ParseCommand_OptionsOnly()
     {
         var statements = new LineParser().ParseLine("command /T:test_value /Q:\"test value\" /X");

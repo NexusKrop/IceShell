@@ -21,4 +21,13 @@ public class LineParserTests
             new("quoted value", true)
         }));
     }
+
+    [Test]
+    public void Parser_EmptyLine()
+    {
+        var parser = new LineParser();
+        var retVal = parser.ParseLine(string.Empty);
+
+        Assert.That(retVal, Is.Empty);
+    }
 }

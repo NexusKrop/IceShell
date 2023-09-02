@@ -91,6 +91,11 @@ public class CommandDispatcher
     /// <exception cref="CommandFormatException">The specified command was not found.</exception>
     public int Execute(BatchLine line, ICommandExecutor executor)
     {
+        if (line.Name == string.Empty)
+        {
+            return 0;
+        }
+
         if (line.IsCommand && line.Command != null)
         {
             return Execute(line.Command, executor);
@@ -101,7 +106,7 @@ public class CommandDispatcher
 
             if (!args.Any())
             {
-                throw new ArgumentException("Supplied empty args", nameof(line));
+                return 0;
             }
 
             var cmdName = line.Statements[0].Content;

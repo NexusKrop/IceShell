@@ -13,22 +13,22 @@ using System.Threading.Tasks;
 
 public class BatchFile : ICommandExecutor
 {
-    public BatchFile(IList<string> lines, IDictionary<string, int> labels)
+    public BatchFile(IList<BatchLine> lines, IDictionary<string, int> labels)
     {
         _lines = lines;
         _labels = labels;
     }
 
-    private readonly IList<string> _lines;
+    private readonly IList<BatchLine> _lines;
     private readonly IDictionary<string, int> _labels;
 
     public bool SupportsJump => true;
 
     public int CurrentLine { get; private set; }
 
-    public static BatchFile Parse(IEnumerable<string> lines)
+    public static BatchFile Parse(IEnumerable<string> lines, CommandDispatcher dispatcher)
     {
-        var retVal = new List<string>();
+        var retVal = new List<BatchLine>();
         var labels = new Dictionary<string, int>();
         var lineNum = 0;
 
@@ -39,7 +39,7 @@ public class BatchFile : ICommandExecutor
             // Double comments
             if (line.StartsWith("::"))
             {
-                retVal.Add(string.Empty);
+                retVal.Add(new BatchLine());
                 continue;
             }
 
@@ -47,11 +47,11 @@ public class BatchFile : ICommandExecutor
             if (line.StartsWith(':'))
             {
                 labels.Add(line[1..], lineNum);
-                retVal.Add(string.Empty);
+                retVal.Add(new BatchLine());
                 continue;
             }
 
-            retVal.Add(line);
+            retVal.Add(dispatcher.ParseLine(line));
         }
 
         return new(retVal, labels);
@@ -64,7 +64,7 @@ public class BatchFile : ICommandExecutor
             var line = _lines[CurrentLine];
             CurrentLine++;
 
-            if (string.IsNullOrWhiteSpace(line))
+            if (string.IsNullOrEmpty(line.Name))
             {
                 continue;
             }

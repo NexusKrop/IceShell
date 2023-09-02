@@ -16,6 +16,11 @@ public interface IShell : ICommandExecutor
     string Prompt { get; set; }
 
     /// <summary>
+    /// Gets the command dispatcher for this instance.
+    /// </summary>
+    CommandDispatcher Dispatcher { get; }
+
+    /// <summary>
     /// Instructs the active shell process to stop receiving new commands after the current one
     /// is complete.
     /// </summary>
@@ -28,4 +33,12 @@ public interface IShell : ICommandExecutor
     /// <param name="actualExecutor">The executor to have this instance act on behalf of. If <see langword="null"/>, this instance will execute commands on its own behalf.</param>
     /// <returns>The return code of the command.</returns>
     int Execute(string line, ICommandExecutor? actualExecutor = null);
+
+    /// <summary>
+    /// Executes an already parsed line of command.
+    /// </summary>
+    /// <param name="line">The line to execute.</param>
+    /// <param name="actualExecutor">The executor to have this instance act on behalf of. If <see langword="null"/>, this instance will execute commands on its own behalf.</param>
+    /// <returns>The return code of the command.</returns>
+    int Execute(BatchLine line, ICommandExecutor? actualExecutor = null);
 }
