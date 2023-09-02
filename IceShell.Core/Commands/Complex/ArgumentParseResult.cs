@@ -7,9 +7,9 @@ using System.Collections.Generic;
 /// <summary>
 /// Represents the parse results of a complex argument set. This class cannot be inherited.
 /// </summary>
-public sealed class ComplexArgumentParseResult
+public sealed class ArgumentParseResult
 {
-    internal ComplexArgumentParseResult()
+    internal ArgumentParseResult()
     {
     }
 
@@ -17,13 +17,13 @@ public sealed class ComplexArgumentParseResult
     public IDictionary<ComplexValueDefinition, string?> Values { get; } = new Dictionary<ComplexValueDefinition, string?>();
     public IList<string?> VariableValues { get; } = new List<string?>();
 
-    public ComplexArgumentParseResult Option(ComplexOptionDefinition option, string? value)
+    public ArgumentParseResult Option(ComplexOptionDefinition option, string? value)
     {
         Options[option] = value;
         return this;
     }
 
-    public ComplexArgumentParseResult Value(ComplexValueDefinition value, string? obj)
+    public ArgumentParseResult Value(ComplexValueDefinition value, string? obj)
     {
         Values[value] = obj;
         return this;

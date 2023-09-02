@@ -30,4 +30,7 @@
   <ItemGroup>
     <None Include="CLI\Languages\*.properties" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IceShell.Parsing\IceShell.Parsing.csproj" />
+  </ItemGroup>
 </Project>

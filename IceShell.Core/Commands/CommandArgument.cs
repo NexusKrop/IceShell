@@ -1,0 +1,102 @@
+namespace IceShell.Core.Commands;
+
+using IceShell.Core.CLI.Languages;
+using IceShell.Core.Exceptions;
+using IceShell.Parsing;
+using NexusKrop.IceShell.Core.Commands.Complex;
+using System.Linq;
+
+/// <summary>
+/// Provides model and parsing services for the modern command parsing routine.
+/// </summary>
+public class CommandArgument
+{
+    private readonly SyntaxCommand _command;
+    private readonly CommandDefinition _definition;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandArgument"/> command.
+    /// </summary>
+    /// <param name="command">The command syntax to parse.</param>
+    /// <param name="definition">The definition of the command.</param>
+    public CommandArgument(SyntaxCommand command, CommandDefinition definition)
+    {
+        _command = command;
+        _definition = definition;
+    }
+
+    public ArgumentParseResult Parse()
+    {
+        var result = new ArgumentParseResult();
+
+        if (_definition.VariableValues)
+        {
+            ParseVariableValues(result);
+        }
+        else
+        {
+            ParseStandardValues(result);
+        }
+
+        ParseOptions(result);
+
+        return result;
+    }
+
+    private void ParseOptions(ArgumentParseResult result)
+    {
+        foreach (var option in _command.Options)
+        {
+            if (!_definition.Options.TryGetValue(option.Identifier, out var optionDef))
+            {
+                throw ExceptionHelper.WithName(Languages.Get("argument_no_such_option"), option.Identifier);
+            }
+
+            if (!optionDef.HasValue && option.Value != null)
+            {
+                throw ExceptionHelper.WithName(Languages.Get("argument_value_required"), option.Identifier);
+            }
+
+            if (optionDef.HasValue && option.Value == null)
+            {
+                throw ExceptionHelper.WithName(Languages.Get("argument_option_no_value"), option.Identifier);
+            }
+
+            result.Option(optionDef, option.Value);
+        }
+    }
+
+    private void ParseVariableValues(ArgumentParseResult result)
+    {
+        foreach (var value in _command.Values)
+        {
+            result.VariableValues.Add(value.Content);
+        }
+    }
+
+    private void ParseStandardValues(ArgumentParseResult result)
+    {
+        var requiredArgCount = _definition.Values.Count(x => x.Required);
+
+        if (_command.Values.Count < requiredArgCount)
+        {
+            throw new CommandFormatException(Languages.ArgumentLowerThanCount(_command.Values.Count, requiredArgCount));
+        }
+
+        var index = 0;
+
+        foreach (var x in _command.Values)
+        {
+            // Check if too many arguments
+            if (index >= _definition.Values.Count)
+            {
+                throw new CommandFormatException(Languages.ArgumentSurpassingCount(index + 1, _definition.Values.Count));
+            }
+
+            var valueDef = _definition.Values[index];
+            result.Value(valueDef, x.Content);
+
+            index++;
+        }
+    }
+}
