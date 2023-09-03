@@ -17,7 +17,7 @@ public static class ConsoleOutput
     /// <param name="message"></param>
     public static void PrintShellError(string message)
     {
-        AnsiConsole.WriteLine($"[red]{Markup.Escape(message)}[/]");
+        AnsiConsole.MarkupLine($"[red]{Markup.Escape(message)}[/]");
     }
 
     /// <summary>
