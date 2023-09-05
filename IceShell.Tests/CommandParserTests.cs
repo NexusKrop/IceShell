@@ -1,6 +1,7 @@
 namespace IceShell.Tests;
 
 using IceShell.Parsing;
+using NexusKrop.IceCube.Util;
 
 public class CommandParserTests
 {
@@ -8,7 +9,7 @@ public class CommandParserTests
     public void ParseOption_NoValueOption()
     {
         var statement = new SyntaxStatement("/T", false);
-        var retVal = CommandParser.ParseOption(statement, null);
+        var retVal = CommandParser.ParseOption(statement, null, out _);
 
         Assert.That(retVal, Is.EqualTo(new SyntaxOption('T', null)));
     }
@@ -17,7 +18,7 @@ public class CommandParserTests
     public void ParseOption_SimpleOption()
     {
         var statement = new SyntaxStatement("/T:test_value", false);
-        var retVal = CommandParser.ParseOption(statement, null);
+        var retVal = CommandParser.ParseOption(statement, null, out _);
 
         Assert.That(retVal, Is.EqualTo(new SyntaxOption('T', "test_value")));
     }
@@ -28,9 +29,34 @@ public class CommandParserTests
         var statementFirst = new SyntaxStatement("/T:", false);
         var statementSecond = new SyntaxStatement("Test text", true);
 
-        var retVal = CommandParser.ParseOption(statementFirst, statementSecond);
+        var retVal = CommandParser.ParseOption(statementFirst, statementSecond, out _);
 
         Assert.That(retVal, Is.EqualTo(new SyntaxOption('T', "Test text")));
+    }
+
+    [Test]
+    public void ParseOption_OptionAndUnixPath()
+    {
+        var statements = new SyntaxStatement[]{
+            new SyntaxStatement("command", false),
+            new SyntaxStatement("/O", false),
+            new SyntaxStatement("/bin/bash", false) };
+
+        var retVal = CommandParser.ParseSingleCommand(statements);
+        Assert.Multiple(() =>
+        {
+            Assert.That(retVal.Name, Is.EqualTo("command"));
+
+            Assert.That(retVal.Values, Is.EqualTo(new HashSet<SyntaxStatement>()
+            {
+                new SyntaxStatement("/bin/bash", false)
+            }));
+
+            Assert.That(retVal.Options, Is.EqualTo(new HashSet<SyntaxOption>()
+            {
+                new SyntaxOption('O', null)
+            }));
+        });
     }
 
     [Test]

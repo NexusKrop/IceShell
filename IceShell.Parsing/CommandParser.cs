@@ -51,12 +51,10 @@ public static class CommandParser
             if (!endOfOptions && content == EndOfOptionsStatement)
             {
                 endOfOptions = true;
+                continue;
             }
 
-            if (statement.WasQuoted
-                || content.Length == 1
-                || endOfOptions
-                || !content.StartsWith('/'))
+            if (endOfOptions || !IsOption(statement))
             {
                 // Is value!
                 if (!ignoreNextValue)
@@ -73,10 +71,16 @@ public static class CommandParser
             if (statements.Length > i + 1)
             {
                 next = statements[i + 1];
+            }
+
+            var option = ParseOption(statement, next, out var extended);
+
+            if (extended)
+            {
                 ignoreNextValue = true;
             }
 
-            options.Add(ParseOption(statement, next));
+            options.Add(option);
         }
 
         return new(name, options, values);
@@ -87,9 +91,10 @@ public static class CommandParser
     /// </summary>
     /// <param name="statement">The first statement.</param>
     /// <param name="next">The statement directly after the first statement.</param>
+    /// <param name="extended">Whether the next value is used to parse the option. The output value of this parameter should be used to tell the parser to skip the next value, if needed.</param>
     /// <returns>The parsed option.</returns>
     /// <exception cref="FormatException">The option syntax is invalid.</exception>
-    public static SyntaxOption ParseOption(SyntaxStatement statement, SyntaxStatement? next)
+    public static SyntaxOption ParseOption(SyntaxStatement statement, SyntaxStatement? next, out bool extended)
     {
         var content = statement.Content;
         string? value;
@@ -98,6 +103,7 @@ public static class CommandParser
 
         if (content.Length == 2)
         {
+            extended = false;
             value = null;
         }
         else if (content.Length == 3 && content.EndsWith(':'))
@@ -112,13 +118,42 @@ public static class CommandParser
                 throw new FormatException(string.Format("Invalid option '{0}'. Is parsing failure?", delimiter));
             }
 
+            extended = true;
             value = next.Content;
         }
         else
         {
+            extended = false;
             value = content[3..];
         }
 
         return new(delimiter, value);
+    }
+
+    internal static bool IsOption(SyntaxStatement statement)
+    {
+        var content = statement.Content;
+
+        if (statement.WasQuoted)
+        {
+            return false;
+        }
+
+        if (content.Length < 2)
+        {
+            return false;
+        }
+
+        if (!content.StartsWith('/'))
+        {
+            return false;
+        }
+
+        if (content.Length > 2 && content[2] != ':')
+        {
+            return false;
+        }
+
+        return true;
     }
 }

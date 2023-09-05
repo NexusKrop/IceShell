@@ -1,9 +1,10 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Reflection.PortableExecutable;
+using System.Runtime.Versioning;
 
 /// <summary>
 /// Provides utilities for file formats and types.
@@ -15,6 +16,8 @@ public static class FileUtil
     /// </summary>
     /// <param name="file">The file.</param>
     /// <returns><see langword="true" /> if the specified file is an executable; otherwise, <see langword="false"/>. </returns>
+    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("linux")]
     public static bool IsExecutable(string file)
     {
         if (OperatingSystem.IsWindows())
