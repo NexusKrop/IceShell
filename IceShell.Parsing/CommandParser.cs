@@ -48,7 +48,9 @@ public static class CommandParser
                 continue;
             }
 
-            if (!endOfOptions && content == EndOfOptionsStatement)
+            if (!endOfOptions
+                && content == EndOfOptionsStatement
+                && !statement.WasQuoted)
             {
                 endOfOptions = true;
                 continue;
