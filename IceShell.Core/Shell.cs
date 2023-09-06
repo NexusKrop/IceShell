@@ -130,7 +130,7 @@ public class Shell : IShell
 
         args?.ForEach(startInfo.ArgumentList.Add);
 
-        if (!FileUtil.IsExecutable(actual))
+        if (!FileUtility.IsExecutable(actual))
         {
             throw new CommandFormatException(string.Format(Languages.Get("shell_not_executable"), actual));
         }

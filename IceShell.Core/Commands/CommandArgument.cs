@@ -1,3 +1,6 @@
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
 namespace IceShell.Core.Commands;
 
 using IceShell.Core.CLI.Languages;
@@ -26,6 +29,10 @@ public class CommandArgument
         _definition = definition;
     }
 
+    /// <summary>
+    /// Parses all value and option arguments.
+    /// </summary>
+    /// <returns>The parse result.</returns>
     public ArgumentParseResult Parse()
     {
         var result = new ArgumentParseResult();

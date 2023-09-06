@@ -10,16 +10,16 @@ An alternative, cross-platform shell written in C#, and inspired by DOS.
 
 ## Installation
 
-### Stable Binaries
+### Release builds
 
-Stable binaries are _not yet available_ in this stage of development. Once they are available, they
-can be seen in [the releases page](https://github.com/NexusKrop/IceShell/releases).
+Releases can be found at [the releases page](https://github.com/NexusKrop/IceShell/releases).
 
-### CI Binaries
+### Development builds
 
-CI build binaries can be found at [the Actions page](https://github.com/NexusKrop/IceShell/actions). Click the latest workflow run and scroll down, you'll see a `build-bin` artifact available for download.
+Development builds can be found at [the Actions page](https://github.com/NexusKrop/IceShell/actions). Click the latest workflow run and scroll down, you'll see a `build-bin` artifact available for download.
 
-- Windows: To run, extract and run `dotnet iceshell.dll`.
+- Windows: Extract and run `dotnet iceshell.dll` in the application folder.
+- Linux: Extract and run `.\iceshell` in the application folder.
 
 ### Build from Source
 
@@ -27,13 +27,13 @@ See [BUILDING](BUILDING.md) file.
 
 ## Contributing
 
-**Starting from 2023/8/12 +08:00, All dependencies, referenced packages, assemblies, projects must conform to NexusKrop [Dependency Guidelines](https://github.com/NexusKrop/.github/blob/main/docs/dependencies.md). Any contribution introducing dependencies (or newer/updated versions of existing dependencies) not conforming to any of the above will be refused, and PR/Issue closed as not planned, with or without explanation.**
-
 For code contributions, pull requests are welcome. For major changes, please open an issue first to discuss what
 you like to change.
 
-You can work on issues that have have the tag `Status: Open` or `Status: Help wanted`. See [Issues](https://github.com/NexusKrop/IceShell/issues).
+You can work on issues that have the tag `Status: Open` or `Status: Help wanted`. See [Issues](https://github.com/NexusKrop/IceShell/issues).
 You may also report bugs or suggest features through the Issues page.
+
+Check the [Contributing Guide](CONTRIBUTING.md) for more information.
 
 ## License
 

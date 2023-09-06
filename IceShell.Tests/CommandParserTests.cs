@@ -1,3 +1,6 @@
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
 namespace IceShell.Tests;
 
 using IceShell.Parsing;

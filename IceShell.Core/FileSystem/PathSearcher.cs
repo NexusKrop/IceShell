@@ -5,9 +5,11 @@ namespace NexusKrop.IceShell.Core.FileSystem;
 
 using global::IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.CLI;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Provides utilities for a custom path system.
@@ -37,7 +39,7 @@ public static class PathSearcher
             // Doing so will cause the shell cannot find anything in PATH because
             // there was no PATH.
 
-            ConsoleOutput.WriteLineColour(Languages.Get("shell_no_path"), ConsoleColor.Yellow);
+            AnsiConsole.MarkupLineInterpolated(FormattableStringFactory.Create("<red>{0}</red>", Languages.Get("shell_no_path")));
             Console.WriteLine();
 
             // 2023/08/17, WithLithum - not sure what I was doing here but
@@ -89,7 +91,12 @@ public static class PathSearcher
         }
     }
 
-    public static void CheckFileName(string path)
+    /// <summary>
+    /// Throws <see cref="FormatException"/> if the specified path is not a valid file name in shell path format.
+    /// </summary>
+    /// <param name="path">The path to check</param>
+    /// <exception cref="FormatException">The specified path is invalid.</exception>
+    public static void EnsureFileName(string path)
     {
         CheckPath(path);
 
@@ -198,7 +205,7 @@ public static class PathSearcher
     /// <returns>The first executable found.</returns>
     public static string? SearchExecutable(string name)
     {
-        CheckFileName(name);
+        EnsureFileName(name);
 
         foreach (var path in PATHS)
         {
@@ -209,7 +216,7 @@ public static class PathSearcher
 
             var possible = GetSystemExecutableName(Path.Combine(path, name));
 
-            if (!File.Exists(possible) || !FileUtil.IsExecutable(possible))
+            if (!File.Exists(possible) || !FileUtility.IsExecutable(possible))
             {
                 continue;
             }

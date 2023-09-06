@@ -20,7 +20,7 @@ using System.Reflection;
 using System.Runtime.Versioning;
 
 /// <summary>
-/// Provides services for the registraton and lookup for the registered commands.
+/// Provides services for the registration and lookup for the registered commands.
 /// </summary>
 public class CommandManager
 {
@@ -84,13 +84,13 @@ public class CommandManager
 
         foreach (var command in _complexCommands.Keys)
         {
-            if (begin == command)
+            if (command.Equals(begin))
             {
                 list.Add(command);
                 break;
             }
 
-            if (!command.Equals(begin) && command.StartsWith(begin))
+            if (command.StartsWith(begin))
             {
                 list.Add(command);
             }
@@ -162,13 +162,11 @@ public class CommandManager
 
         if (attributes.Length != 1)
         {
-            throw new ArgumentException(Languages.FormatMessage("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName), nameof(type));
+            throw new ArgumentException(Languages.FormatMessage("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName ?? type.Name), nameof(type));
         }
 
         // Step 2: Search platform attributes
-        var platformAttr = type.GetCustomAttributes(typeof(SupportedOSPlatformAttribute), false);
-
-        foreach (var attr in platformAttr)
+        foreach (var attr in type.GetCustomAttributes(typeof(SupportedOSPlatformAttribute), false))
         {
             if (attr is SupportedOSPlatformAttribute os)
             {
