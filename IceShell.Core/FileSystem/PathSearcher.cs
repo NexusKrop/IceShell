@@ -15,7 +15,7 @@ using System.Collections.Immutable;
 public static class PathSearcher
 {
     /// <summary>
-    /// The shell path seperator.
+    /// The shell path separator.
     /// </summary>
     public const char SHELL_SEPARATOR = '\\';
 

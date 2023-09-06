@@ -5,6 +5,7 @@ using IceShell.Core.Exceptions;
 using IceShell.Parsing;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System.Linq;
+using System.Text;
 
 /// <summary>
 /// Provides model and parsing services for the modern command parsing routine.
@@ -84,19 +85,56 @@ public class CommandArgument
         }
 
         var index = 0;
+        var startGreedy = false;
 
         foreach (var x in _command.Values)
         {
             // Check if too many arguments
-            if (index >= _definition.Values.Count)
+            if (!_definition.GreedyString && index >= _definition.Values.Count)
             {
                 throw new CommandFormatException(Languages.ArgumentSurpassingCount(index + 1, _definition.Values.Count));
             }
 
-            var valueDef = _definition.Values[index];
-            result.Value(valueDef, x.Content);
+            if (_definition.GreedyString && index == _definition.Values.Count - 1)
+            {
+                startGreedy = true;
+                break;
+            }
+            else
+            {
+                var valueDef = _definition.Values[index];
+                result.Value(valueDef, x.Content);
 
-            index++;
+                index++;
+            }
+        }
+
+        if (startGreedy)
+        {
+            var sb = new StringBuilder();
+            var first = true;
+            var skipId = 0;
+
+            foreach (var value in _command.Values)
+            {
+                if (skipId < index)
+                {
+                    skipId++;
+                    continue;
+                }
+
+                if (!first)
+                {
+                    sb.Append(' ');
+                }
+
+                first = false;
+
+                sb.Append(value.Content);
+            }
+
+            var valueDef = _definition.Values[index];
+            result.Value(valueDef, sb.ToString());
         }
     }
 }

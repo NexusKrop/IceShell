@@ -21,7 +21,7 @@ public static class CommandParser
     public static SyntaxCommand ParseSingleCommand(SyntaxStatement[] statements)
     {
         var options = new HashSet<SyntaxOption>();
-        var values = new HashSet<SyntaxStatement>();
+        var values = new List<SyntaxStatement>();
         var name = "<pending>";
         var ignoreNextValue = false;
         var endOfOptions = false;

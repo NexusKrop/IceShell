@@ -1,3 +1,10 @@
+## Spell Checker
+
+[*]
+# VSSPELL: Spell checker settings for all files
+vsspell_section_id = 9f07c577adcd4fd7a93a42a503828225
+vsspell_dictionary_languages_9f07c577adcd4fd7a93a42a503828225=en-GB
+
 [*.cs]
 charset = utf-8
 csharp_using_directive_placement = inside_namespace:silent

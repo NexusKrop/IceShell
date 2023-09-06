@@ -12,7 +12,7 @@ public readonly record struct SyntaxCommand
     /// <param name="name">The name of the command.</param>
     /// <param name="options">The list of options.</param>
     /// <param name="values">The list of values.</param>
-    public SyntaxCommand(string name, ICollection<SyntaxOption> options, ICollection<SyntaxStatement> values)
+    public SyntaxCommand(string name, ICollection<SyntaxOption> options, IList<SyntaxStatement> values)
     {
         Name = name;
         Options = options;
@@ -32,5 +32,5 @@ public readonly record struct SyntaxCommand
     /// <summary>
     /// Gets the list of users that were specified by the user.
     /// </summary>
-    public ICollection<SyntaxStatement> Values { get; }
+    public IList<SyntaxStatement> Values { get; }
 }
