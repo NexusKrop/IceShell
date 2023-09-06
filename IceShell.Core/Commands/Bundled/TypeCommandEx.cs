@@ -7,6 +7,7 @@ using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using System;
 
 /// <summary>
 /// Defines a command that prints out the contents of a file.
@@ -20,12 +21,42 @@ public class TypeCommandEx : ICommand
     [Value("file", position: 0)]
     public string? ArgFile { get; set; }
 
+    /// <summary>
+    /// Whether to display the file in a streamed fashion.
+    /// </summary>
+    [Option('S', false)]
+    public bool Streamed { get; set; }
+
     /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor)
     {
         CommandChecks.FileExists(ArgFile!);
 
-        System.Console.WriteLine(File.ReadAllText(ArgFile!));
+        if (!Streamed)
+        {
+            Console.WriteLine(File.ReadAllText(ArgFile!));
+        }
+        else
+        {
+            ExecuteStreamed(ArgFile!);
+        }
         return 0;
+    }
+
+    private static void ExecuteStreamed(string file)
+    {
+        using var stream = new StreamReader(file);
+
+        try
+        {
+            while (!stream.EndOfStream)
+            {
+                Console.Out.WriteLine(stream.ReadLine());
+            }
+        }
+        catch (EndOfStreamException)
+        {
+            // End of stream, do nothing.
+        }
     }
 }
