@@ -4,10 +4,34 @@
 namespace IceShell.Tests;
 
 using IceShell.Parsing;
-using NexusKrop.IceCube.Util;
 
 public class CommandParserTests
 {
+    [Test]
+    public void ParseCompound_Simple()
+    {
+        var statements = SyntaxStatement.Of("test", "argument", ">", "test1", "arg2");
+
+        var parsed = CommandParser.ParseCompound(statements);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(parsed.Segments, Has.Count.EqualTo(2));
+
+            Assert.That(parsed.Segments[0].NextAction, Is.EqualTo(SyntaxNextAction.Redirect));
+            Assert.That(parsed.Segments[0].Command?.Name, Is.EqualTo("test"));
+            Assert.That(parsed.Segments[0].Command?.Options, Is.Empty);
+            Assert.That(parsed.Segments[0].Command?.Values, Has.Count.EqualTo(1));
+            Assert.That(parsed.Segments[0].Command?.Values[0].Content, Is.EqualTo("argument"));
+
+            Assert.That(parsed.Segments[1].NextAction, Is.EqualTo(SyntaxNextAction.None));
+            Assert.That(parsed.Segments[1].Command?.Name, Is.EqualTo("test1"));
+            Assert.That(parsed.Segments[1].Command?.Options, Is.Empty);
+            Assert.That(parsed.Segments[1].Command?.Values, Has.Count.EqualTo(1));
+            Assert.That(parsed.Segments[1].Command?.Values[0].Content, Is.EqualTo("arg2"));
+        });
+    }
+
     [Test]
     public void ParseOption_NoValueOption()
     {

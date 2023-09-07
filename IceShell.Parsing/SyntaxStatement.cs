@@ -28,4 +28,21 @@ public record SyntaxStatement
     /// Gets or sets whether this statement was quoted.
     /// </summary>
     public bool WasQuoted { get; }
+
+    /// <summary>
+    /// Creates a list of unquoted statements with the specified contents.
+    /// </summary>
+    /// <param name="contents">The contents.</param>
+    /// <returns>A new list of unquoted statements.</returns>
+    public static IReadOnlyList<SyntaxStatement> Of(params string[] contents)
+    {
+        var list = new List<SyntaxStatement>();
+
+        foreach (var item in contents)
+        {
+            list.Add(new(item, false));
+        }
+
+        return list.AsReadOnly();
+    }
 }

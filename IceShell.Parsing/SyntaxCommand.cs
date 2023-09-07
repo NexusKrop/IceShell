@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Represents a command specified by the user.
 /// </summary>
-public readonly record struct SyntaxCommand
+public record SyntaxCommand
 {
     /// <summary>
     /// Initializes a new instance of <see cref="SyntaxCommand"/> class.

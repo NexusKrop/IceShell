@@ -15,13 +15,37 @@ public static class CommandParser
     /// </summary>
     public const string EndOfOptionsStatement = "--";
 
+    public static SyntaxCompound ParseCompound(IReadOnlyList<SyntaxStatement> statements)
+    {
+        var thisCompound = new List<SyntaxSegment>();
+        var thisSegment = new List<SyntaxStatement>();
+
+        foreach (var statement in statements)
+        {
+            if (statement.Content == ">")
+            {
+                thisCompound.Add(new SyntaxSegment(ParseSingleCommand(thisSegment), SyntaxNextAction.Redirect));
+
+                thisSegment.Clear();
+                continue;
+            }
+
+            thisSegment.Add(statement);
+        }
+
+        thisCompound.Add(new SyntaxSegment(ParseSingleCommand(thisSegment),
+                    SyntaxNextAction.None));
+
+        return new(thisCompound.AsReadOnly());
+    }
+
     /// <summary>
     /// Parses a single command.
     /// </summary>
     /// <param name="statements">The list of statements that constitutes of a command.</param>
     /// <returns>The parsed command.</returns>
     /// <exception cref="FormatException">The command syntax is invalid.</exception>
-    public static SyntaxCommand ParseSingleCommand(SyntaxStatement[] statements)
+    public static SyntaxCommand ParseSingleCommand(IList<SyntaxStatement> statements)
     {
         var options = new HashSet<SyntaxOption>();
         var values = new List<SyntaxStatement>();
@@ -35,7 +59,7 @@ public static class CommandParser
             return new(name, options, values);
         }
 
-        for (int i = 0; i < statements.Length; i++)
+        for (int i = 0; i < statements.Count; i++)
         {
             var statement = statements[i];
             var content = statement.Content;
@@ -73,7 +97,7 @@ public static class CommandParser
 
             SyntaxStatement? next = null;
 
-            if (statements.Length > i + 1)
+            if (statements.Count > i + 1)
             {
                 next = statements[i + 1];
             }
