@@ -26,7 +26,7 @@ public class EchoCommandEx : ICommand
     public string? Message { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         Console.WriteLine(Message ?? Environment.NewLine);
         return 0;

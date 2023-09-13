@@ -24,7 +24,7 @@ public class PromptCommandEx : ICommand
     public string? Prompt { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         var prompt = Prompt;
 

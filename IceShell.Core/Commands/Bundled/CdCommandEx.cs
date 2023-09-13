@@ -30,7 +30,7 @@ public class CdCommandEx : ICommand
     public string? Destination { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         if (string.IsNullOrWhiteSpace(Destination))
         {

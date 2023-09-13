@@ -17,7 +17,7 @@ using System;
 /// </summary>
 [ComplexCommand("mkdir", "Creates a directory, or a tree of directories.")]
 [CommandAlias("md")]
-public class MkdirCommandEx : ICommand
+public class MakeDirectoryCommand : ICommand
 {
     /// <summary>
     /// Gets or sets the name of the directory or that path syntax that represents the directory tree to create.
@@ -26,7 +26,7 @@ public class MkdirCommandEx : ICommand
     public string? DirectoryName { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         var dir = PathSearcher.ShellToSystem(DirectoryName);
 

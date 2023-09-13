@@ -18,7 +18,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// </summary>
 [ComplexCommand("move", Description = "Move one or more files.")]
 [VariableValue]
-public class MoveCommandEx : DestinationFileCommandBase, ICommand
+public class MoveCommandEx : DestinationFileCommandBase
 {
     /// <inheritdoc />
     public override void DoOperation(string source, string destination)

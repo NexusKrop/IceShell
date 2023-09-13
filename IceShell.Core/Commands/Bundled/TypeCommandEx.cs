@@ -28,7 +28,7 @@ public class TypeCommandEx : ICommand
     public bool Streamed { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         CommandChecks.FileExists(ArgFile!);
 

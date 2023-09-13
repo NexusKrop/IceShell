@@ -25,7 +25,7 @@ public class HelpCommandEx : ICommand
     public string? CommandName { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         var commandName = CommandName;
 

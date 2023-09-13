@@ -39,7 +39,7 @@ public class CommandDispatcher
     /// </summary>
     /// <param name="line">The line to parse.</param>
     /// <returns>The parsed BatchLine.</returns>
-    public BatchLine ParseLine(string line)
+    public static BatchLine ParseLine(string line)
     {
         var statements = new LineParser().ParseLine(line);
         // If there is no such command, the batch line is parsed as calling for an executable.
@@ -63,25 +63,6 @@ public class CommandDispatcher
     }
 
     /// <summary>
-    /// Parses a command string to a single parsed command.
-    /// </summary>
-    /// <param name="commandName">The name of the command to parse.</param>
-    /// <param name="parser">The current command parser. Must be located after the name of the command.</param>
-    /// <returns>The parsed command ready to execute.</returns>
-    /// <exception cref="CommandFormatException">The command format is invalid.</exception>
-    [Obsolete("Use ParseLine instead.")]
-    public static ParsedCommand Parse(string commandName, OldCommandParser parser)
-    {
-        var type = Shell.CommandManager.GetDefinition(commandName)
-            ?? throw new CommandFormatException(Languages.UnknownCommand(commandName));
-
-        var args = new ComplexArgument(parser, type.Definition);
-
-        var parsedArgs = args.Parse();
-        return new(parsedArgs, type);
-    }
-
-    /// <summary>
     /// Executes the specified batch line.
     /// </summary>
     /// <param name="line">The line to execute.</param>
@@ -91,14 +72,14 @@ public class CommandDispatcher
     /// <exception cref="CommandFormatException">The specified command was not found.</exception>
     public int Execute(BatchLine line, ICommandExecutor executor)
     {
-        if (line.Name == string.Empty)
+        if (string.IsNullOrWhiteSpace(line.Name))
         {
             return 0;
         }
 
         if (line.IsCommand && line.Command != null)
         {
-            return Execute(line.Command, executor);
+            return Execute(line.Command, executor, new(null, null));
         }
         else if (line.Statements != null)
         {
@@ -145,8 +126,9 @@ public class CommandDispatcher
     /// </summary>
     /// <param name="command">The command to execute.</param>
     /// <param name="executor">The command executor to act on behalf of.</param>
+    /// <param name="context">The context.</param>
     /// <returns>The exit code of the command.</returns>
-    public int Execute(ParsedCommand command, ICommandExecutor executor)
+    public int Execute(ParsedCommand command, ICommandExecutor executor, ExecutionContext context)
     {
         var instance = (ICommand)Activator.CreateInstance(command.Command.Type)!;
 
@@ -186,6 +168,6 @@ public class CommandDispatcher
             value.Property.SetValue(instance, obj);
         }
 
-        return instance.Execute(_shell, executor);
+        return instance.Execute(_shell, executor, context);
     }
 }

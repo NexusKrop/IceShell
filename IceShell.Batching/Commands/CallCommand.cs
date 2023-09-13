@@ -15,7 +15,7 @@ public class CallCommand : ICommand
     [Value("file", true, 0)]
     public string? FileName { get; set; }
 
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         var full = Path.GetFullPath(FileName!);
 

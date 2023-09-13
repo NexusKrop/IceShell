@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public record BatchLine
 {
     /// <summary>
-    /// Initializes a new intance of the <see cref="BatchLine"/> record.
+    /// Initializes a new instance of the <see cref="BatchLine"/> record.
     /// </summary>
     public BatchLine()
     {

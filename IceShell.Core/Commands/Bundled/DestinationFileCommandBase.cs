@@ -42,14 +42,8 @@ public abstract class DestinationFileCommandBase : ICommand
     /// <param name="destination">The calculated destination of the specified file.</param>
     public abstract void DoOperation(string source, string destination);
 
-    /// <summary>
-    /// Executes this command.
-    /// </summary>
-    /// <param name="shell">The shell that the executor have executed this command with.</param>
-    /// <param name="executor">The executor that have executed this command.</param>
-    /// <returns>The return code. If <c>0</c>, this command was successful.</returns>
-    /// <exception cref="CommandFormatException">Invalid arguments.</exception>
-    public int Execute(IShell shell, ICommandExecutor executor)
+    /// <inheritdoc />
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         string? destination = null;
 

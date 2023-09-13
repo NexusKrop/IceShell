@@ -16,7 +16,7 @@ using System;
 /// Defines a command that creates an empty file.
 /// </summary>
 [ComplexCommand("mkfile")]
-public class MkfileCommandEx : ICommand
+public class MakeFileCommand : ICommand
 {
     /// <summary>
     /// Gets or sets the name of the file to create.
@@ -25,7 +25,7 @@ public class MkfileCommandEx : ICommand
     public string? Name { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         var actual = PathSearcher.ShellToSystem(Name);
 

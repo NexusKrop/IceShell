@@ -22,7 +22,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// </summary>
 [ComplexCommand("del", "Deletes one or more files.")]
 [VariableValue]
-public class DelCommandEx : ICommand
+public class DeleteFileCommandEx : ICommand
 {
     /// <summary>
     /// Gets or sets the list of the targets.
@@ -54,9 +54,9 @@ public class DelCommandEx : ICommand
     }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        if (Targets == null || !Targets.Any())
+        if (Targets?.Any() != true)
         {
             throw new CommandFormatException(Languages.RequiresValue(0));
         }

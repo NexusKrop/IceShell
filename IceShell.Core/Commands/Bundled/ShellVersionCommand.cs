@@ -15,7 +15,7 @@ using System.Reflection;
 /// Defines a command that shows the version of the operating system and the shell program.
 /// </summary>
 [ComplexCommand("ver", "Displays the IceShell version.")]
-public class VerCommand : ICommand
+public class ShellVersionCommand : ICommand
 {
 #if DEBUG
     private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "unknown";
@@ -24,7 +24,7 @@ public class VerCommand : ICommand
 #endif
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         Console.WriteLine(Languages.Get("ver_line_0"), PRODUCT_VERSION);
         Console.WriteLine(Languages.Get("ver_line_1"), Environment.OSVersion.VersionString);

@@ -54,7 +54,7 @@ public class BatchFile : ICommandExecutor
                 continue;
             }
 
-            retVal.Add(dispatcher.ParseLine(line));
+            retVal.Add(CommandDispatcher.ParseLine(line));
         }
 
         return new(retVal, labels);

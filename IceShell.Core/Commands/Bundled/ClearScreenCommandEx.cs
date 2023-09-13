@@ -13,10 +13,10 @@ using System;
 /// </summary>
 /// <seealso cref="Console.Clear()"/>
 [ComplexCommand("cls", "Clears the screen.")]
-public class ClsCommandEx : ICommand
+public class ClearScreenCommandEx : ICommand
 {
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         Console.Clear();
         return 0;

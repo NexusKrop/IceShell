@@ -16,7 +16,7 @@ public class GotoCommand : ICommand
     [Value("label", true, 0)]
     public string? Label { get; set; }
 
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         if (!executor.SupportsJump)
         {

@@ -24,7 +24,7 @@ public class StartCommandEx : ICommand
     public string? Target { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         if (Target == null)
         {

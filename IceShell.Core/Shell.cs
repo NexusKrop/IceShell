@@ -107,40 +107,6 @@ public class Shell : IShell
     }
 
     /// <summary>
-    /// Executes an executable in the current folder, and if success, waits for it to exit.
-    /// </summary>
-    /// <param name="fileName">The name of the file.</param>
-    /// <param name="args">The arguments.</param>
-    /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
-    /// <exception cref="CommandFormatException">The specified file was not executable.</exception>
-    [Obsolete("Shell disk execution is no longer supported. Use CommandDispatcher to execute instead.")]
-    public bool ExecuteOnDisk(string fileName, string[]? args)
-    {
-        var actual = PathSearcher.GetSystemExecutableName(Path.Combine(Environment.CurrentDirectory, fileName));
-
-        if (!File.Exists(actual))
-        {
-            return false;
-        }
-
-        var startInfo = new ProcessStartInfo(actual)
-        {
-            WorkingDirectory = Environment.CurrentDirectory
-        };
-
-        args?.ForEach(startInfo.ArgumentList.Add);
-
-        if (!FileUtility.IsExecutable(actual))
-        {
-            throw new CommandFormatException(string.Format(Languages.Get("shell_not_executable"), actual));
-        }
-
-        Process.Start(startInfo)?.WaitForExit();
-
-        return true;
-    }
-
-    /// <summary>
     /// Executes an executable located in <c>PATH</c>.
     /// </summary>
     /// <param name="fileName">The name of the executable. Subdirectories are prohibited.</param>
@@ -176,7 +142,7 @@ public class Shell : IShell
     {
         try
         {
-            var batchLine = _dispatcher.ParseLine(line);
+            var batchLine = CommandDispatcher.ParseLine(line);
 
             _dispatcher.Execute(batchLine, this);
         }

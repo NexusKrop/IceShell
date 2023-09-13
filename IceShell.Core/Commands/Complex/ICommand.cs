@@ -26,6 +26,7 @@ public interface ICommand
     /// </summary>
     /// <param name="shell">The shell that this command was executed with.</param>
     /// <param name="executor">The executor that this command was executed by.</param>
+    /// <param name="context">The execution context. The instance provided may not be unique for this execution event.</param>
     /// <returns>The execution result code. If <c>0</c>, the command is considered success.</returns>
-    int Execute(IShell shell, ICommandExecutor executor);
+    int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context);
 }

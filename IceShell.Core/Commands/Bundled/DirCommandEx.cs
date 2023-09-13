@@ -124,6 +124,30 @@ internal class DirCommandEx : ICommand
         }
     }
 
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    {
+        // All chunked out ones need fix
+
+        if (!string.IsNullOrWhiteSpace(TargetDir) && Directory.Exists(TargetDir))
+        {
+            _dir = TargetDir;
+        }
+
+        if (!string.IsNullOrWhiteSpace(DateFormat))
+        {
+            _dateFormat = DateFormat;
+        }
+
+        if (!string.IsNullOrWhiteSpace(TimeFormat))
+        {
+            _timeFormat = TimeFormat;
+        }
+
+        Execute(RevealHidden);
+
+        return 0;
+    }
+
     private void Execute(bool revealHidden)
     {
         // Print DOS-like table title, sans the volume information (too complex).
@@ -210,28 +234,4 @@ internal class DirCommandEx : ICommand
 
     [Option('h', false)]
     public bool RevealHidden { get; set; }
-
-    public int Execute(IShell shell, ICommandExecutor executor)
-    {
-        // All chunked out ones need fix
-
-        if (!string.IsNullOrWhiteSpace(TargetDir) && Directory.Exists(TargetDir))
-        {
-            _dir = TargetDir;
-        }
-
-        if (!string.IsNullOrWhiteSpace(DateFormat))
-        {
-            _dateFormat = DateFormat;
-        }
-
-        if (!string.IsNullOrWhiteSpace(TimeFormat))
-        {
-            _timeFormat = TimeFormat;
-        }
-
-        Execute(RevealHidden);
-
-        return 0;
-    }
 }

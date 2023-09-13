@@ -39,12 +39,12 @@ public class CommandManager
             RegisterComplex(typeof(ExitCommandEx));
             RegisterComplex(typeof(CdCommandEx));
             RegisterComplex(typeof(CopyCommandEx));
-            RegisterComplex(typeof(VerCommand));
+            RegisterComplex(typeof(ShellVersionCommand));
             RegisterComplex(typeof(StartCommandEx));
-            RegisterComplex(typeof(ClsCommandEx));
-            RegisterComplex(typeof(MkdirCommandEx));
-            RegisterComplex(typeof(DelCommandEx));
-            RegisterComplex(typeof(MkfileCommandEx));
+            RegisterComplex(typeof(ClearScreenCommandEx));
+            RegisterComplex(typeof(MakeDirectoryCommand));
+            RegisterComplex(typeof(DeleteFileCommandEx));
+            RegisterComplex(typeof(MakeFileCommand));
             RegisterComplex(typeof(MoveCommandEx));
             RegisterComplex(typeof(HelpCommandEx));
             RegisterComplex(typeof(TypeCommandEx));
