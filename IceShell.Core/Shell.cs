@@ -24,13 +24,14 @@ using System.Diagnostics;
 /// </summary>
 public class Shell : IShell
 {
+    private bool _exit;
+
     /// <summary>
     /// The default prompt string of the interactive shell.
     /// </summary>
     public const string DefaultPrompt = "%P%G ";
 
     private readonly ShellSettings _settings;
-    private readonly CommandDispatcher _dispatcher;
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
 
@@ -38,7 +39,7 @@ public class Shell : IShell
     public string Prompt { get; set; }
 
     /// <inheritdoc />
-    public CommandDispatcher Dispatcher => _dispatcher;
+    public CommandDispatcher Dispatcher { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Shell"/> class, with the default settings.
@@ -55,7 +56,7 @@ public class Shell : IShell
     {
         _settings = settings;
         Prompt = DefaultPrompt;
-        _dispatcher = new(this);
+        Dispatcher = new(this);
     }
 
     // TODO replace those global stuff with interfaces and instance properties
@@ -69,13 +70,6 @@ public class Shell : IShell
     /// Gets the global <see cref="ModuleManager"/>.
     /// </summary>
     public static ModuleManager ModuleManager { get; } = new();
-
-    // TODO exit via IShell not this
-    /// <summary>
-    /// Gets or sets whether all shells will exit after executing their next command, or
-    /// evaluated their next user input.
-    /// </summary>
-    public static bool ExitShell { get; set; }
 
     /// <inheritdoc />
     public bool SupportsJump => false;
@@ -95,15 +89,7 @@ public class Shell : IShell
     /// </summary>
     public void Quit()
     {
-        Shell.QuitStatic();
-    }
-
-    /// <summary>
-    /// Tasks all shell instances to exit after executing their next (or last, if currently executing) command or user input.
-    /// </summary>
-    public static void QuitStatic()
-    {
-        ExitShell = true;
+        _exit = true;
     }
 
     /// <summary>
@@ -144,7 +130,7 @@ public class Shell : IShell
         {
             var batchLine = CommandDispatcher.ParseLine(line);
 
-            _dispatcher.Execute(batchLine, this);
+            Dispatcher.Execute(batchLine, this);
         }
         catch (CommandFormatException ex)
         {
@@ -162,7 +148,7 @@ public class Shell : IShell
     /// <inheritdoc />
     public int Execute(BatchLine line, ICommandExecutor? actualExecutor = null)
     {
-        return _dispatcher.Execute(line, actualExecutor ?? this);
+        return Dispatcher.Execute(line, actualExecutor ?? this);
     }
 
     /// <summary>
@@ -188,7 +174,7 @@ public class Shell : IShell
         // Add an empty line afterward
         System.Console.WriteLine();
 
-        while (!ExitShell)
+        while (!_exit)
         {
             var prompt = this.Prompt.Replace("%P", PathSearcher.SystemToShell(Environment.CurrentDirectory), true, null)
                 .Replace("%G", ">", true, null)
