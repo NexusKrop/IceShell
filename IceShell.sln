@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev Settings", "Dev Setting
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceShell.Parsing", "IceShell.Parsing\IceShell.Parsing.csproj", "{7401BF8E-9BEF-456C-9C31-AAA91B9DD978}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "build\Build.csproj", "{F75BC986-A349-46CA-92F6-A70DA34EF299}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{7401BF8E-9BEF-456C-9C31-AAA91B9DD978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7401BF8E-9BEF-456C-9C31-AAA91B9DD978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7401BF8E-9BEF-456C-9C31-AAA91B9DD978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F75BC986-A349-46CA-92F6-A70DA34EF299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F75BC986-A349-46CA-92F6-A70DA34EF299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F75BC986-A349-46CA-92F6-A70DA34EF299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F75BC986-A349-46CA-92F6-A70DA34EF299}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
