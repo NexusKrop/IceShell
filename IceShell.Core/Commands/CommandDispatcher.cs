@@ -39,27 +39,72 @@ public class CommandDispatcher
     /// </summary>
     /// <param name="line">The line to parse.</param>
     /// <returns>The parsed BatchLine.</returns>
-    public static BatchLine ParseLine(string line)
+    public static BatchLineCompound ParseLine(string line)
     {
         var statements = new LineParser().ParseLine(line);
-        // If there is no such command, the batch line is parsed as calling for an executable.
-        var cmdName = statements[0].Content;
-        var definition = Shell.CommandManager.GetDefinition(cmdName);
 
-        // If user specifies '.' or directory separator, this is a hard relative path.
-        if (cmdName.StartsWith('.') || cmdName.StartsWith(Path.DirectorySeparatorChar) || cmdName.StartsWith('\\')
-            || definition == null)
+        var rawCompound = NewCommandParser.ParseCompound(statements, Shell.CommandManager.HasDefinition);
+
+        var sysCompound = new List<BatchLine>();
+
+        foreach (var state in rawCompound)
         {
-            return new BatchLine(statements);
+            if (state.Type == SegmentType.File)
+            {
+                sysCompound.Add(new BatchLine(new List<SyntaxStatement>(state.FileStatements!), state.NextAction));
+            }
+            else if (state.Type == SegmentType.Command)
+            {
+                var definition = Shell.CommandManager.GetDefinition(state.Command!.Name)
+                    ?? throw new InvalidOperationException("Check parser, invalid command");
+
+                var argument = new CommandArgument(state.Command!, definition.Definition);
+                var result = argument.Parse();
+
+                var cmdInfo = new ParsedCommand(result, definition);
+
+                sysCompound.Add(new BatchLine(cmdInfo, state.Command!.Name, state.NextAction));
+            }
         }
 
-        var parsed = NewCommandParser.ParseSingleCommand(statements);
+        return new(sysCompound);
+    }
 
-        var argument = new CommandArgument(parsed, definition.Definition);
-        var result = argument.Parse();
+    /// <summary>
+    /// Executes a batch line compound.
+    /// </summary>
+    /// <param name="compound">The compound to execute..</param>
+    /// <param name="executor">Th executor to act on behalf of.</param>
+    /// <returns>The return code of the commands. Returns zero if success.</returns>
+    /// <exception cref="CommandFormatException">Action never ends, or other kinds of command failures.</exception>
+    public int Execute(BatchLineCompound compound, ICommandExecutor executor)
+    {
+        var inAction = false;
+        var nextAction = SyntaxNextAction.None;
 
-        var cmdInfo = new ParsedCommand(result, definition);
-        return new BatchLine(cmdInfo, cmdName);
+        foreach (var line in compound)
+        {
+            // TODO implement actions
+
+            var exitCode = Execute(line, executor);
+
+            if (exitCode != 0 && inAction)
+            {
+                // Command failure
+                return exitCode;
+            }
+
+            nextAction = line.NextAction;
+            inAction = nextAction != SyntaxNextAction.None;
+        }
+
+        if (inAction)
+        {
+            // TODO localize this
+            throw new CommandFormatException("Action never completes");
+        }
+
+        return 0;
     }
 
     /// <summary>

@@ -120,6 +120,16 @@ public class CommandManager
     }
 
     /// <summary>
+    /// Determines whether a definition with the specified name exists.
+    /// </summary>
+    /// <param name="name">The name to check.</param>
+    /// <returns><see langword="true"/> if definition exists; otherwise, <see langword="false"/>.</returns>
+    public bool HasDefinition(string name)
+    {
+        return _complexCommands.ContainsKey(name.ToUpperInvariant());
+    }
+
+    /// <summary>
     /// Gets a command implementation type.
     /// </summary>
     /// <param name="name">The name of the command. Can be an alias.</param>

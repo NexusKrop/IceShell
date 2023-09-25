@@ -25,11 +25,13 @@ public record BatchLine
     /// </summary>
     /// <param name="parsedCommand">The parsed internal command.</param>
     /// <param name="commandName">The name of the command.</param>
-    public BatchLine(ParsedCommand parsedCommand, string commandName)
+    /// <param name="nextAction">The action to perform to the next command.</param>
+    public BatchLine(ParsedCommand parsedCommand, string commandName, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
         IsCommand = true;
         Command = parsedCommand;
         Name = commandName;
+        NextAction = nextAction;
     }
 
     /// <summary>
@@ -37,11 +39,13 @@ public record BatchLine
     /// an external program.
     /// </summary>
     /// <param name="statements">The list of statements containing the name of the command.</param>
-    public BatchLine(IList<SyntaxStatement> statements)
+    /// <param name="nextAction">The action to perform to the next command.</param>
+    public BatchLine(IList<SyntaxStatement> statements, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
         IsCommand = false;
         Statements = statements;
         Name = statements[0].Content;
+        NextAction = nextAction;
     }
 
     /// <summary>
@@ -63,4 +67,9 @@ public record BatchLine
     /// Gets the parsed command.
     /// </summary>
     public ParsedCommand? Command { get; }
+
+    /// <summary>
+    /// Gets the action to perform to the next command in the compound.
+    /// </summary>
+    public SyntaxNextAction NextAction { get; }
 }

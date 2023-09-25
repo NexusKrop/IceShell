@@ -15,26 +15,39 @@ public static class CommandParser
     /// </summary>
     public const string EndOfOptionsStatement = "--";
 
-    public static SyntaxCompound ParseCompound(IReadOnlyList<SyntaxStatement> statements)
+    public static SyntaxCompound ParseCompound(IReadOnlyList<SyntaxStatement> statements, Predicate<string> isCommandName)
     {
         var thisCompound = new List<SyntaxSegment>();
-        var thisSegment = new List<SyntaxStatement>();
+        var currentSegment = new List<SyntaxStatement>();
 
         foreach (var statement in statements)
         {
             if (statement.Content == ">")
             {
-                thisCompound.Add(new SyntaxSegment(ParseSingleCommand(thisSegment), SyntaxNextAction.Redirect));
-
-                thisSegment.Clear();
+                EndSegment(SyntaxNextAction.Redirect);
+                currentSegment.Clear();
                 continue;
             }
 
-            thisSegment.Add(statement);
+            currentSegment.Add(statement);
         }
 
-        thisCompound.Add(new SyntaxSegment(ParseSingleCommand(thisSegment),
-                    SyntaxNextAction.None));
+        EndSegment(SyntaxNextAction.None);
+
+        void EndSegment(SyntaxNextAction nextAction)
+        {
+            var fileName = currentSegment![0].Content;
+
+            if (!fileName.StartsWith('.') && isCommandName(fileName))
+            {
+                thisCompound.Add(new SyntaxSegment(ParseSingleCommand(currentSegment),
+                    nextAction));
+            }
+            else
+            {
+                thisCompound.Add(new SyntaxSegment(fileName, nextAction, currentSegment.ToArray()));
+            }
+        }
 
         return new(thisCompound.AsReadOnly());
     }

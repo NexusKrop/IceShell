@@ -151,6 +151,12 @@ public class Shell : IShell
         return Dispatcher.Execute(line, actualExecutor ?? this);
     }
 
+    /// <inheritdoc />
+    public int Execute(BatchLineCompound compound, ICommandExecutor? actualExecutor = null)
+    {
+        return Dispatcher.Execute(compound, actualExecutor ?? this);
+    }
+
     /// <summary>
     /// Starts the interactive shell process and logic on the current thread, and returns after the current
     /// shell instance have exited.

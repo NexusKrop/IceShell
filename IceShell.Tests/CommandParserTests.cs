@@ -12,7 +12,7 @@ public class CommandParserTests
     {
         var statements = SyntaxStatement.Of("test", "argument", ">", "test1", "arg2");
 
-        var parsed = CommandParser.ParseCompound(statements);
+        var parsed = CommandParser.ParseCompound(statements, x => true);
 
         Assert.Multiple(() =>
         {

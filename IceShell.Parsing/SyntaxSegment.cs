@@ -22,11 +22,13 @@ public record SyntaxSegment
     /// </summary>
     /// <param name="file">The file.</param>
     /// <param name="nextAction">The action to perform when executing the next segment.</param>
-    public SyntaxSegment(string file, SyntaxNextAction nextAction = SyntaxNextAction.None)
+    /// <param name="additionalStatements">Additional statements to pass when executing the file.</param>
+    public SyntaxSegment(string file, SyntaxNextAction nextAction = SyntaxNextAction.None, IEnumerable<SyntaxStatement>? additionalStatements = null)
     {
         File = file;
         Type = SegmentType.File;
         NextAction = nextAction;
+        FileStatements = additionalStatements;
     }
 
     /// <summary>
@@ -49,6 +51,11 @@ public record SyntaxSegment
     /// The file identifier of this instance. The value should be ignored if <see cref="Type"/> is not <see cref="SegmentType.File"/>.
     /// </value>
     public string? File { get; set; }
+
+    /// <summary>
+    /// Get or sets the additional statements to supply to the file.
+    /// </summary>
+    public IEnumerable<SyntaxStatement>? FileStatements { get; set; }
 
     /// <summary>
     /// Gets or sets the action to perform when executing the next segment.
