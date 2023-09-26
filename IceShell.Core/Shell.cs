@@ -18,12 +18,22 @@ using NexusKrop.IceShell.Core.FileSystem;
 using ReadLineReboot;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
 /// <summary>
 /// Represents the command-line interactive shell, the core of IceShell.
 /// </summary>
 public class Shell : IShell
 {
+    /// <summary>
+    /// Gets the version of the shell interpreter application.
+    /// </summary>
+#if DEBUG
+    public static readonly string AppVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "unknown";
+#else
+    public static readonly string AppVersion = FileVersionInfo.GetVersionInfo(Environment.ProcessPath ?? "iceshell.exe").ProductVersion ?? "unknown";
+#endif
+
     private bool _exit;
 
     /// <summary>
@@ -165,10 +175,15 @@ public class Shell : IShell
         ModuleManager.InitializeModules();
 
         // show date and time if allowed
-        if (_settings.DisplayDateTimeOnStartup)
+        if (_settings.DisplayDateTimeOnStartUp)
         {
             System.Console.WriteLine($"Current date is {DateTime.Now.ToShortDateString()}");
             System.Console.WriteLine($"Current time is {DateTime.Now.ToShortTimeString()}");
+        }
+
+        if (_settings.DisplayShellInfoOnStartUp)
+        {
+            Console.WriteLine(Languages.Get("ver_line_0"), AppVersion);
         }
 
         // Add an empty line afterward

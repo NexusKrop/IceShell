@@ -14,7 +14,12 @@ public class ShellSettings
     /// <summary>
     /// Gets or sets whether to display date and time when the shell interpreter starts.
     /// </summary>
-    public bool DisplayDateTimeOnStartup { get; set; }
+    public bool DisplayDateTimeOnStartUp { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether to display the version of the shell interpreter when it starts.
+    /// </summary>
+    public bool DisplayShellInfoOnStartUp { get; set; }
 
     /// <summary>
     /// Gets or sets whether to use a custom, platform-agnostic (to user only) path system.
@@ -35,9 +40,10 @@ public class ShellSettings
         var parser = new FileIniDataParser();
 
         var data = new IniData();
-        data["Shell"]["DisplayDateTimeOnStartup"] = DisplayDateTimeOnStartup.ToString();
+        data["Shell"]["DisplayDateTimeOnStartup"] = DisplayDateTimeOnStartUp.ToString();
         data["Shell"][nameof(UseCustomPathSystem)] = UseCustomPathSystem.ToString();
         data["Shell"][nameof(Language)] = Language;
+        data["Shell"][nameof(DisplayShellInfoOnStartUp)] = DisplayShellInfoOnStartUp.ToString();
 
         parser.WriteFile(file, data);
     }
@@ -56,9 +62,10 @@ public class ShellSettings
         var result = new ShellSettings
         {
             // Add data here
-            DisplayDateTimeOnStartup = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]),
+            DisplayDateTimeOnStartUp = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]),
             UseCustomPathSystem = bool.Parse(data["Shell"][nameof(UseCustomPathSystem)]),
-            Language = data["Shell"][nameof(Language)]
+            Language = data["Shell"][nameof(Language)],
+            DisplayShellInfoOnStartUp = bool.Parse(data["Shell"][nameof(DisplayShellInfoOnStartUp)])
         };
 
         return result;

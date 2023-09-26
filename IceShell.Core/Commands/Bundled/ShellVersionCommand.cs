@@ -8,8 +8,6 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
-using System.Diagnostics;
-using System.Reflection;
 
 /// <summary>
 /// Defines a command that shows the version of the operating system and the shell program.
@@ -17,16 +15,10 @@ using System.Reflection;
 [ComplexCommand("ver", "Displays the IceShell version.")]
 public class ShellVersionCommand : ICommand
 {
-#if DEBUG
-    private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "unknown";
-#else
-    private static readonly string PRODUCT_VERSION = FileVersionInfo.GetVersionInfo(Environment.ProcessPath ?? "NexusKrop.IceShell.exe").ProductVersion ?? "unknown";
-#endif
-
     /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
-        Console.WriteLine(Languages.Get("ver_line_0"), PRODUCT_VERSION);
+        Console.WriteLine(Languages.Get("ver_line_0"), Shell.AppVersion);
         Console.WriteLine(Languages.Get("ver_line_1"), Environment.OSVersion.VersionString);
         Console.WriteLine();
         Console.WriteLine(Languages.Get("ver_line_2"));
