@@ -1,4 +1,4 @@
-# Contributing Guidelines
+﻿# Contributing Guidelines
 
 Thank you for taking time to improve this very project, whether by
 reporting bugs, suggesting features, or contributing code.
@@ -7,6 +7,17 @@ In this guide you will know about:
 
 - Ways to contribute
 - How do you effectively contribute
+
+## Issue Labels
+
+### Effort/Expertise Category
+
+The Effort/Expertise Category are set of labels that roughly describes how much effort
+and expertise (relative to this project) is required to complete this issue.
+
+- `⏫advanced`: Requires probably around hours to implement and finish, and requires somewhat advanced expertise
+- `➖intermediate`: Requires probably around 30m-2h to implement and finish, and intermediate-to-beginner expertise
+- `⏬beginner`: Requires not more than 30m to complete (usually low-priority tasks)
 
 ## Ways to contribute
 
