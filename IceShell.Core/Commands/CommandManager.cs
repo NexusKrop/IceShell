@@ -120,13 +120,26 @@ public class CommandManager
     }
 
     /// <summary>
-    /// Determines whether a definition with the specified name exists.
+    /// Determines whether a definition with the specified name exists, and such definition supports the current
+    /// operating system.
     /// </summary>
     /// <param name="name">The name to check.</param>
     /// <returns><see langword="true"/> if definition exists; otherwise, <see langword="false"/>.</returns>
     public bool HasDefinition(string name)
     {
-        return _complexCommands.ContainsKey(name.ToUpperInvariant());
+        if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var def))
+        {
+            return false;
+        }
+
+        if (def.OSPlatform.Any())
+        {
+            return Array.Exists(def.OSPlatform, OperatingSystem.IsOSPlatform);
+        }
+        else
+        {
+            return true;
+        }
     }
 
     /// <summary>
@@ -141,7 +154,7 @@ public class CommandManager
             x = null;
         }
 
-        if (x != null && !x.OSPlatform.IsEmpty() && !x.OSPlatform.Any(platform => OperatingSystem.IsOSPlatform(platform)))
+        if (x?.OSPlatform.IsEmpty() == false && !Array.Exists(x.OSPlatform, OperatingSystem.IsOSPlatform))
         {
             return null;
         }
