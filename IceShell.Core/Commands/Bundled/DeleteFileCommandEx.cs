@@ -40,7 +40,7 @@ public class DeleteFileCommandEx : ICommand
     {
         try
         {
-            if (Prompt && !ConsoleAsk.YesNo(Languages.DelPrompt(file)))
+            if (Prompt && !ConsoleAsk.YesNo(Languages.DeletePrompt(file)))
             {
                 return;
             }

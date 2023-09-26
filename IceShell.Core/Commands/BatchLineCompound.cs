@@ -34,11 +34,20 @@ public class BatchLineCompound : IEnumerable<BatchLine>
         return ((IEnumerable)Lines).GetEnumerator();
     }
 
+    /// <summary>
+    /// Creates a <see cref="BatchLineCompound"/> with only a single command.
+    /// </summary>
+    /// <param name="line">The command.</param>
+    /// <returns>A new instance <see cref="BatchLineCompound"/> with only a single command.</returns>
     public static BatchLineCompound Single(BatchLine line)
     {
         return new BatchLineCompound(Arrays.From(line));
     }
 
+    /// <summary>
+    /// Creates an empty <see cref="BatchLineCompound"/>.
+    /// </summary>
+    /// <returns>An empty instance of <see cref="BatchLineCompound"/>.</returns>
     public static BatchLineCompound Empty()
     {
         return new BatchLineCompound(Array.Empty<BatchLine>());

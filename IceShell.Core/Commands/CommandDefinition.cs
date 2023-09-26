@@ -162,9 +162,16 @@ public class CommandDefinition
         return this;
     }
 
+    /// <summary>
+    /// Registers a new value argument to this definition.
+    /// </summary>
+    /// <param name="definition">The definition of value argument.</param>
+    /// <param name="position">The position of the value argument.</param>
+    /// <returns>This <see cref="CommandDefinition"/> instance.</returns>
+    /// <exception cref="ArgumentException">Required complex argument values cannot have preceding optional options.</exception>
     public CommandDefinition Value(ComplexValueDefinition definition, int position = -1)
     {
-        if (Values.Any() && !Values.Last().Required && definition.Required)
+        if (Values.Any() && !Values[^1].Required && definition.Required)
         {
             throw new ArgumentException("Required complex argument values cannot have preceding optional options.");
         }

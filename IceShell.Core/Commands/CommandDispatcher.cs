@@ -80,7 +80,7 @@ public class CommandDispatcher
     public int Execute(BatchLineCompound compound, ICommandExecutor executor)
     {
         var inAction = false;
-        var nextAction = SyntaxNextAction.None;
+        SyntaxNextAction nextAction;
 
         foreach (var line in compound)
         {
@@ -100,8 +100,7 @@ public class CommandDispatcher
 
         if (inAction)
         {
-            // TODO localize this
-            throw new CommandFormatException("Action never completes");
+            throw new CommandFormatException(Languages.ActionNeverComplete());
         }
 
         return 0;

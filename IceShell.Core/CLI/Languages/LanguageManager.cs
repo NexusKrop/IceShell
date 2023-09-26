@@ -12,8 +12,6 @@ using global::IceShell.Settings;
 /// </summary>
 public class Languages
 {
-    // TODO move instance stuff to a new class called LanguageService
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Languages"/> class.
     /// </summary>
@@ -170,7 +168,7 @@ public class Languages
     /// </summary>
     /// <param name="file">The name of or path to the file to delete.</param>
     /// <returns>The deletion confirmation message.</returns>
-    public static string DelPrompt(string file) => string.Format(Get("del_prompt"), file);
+    public static string DeletePrompt(string file) => string.Format(Get("del_prompt"), file);
 
     /// <summary>
     /// Gets the message that is displayed when the procedure cannot continue because it does not have access
@@ -182,4 +180,6 @@ public class Languages
 
     internal static string RequiresValue(int value) => string.Format(Get("generic_requires_value"), value);
     internal static string CopyIsFileMore() => Get("copy_destination_file_more");
+
+    internal static string ActionNeverComplete() => Get("generic_action_never_complete");
 }

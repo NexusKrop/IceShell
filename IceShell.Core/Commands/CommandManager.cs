@@ -111,7 +111,7 @@ public class CommandManager
             x = null;
         }
 
-        if (x != null && !x.OSPlatform.IsEmpty() && !x.OSPlatform.Any(platform => OperatingSystem.IsOSPlatform(platform)))
+        if (x?.OSPlatform.IsEmpty() == false && !Array.Exists(x.OSPlatform, OperatingSystem.IsOSPlatform))
         {
             return null;
         }

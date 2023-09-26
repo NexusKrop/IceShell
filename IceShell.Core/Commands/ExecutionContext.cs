@@ -6,6 +6,11 @@ namespace IceShell.Core.Commands;
 /// </summary>
 public record ExecutionContext
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExecutionContext"/> class.
+    /// </summary>
+    /// <param name="writeTo">The text writer to write the result of execution to.</param>
+    /// <param name="readFrom">The text reader to read results of the last command from.</param>
     public ExecutionContext(TextWriter? writeTo, TextReader? readFrom)
     {
         ResultTo = writeTo;
