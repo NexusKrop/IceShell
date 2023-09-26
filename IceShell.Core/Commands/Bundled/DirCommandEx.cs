@@ -128,7 +128,9 @@ internal class DirCommandEx : ICommand
     {
         // All chunked out ones need fix
 
-        if (!string.IsNullOrWhiteSpace(TargetDir) && Directory.Exists(TargetDir))
+        CommandChecks.DirectoryExists(TargetDir);
+
+        if (!string.IsNullOrWhiteSpace(TargetDir))
         {
             _dir = TargetDir;
         }

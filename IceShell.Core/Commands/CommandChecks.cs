@@ -32,9 +32,9 @@ public static class CommandChecks
     /// Throws a <see cref="CommandFormatException"/> if the specified directory does exist.
     /// </summary>
     /// <param name="directory">The directory to check.</param>
-    public static void DirectoryExists(string directory)
+    public static void DirectoryExists(string? directory)
     {
-        if (!Directory.Exists(directory))
+        if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
         {
             throw ExceptionHelper.WithName(Languages.Get("generic_directory_not_found"), directory);
         }
