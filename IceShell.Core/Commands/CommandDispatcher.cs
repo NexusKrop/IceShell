@@ -80,18 +80,30 @@ public class CommandDispatcher
     public int Execute(BatchLineCompound compound, ICommandExecutor executor)
     {
         var inAction = false;
-        SyntaxNextAction nextAction;
+        var nextAction = SyntaxNextAction.None;
+        TextReader? lastOutStream = null;
 
         foreach (var line in compound)
         {
-            // TODO implement actions
+            var context = new ExecutionContext(null, line.NextAction);
 
-            var exitCode = Execute(line, executor);
+            if (nextAction == SyntaxNextAction.Redirect)
+            {
+                context.Retrieval = lastOutStream;
+                lastOutStream = null;
+            }
+
+            var exitCode = Execute(line, executor, out var pipeStream, context);
 
             if (exitCode != 0 && inAction)
             {
                 // Command failure
                 return exitCode;
+            }
+
+            if (line.NextAction == SyntaxNextAction.Redirect)
+            {
+                lastOutStream = pipeStream;
             }
 
             nextAction = line.NextAction;
@@ -103,6 +115,11 @@ public class CommandDispatcher
             throw new CommandFormatException(Languages.ActionNeverComplete());
         }
 
+        if (lastOutStream != null)
+        {
+            Console.WriteLine(lastOutStream.ReadToEnd());
+        }
+
         return 0;
     }
 
@@ -111,19 +128,22 @@ public class CommandDispatcher
     /// </summary>
     /// <param name="line">The line to execute.</param>
     /// <param name="executor">The executor to act on behalf of.</param>
+    /// <param name="context">The execution context.</param>
+    /// <param name="outStream">The pipe out stream.</param>
     /// <returns>The exit code of the command or process; if failed to start external command, returns <c>-255</c>.</returns>
     /// <exception cref="ArgumentException">The specified <see cref="BatchLine"/> is invalid.</exception>
     /// <exception cref="CommandFormatException">The specified command was not found.</exception>
-    public int Execute(BatchLine line, ICommandExecutor executor)
+    public int Execute(BatchLine line, ICommandExecutor executor, out TextReader? outStream, ExecutionContext? context = null)
     {
         if (string.IsNullOrWhiteSpace(line.Name))
         {
+            outStream = null;
             return 0;
         }
 
         if (line.IsCommand && line.Command != null)
         {
-            return Execute(line.Command, executor, new(null, null));
+            return Execute(line.Command, executor, context ?? ExecutionContext.Empty, out outStream);
         }
         else if (line.Statements != null)
         {
@@ -131,6 +151,7 @@ public class CommandDispatcher
 
             if (!args.Any())
             {
+                outStream = null;
                 return 0;
             }
 
@@ -152,11 +173,13 @@ public class CommandDispatcher
             if (process == null)
             {
                 ConsoleOutput.PrintShellError(Languages.Get("shell_unable_start_process"));
+                outStream = null;
                 return -255;
             }
 
             process.WaitForExit();
 
+            outStream = null;
             return process.ExitCode;
         }
         else
@@ -171,8 +194,9 @@ public class CommandDispatcher
     /// <param name="command">The command to execute.</param>
     /// <param name="executor">The command executor to act on behalf of.</param>
     /// <param name="context">The context.</param>
+    /// <param name="pipeOut">The pipe output stream.</param>
     /// <returns>The exit code of the command.</returns>
-    public int Execute(ParsedCommand command, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(ParsedCommand command, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeOut)
     {
         var instance = (ICommand)Activator.CreateInstance(command.Command.Type)!;
 
@@ -212,6 +236,8 @@ public class CommandDispatcher
             value.Property.SetValue(instance, obj);
         }
 
-        return instance.Execute(_shell, executor, context);
+        var retVal = instance.Execute(_shell, executor, context, out var pipeStream);
+        pipeOut = pipeStream;
+        return retVal;
     }
 }

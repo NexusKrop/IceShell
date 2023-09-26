@@ -27,6 +27,7 @@ public interface ICommand
     /// <param name="shell">The shell that this command was executed with.</param>
     /// <param name="executor">The executor that this command was executed by.</param>
     /// <param name="context">The execution context. The instance provided may not be unique for this execution event.</param>
+    /// <param name="pipeStream">The piping stream. If no next action is specified in context, the shell redirects it to the standard output.</param>
     /// <returns>The execution result code. If <c>0</c>, the command is considered success.</returns>
-    int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context);
+    int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream);
 }

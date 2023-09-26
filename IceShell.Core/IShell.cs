@@ -35,14 +35,6 @@ public interface IShell : ICommandExecutor
     int Execute(string line, ICommandExecutor? actualExecutor = null);
 
     /// <summary>
-    /// Executes an already parsed line of command.
-    /// </summary>
-    /// <param name="line">The line to execute.</param>
-    /// <param name="actualExecutor">The executor to have this instance act on behalf of. If <see langword="null"/>, this instance will execute commands on its own behalf.</param>
-    /// <returns>The return code of the command.</returns>
-    int Execute(BatchLine line, ICommandExecutor? actualExecutor = null);
-
-    /// <summary>
     /// Executes an already passed command compound.
     /// </summary>
     /// <param name="compound">The compound to execute.</param>

@@ -24,8 +24,10 @@ public class StartCommandEx : ICommand
     public string? Target { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         if (Target == null)
         {
             throw new CommandFormatException(Languages.RequiresValue(0));

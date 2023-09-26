@@ -14,8 +14,9 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 public class ExitCommandEx : ICommand
 {
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
         shell.Quit();
         return 0;
     }

@@ -15,8 +15,10 @@ public class CallCommand : ICommand
     [Value("file", true, 0)]
     public string? FileName { get; set; }
 
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         var full = Path.GetFullPath(FileName!);
 
         CommandChecks.FileExists(full);

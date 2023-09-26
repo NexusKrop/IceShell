@@ -25,8 +25,10 @@ public class HelpCommandEx : ICommand
     public string? CommandName { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         var commandName = CommandName;
 
         if (string.IsNullOrWhiteSpace(commandName))

@@ -24,13 +24,14 @@ public class ShellVersionCommand : ICommand
 #endif
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
         Console.WriteLine(Languages.Get("ver_line_0"), PRODUCT_VERSION);
         Console.WriteLine(Languages.Get("ver_line_1"), Environment.OSVersion.VersionString);
         Console.WriteLine();
         Console.WriteLine(Languages.Get("ver_line_2"));
 
+        pipeStream = null;
         return 0;
     }
 }

@@ -43,8 +43,10 @@ public abstract class DestinationFileCommandBase : ICommand
     public abstract void DoOperation(string source, string destination);
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         string? destination = null;
 
         if (Buffer == null || Buffer.Count < 2)

@@ -16,8 +16,10 @@ public class GotoCommand : ICommand
     [Value("label", true, 0)]
     public string? Label { get; set; }
 
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         if (!executor.SupportsJump)
         {
             throw new CommandFormatException(Languages.Get("batch_goto_not_supported"));

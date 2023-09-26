@@ -22,8 +22,9 @@ public class RemarksCommand : ICommand
     public string? Comment { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
         return 0;
     }
 }

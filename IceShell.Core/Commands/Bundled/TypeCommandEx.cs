@@ -28,35 +28,17 @@ public class TypeCommandEx : ICommand
     public bool Streamed { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
         CommandChecks.FileExists(ArgFile!);
 
-        if (!Streamed)
-        {
-            Console.WriteLine(File.ReadAllText(ArgFile!));
-        }
-        else
-        {
-            ExecuteStreamed(ArgFile!);
-        }
+        ExecuteStreamed(ArgFile!, out pipeStream);
+
         return 0;
     }
 
-    private static void ExecuteStreamed(string file)
+    private static void ExecuteStreamed(string file, out TextReader pipeStream)
     {
-        using var stream = new StreamReader(file);
-
-        try
-        {
-            while (!stream.EndOfStream)
-            {
-                Console.Out.WriteLine(stream.ReadLine());
-            }
-        }
-        catch (EndOfStreamException)
-        {
-            // End of stream, do nothing.
-        }
+        pipeStream = new StreamReader(file);
     }
 }

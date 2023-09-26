@@ -54,8 +54,10 @@ public class DeleteFileCommandEx : ICommand
     }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         if (Targets?.Any() != true)
         {
             throw new CommandFormatException(Languages.RequiresValue(0));

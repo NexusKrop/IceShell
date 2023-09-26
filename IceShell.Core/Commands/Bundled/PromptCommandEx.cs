@@ -24,8 +24,9 @@ public class PromptCommandEx : ICommand
     public string? Prompt { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
         var prompt = Prompt;
 
         if (string.IsNullOrWhiteSpace(prompt))

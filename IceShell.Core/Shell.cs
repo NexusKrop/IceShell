@@ -146,12 +146,6 @@ public class Shell : IShell
     }
 
     /// <inheritdoc />
-    public int Execute(BatchLine line, ICommandExecutor? actualExecutor = null)
-    {
-        return Dispatcher.Execute(line, actualExecutor ?? this);
-    }
-
-    /// <inheritdoc />
     public int Execute(BatchLineCompound compound, ICommandExecutor? actualExecutor = null)
     {
         return Dispatcher.Execute(compound, actualExecutor ?? this);

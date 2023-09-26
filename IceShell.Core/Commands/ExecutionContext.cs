@@ -1,5 +1,7 @@
 namespace IceShell.Core.Commands;
 
+using IceShell.Parsing;
+
 /// <summary>
 /// Represents context for command execution events, either for a single triggering,
 /// a single shell, or a single batch file.
@@ -11,22 +13,25 @@ public record ExecutionContext
     /// </summary>
     /// <param name="writeTo">The text writer to write the result of execution to.</param>
     /// <param name="readFrom">The text reader to read results of the last command from.</param>
-    public ExecutionContext(TextWriter? writeTo, TextReader? readFrom)
+    /// <param name="nextAction">The next action.</param>
+    public ExecutionContext(TextReader? readFrom, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
-        ResultTo = writeTo;
         Retrieval = readFrom;
+        NextAction = nextAction;
     }
 
     /// <summary>
-    /// Gets the text writer to write the result of execution to.
+    /// Gets or sets the text reader to read the result of the last command from.
     /// </summary>
-    /// <remarks>
-    /// You should not write error messages and information outputs to this text writer.
-    /// </remarks>
-    public TextWriter? ResultTo { get; }
+    public TextReader? Retrieval { get; set; }
 
     /// <summary>
-    /// Gets the text reader to read the result of the last command from.
+    /// Gets the next action.
     /// </summary>
-    public TextReader? Retrieval { get; }
+    public SyntaxNextAction NextAction { get; }
+
+    /// <summary>
+    /// An empty <see cref="ExecutionContext"/>.
+    /// </summary>
+    public static readonly ExecutionContext Empty = new(null, SyntaxNextAction.None);
 }

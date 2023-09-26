@@ -30,8 +30,10 @@ public class CdCommandEx : ICommand
     public string? Destination { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         if (string.IsNullOrWhiteSpace(Destination))
         {
             // Print current directory if no current directory is provided

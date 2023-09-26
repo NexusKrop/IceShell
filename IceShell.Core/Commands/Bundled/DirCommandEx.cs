@@ -7,6 +7,7 @@ using global::IceShell.Core;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
+using global::IceShell.Parsing;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
@@ -16,6 +17,23 @@ using System.Text;
 /// <summary>
 /// Displays a list of files and subdirectories in a directory.
 /// </summary>
+/// <remarks>
+/// <para>
+/// When executed without redirection, this command prints a user-friendly table of directories and files
+/// to the standard output.
+/// </para>
+/// <para>
+/// When executed and instructed to redirect output to the next command, the command sends a list of directories
+/// and files, with each line being a file or directory, and three null separated fields (of file name, size,
+/// modification date). It looks like this (in example, two lines of strings in C#. In terminal it looks like lines of unseparated fields):
+/// <code language="cs">
+/// {
+///     "text.txt\0123\2023-09-25T20:45:59.4034994",
+///     "dir\0DIR\02023-09-25T20:45:59.4034994"
+/// }
+/// </code>
+/// </para>
+/// </remarks>
 [ComplexCommand("dir", "Displays a list of files and subdirectories in a directory.")]
 internal class DirCommandEx : ICommand
 {
@@ -49,7 +67,7 @@ internal class DirCommandEx : ICommand
         // We add short date string first.
         builder.Append(sdStr);
 
-        // This apply to zh-CN culture
+        // This apply to Chinese culture
         // Not sure about others
         if (sdStr.Length == 9 && stStr.Length == 5)
         {
@@ -73,7 +91,7 @@ internal class DirCommandEx : ICommand
     {
         // Absolutely make sure you calibrated the table before printing.
 
-        // Calculate the minimum character amounuts required for columns.
+        // Calculate the minimum character amounts required for columns.
         var dateMinimum = _dateLongest + 3;
         var sizeMinimum = _sizeLongest + 3;
 
@@ -81,7 +99,7 @@ internal class DirCommandEx : ICommand
         {
             Console.Write(row.ShortDateTime);
 
-            // If not enough characters to align the table, fill with whitespaces.
+            // If not enough characters to align the table, fill with white-spaces.
             if (row.ShortDateTime.Length < dateMinimum)
             {
                 for (int i = row.ShortDateTime.Length; i < dateMinimum; i++)
@@ -124,15 +142,18 @@ internal class DirCommandEx : ICommand
         }
     }
 
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+        var realTarget = TargetDir ?? Directory.GetCurrentDirectory();
+
         // All chunked out ones need fix
 
-        CommandChecks.DirectoryExists(TargetDir);
+        CommandChecks.DirectoryExists(realTarget);
 
-        if (!string.IsNullOrWhiteSpace(TargetDir))
+        if (!string.IsNullOrWhiteSpace(realTarget))
         {
-            _dir = TargetDir;
+            _dir = realTarget;
         }
 
         if (!string.IsNullOrWhiteSpace(DateFormat))
@@ -145,11 +166,65 @@ internal class DirCommandEx : ICommand
             _timeFormat = TimeFormat;
         }
 
-        Execute(RevealHidden);
+        if (context.NextAction == SyntaxNextAction.Redirect)
+        {
+            Execute(RevealHidden, out pipeStream);
+        }
+        else
+        {
+            Execute(RevealHidden);
+        }
 
         return 0;
     }
 
+    private void Execute(bool revealHidden, out TextReader? pipeStream)
+    {
+        var windows = OperatingSystem.IsWindows();
+        var sb = new StringBuilder();
+
+        // Iterate through directories.
+        foreach (var folder in Directory.GetDirectories(_dir))
+        {
+            // Acquire info and last changed date/time for the entry.
+            var info = new DirectoryInfo(folder);
+            var modified = Directory.GetLastWriteTime(folder);
+
+            // Add to row.
+            sb.AppendFormat("{0}\0{1}\0{2}", info.Name, "DIR", modified.ToString("o")).AppendLine();
+        }
+
+        // Do the same for files.
+        foreach (var file in Directory.GetFiles(_dir))
+        {
+            var info = new FileInfo(file);
+            var modified = File.GetLastWriteTime(file);
+
+            if (!revealHidden)
+            {
+                if (windows && (info.Attributes.HasFlag(FileAttributes.Hidden)
+                    || info.Attributes.HasFlag(FileAttributes.System)))
+                {
+                    continue;
+                }
+
+                if (!windows && info.Name.StartsWith('.'))
+                {
+                    continue;
+                }
+            }
+
+            sb.AppendFormat("{0}\0{1}\0{2}", info.Name, info.Length.ToString(), modified.ToString("o")).AppendLine();
+        }
+
+        var str = sb.ToString();
+
+        pipeStream = new StringReader(str);
+    }
+
+    // The code of printing human-friendly stuff are much more complex than
+    // printing machine-readable stuff (mainly due to we have to align a table, nowadays these are covered
+    // by Spectre Console anyway)
     private void Execute(bool revealHidden)
     {
         // Print DOS-like table title, sans the volume information (too complex).
@@ -161,7 +236,7 @@ internal class DirCommandEx : ICommand
         // Iterate through directories.
         foreach (var folder in Directory.GetDirectories(_dir))
         {
-            // Acquire info and last changed datetime for the entry.
+            // Acquire info and last changed date/time for the entry.
             var info = new DirectoryInfo(folder);
             var modified = Directory.GetLastWriteTime(folder);
 

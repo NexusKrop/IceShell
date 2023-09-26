@@ -25,8 +25,9 @@ public class MakeFileCommand : ICommand
     public string? Name { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
         var actual = PathSearcher.ShellToSystem(Name);
 
         CommandChecks.FileNotExists(actual);

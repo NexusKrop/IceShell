@@ -6,6 +6,7 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
+using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 
@@ -22,13 +23,23 @@ public class EchoCommandEx : ICommand
     /// <value>
     /// The message to display. If <see langword="null"/>, displays a blank new line.
     /// </value>
-    [Value("message", position: 0)]
+    [Value("message", position: 0, required: false)]
     public string? Message { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
-        Console.WriteLine(Message ?? Environment.NewLine);
+        pipeStream = null;
+
+        if (context.Retrieval == null)
+        {
+            Console.WriteLine(Message ?? Environment.NewLine);
+        }
+        else
+        {
+            Console.WriteLine(context.Retrieval.ReadToEnd());
+        }
+
         return 0;
     }
 }

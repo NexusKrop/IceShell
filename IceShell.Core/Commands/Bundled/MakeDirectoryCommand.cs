@@ -26,8 +26,10 @@ public class MakeDirectoryCommand : ICommand
     public string? DirectoryName { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
+
         var dir = PathSearcher.ShellToSystem(DirectoryName);
 
         CommandChecks.NothingExists(dir);

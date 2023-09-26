@@ -16,8 +16,9 @@ using System;
 public class ClearScreenCommandEx : ICommand
 {
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
+        pipeStream = null;
         Console.Clear();
         return 0;
     }
