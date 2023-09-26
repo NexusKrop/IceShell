@@ -171,14 +171,16 @@ public class Shell : IShell
         ReadLine.HistoryEnabled = true;
         ReadLine.AutoCompletionHandler = new ShellCompletionHandler(CommandManager, DIR_CACHE);
 
-        ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "modules"));
+        ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "modules"));
         ModuleManager.InitializeModules();
 
         // show date and time if allowed
         if (_settings.DisplayDateTimeOnStartUp)
         {
-            System.Console.WriteLine($"Current date is {DateTime.Now.ToShortDateString()}");
-            System.Console.WriteLine($"Current time is {DateTime.Now.ToShortTimeString()}");
+            var time = DateTime.Now;
+
+            Console.WriteLine(Languages.Get("shell_current_date"), time.ToShortDateString());
+            Console.WriteLine(Languages.Get("shell_current_time"), time.ToShortTimeString());
         }
 
         if (_settings.DisplayShellInfoOnStartUp)
@@ -186,8 +188,8 @@ public class Shell : IShell
             Console.WriteLine(Languages.Get("ver_line_0"), AppVersion);
         }
 
-        // Add an empty line afterward
-        System.Console.WriteLine();
+        // Add an empty line afterwards
+        Console.WriteLine();
 
         while (!_exit)
         {
