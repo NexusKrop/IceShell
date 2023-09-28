@@ -6,12 +6,8 @@ namespace NexusKrop.IceShell.Core.Commands.Complex;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Exceptions;
-using IceShell.Core.Commands;
-using NexusKrop.IceCube;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using LegacyCommandParser = CommandParser;
 

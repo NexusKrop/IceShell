@@ -7,12 +7,9 @@ using IceShell.Core;
 using IceShell.Core.CLI.Languages;
 using IceShell.Core.Commands;
 using IceShell.Core.Exceptions;
-using NexusKrop.IceShell.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class BatchFile : ICommandExecutor
 {

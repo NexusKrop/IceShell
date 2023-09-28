@@ -4,7 +4,6 @@
 namespace NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Reflection.PortableExecutable;
-using System.Runtime.Versioning;
 
 /// <summary>
 /// Provides utilities for file formats and types.

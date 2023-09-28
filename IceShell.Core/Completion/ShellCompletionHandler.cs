@@ -3,7 +3,6 @@
 
 namespace NexusKrop.IceShell.Core.Completion;
 
-using NexusKrop.IceCube;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Completion.Cache;

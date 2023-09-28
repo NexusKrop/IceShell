@@ -6,7 +6,6 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
-using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 

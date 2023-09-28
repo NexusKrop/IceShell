@@ -5,14 +5,9 @@ namespace IceShell.Core.Api;
 
 using IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.CLI;
-using NexusKrop.IceShell.Core.Completion.Cache;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Provides module management interface and service for shell environments.

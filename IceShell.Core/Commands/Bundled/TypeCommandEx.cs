@@ -7,7 +7,6 @@ using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
-using System;
 
 /// <summary>
 /// Defines a command that prints out the contents of a file.

@@ -4,7 +4,6 @@
 namespace IceShell.Core.Commands;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
-using System;
 using static NexusKrop.IceShell.Core.Commands.CommandManager;
 
 /// <summary>

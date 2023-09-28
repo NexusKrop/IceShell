@@ -1,4 +1,6 @@
-using System.Threading.Tasks;
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
 using Cake.Common;
 using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;

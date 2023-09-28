@@ -6,7 +6,6 @@ namespace IceShell.Core.Commands;
 using IceShell.Core.CLI.Languages;
 using IceShell.Core.Exceptions;
 using IceShell.Parsing;
-using NexusKrop.IceCube;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.CLI;
@@ -17,7 +16,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NewCommandParser = Parsing.CommandParser;
-using OldCommandParser = NexusKrop.IceShell.Core.CommandParser;
 
 /// <summary>
 /// Provides a service to shells that parses and executes commands on its behalf.

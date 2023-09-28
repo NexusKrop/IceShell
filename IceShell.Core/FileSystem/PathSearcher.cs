@@ -4,7 +4,6 @@
 namespace NexusKrop.IceShell.Core.FileSystem;
 
 using global::IceShell.Core.CLI.Languages;
-using NexusKrop.IceShell.Core.CLI;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;

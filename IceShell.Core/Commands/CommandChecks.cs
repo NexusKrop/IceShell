@@ -5,11 +5,6 @@ namespace IceShell.Core.Commands;
 
 using IceShell.Core.CLI.Languages;
 using IceShell.Core.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Provides methods to throw exceptions when certain conditions are met or are not met.
