@@ -9,6 +9,7 @@ using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Bundled;
 using global::IceShell.Core.Commands.Complex;
 using global::IceShell.Core.Exceptions;
+using global::IceShell.Core.Api;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -22,91 +23,58 @@ using System.Runtime.Versioning;
 /// <summary>
 /// Provides services for the registration and lookup for the registered commands.
 /// </summary>
-public class CommandManager
+public class CommandManager : ICommandManager
 {
+    private static readonly Type[] DefaultCommands = new Type[]
+    {
+        typeof(DirCommandEx),
+        typeof(EchoCommandEx),
+        typeof(ExitCommandEx),
+        typeof(CdCommandEx),
+        typeof(CopyCommandEx),
+        typeof(ShellVersionCommand),
+        typeof(StartCommandEx),
+        typeof(ClearScreenCommandEx),
+        typeof(MakeDirectoryCommand),
+        typeof(DeleteFileCommandEx),
+        typeof(MakeFileCommand),
+        typeof(MoveCommandEx),
+        typeof(TypeCommandEx),
+        typeof(PromptCommandEx),
+        typeof(HelpCommandEx)
+    };
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandManager"/> class.
     /// </summary>
     /// <param name="registerDefaults">If <see langword="true"/>, registers the bundled commands.</param>
     public CommandManager(bool registerDefaults = true)
     {
-        CommandEntries = new ReadOnlyDictionary<string, ComplexCommandEntry>(_complexCommands);
+        CommandEntries = new ReadOnlyDictionary<string, CommandEntry>(_complexCommands);
 
         if (registerDefaults)
         {
-            RegisterComplex(typeof(DirCommandEx));
-            RegisterComplex(typeof(EchoCommandEx));
-            RegisterComplex(typeof(ExitCommandEx));
-            RegisterComplex(typeof(CdCommandEx));
-            RegisterComplex(typeof(CopyCommandEx));
-            RegisterComplex(typeof(ShellVersionCommand));
-            RegisterComplex(typeof(StartCommandEx));
-            RegisterComplex(typeof(ClearScreenCommandEx));
-            RegisterComplex(typeof(MakeDirectoryCommand));
-            RegisterComplex(typeof(DeleteFileCommandEx));
-            RegisterComplex(typeof(MakeFileCommand));
-            RegisterComplex(typeof(MoveCommandEx));
-            RegisterComplex(typeof(HelpCommandEx));
-            RegisterComplex(typeof(TypeCommandEx));
-            RegisterComplex(typeof(PromptCommandEx));
+            DefaultCommands.ForEach(Register);
         }
     }
 
-    /// <summary>
-    /// Represents a command registration entry.
-    /// </summary>
-    /// <param name="Type">The type containing the implementation of the command.</param>
-    /// <param name="OSPlatform">The platform that the command explicitly supports. If empty, the command is considered to work on all platforms.</param>
-    /// <param name="Definition">The command definition.</param>
-    /// <param name="Description">The description to show in help messages.</param>
-    public sealed record ComplexCommandEntry(Type Type, string[] OSPlatform, CommandDefinition Definition, string? Description = null);
-
-    private readonly Dictionary<string, ComplexCommandEntry> _complexCommands = new();
+    private readonly Dictionary<string, CommandEntry> _complexCommands = new();
 
     /// <summary>
     /// Gets the registered command entries.
     /// </summary>
-    public IReadOnlyDictionary<string, ComplexCommandEntry> CommandEntries { get; }
+    public IReadOnlyDictionary<string, CommandEntry> CommandEntries { get; }
 
-    /// <summary>
-    /// Returns a list of the command names that begins with the specified characters.
-    /// </summary>
-    /// <param name="begin">The characters to search for completion.</param>
-    /// <returns>The list of command names.</returns>
-    public string[] CompleteCommand(string begin)
+    /// <inheritdoc />
+    public int CommandCount => _complexCommands.Count;
+
+    /// <inheritdoc />
+    public IEnumerable<string> CommandAliases => _complexCommands.Keys;
+
+    /// <inheritdoc />
+    public CommandEntry? GetDefinition(string alias)
     {
-        if (string.IsNullOrWhiteSpace(begin))
-        {
-            return Array.Empty<string>();
-        }
-
-        var list = new List<string>(_complexCommands.Count);
-
-        foreach (var command in _complexCommands.Keys)
-        {
-            if (command.Equals(begin))
-            {
-                list.Add(command);
-                break;
-            }
-
-            if (command.StartsWith(begin))
-            {
-                list.Add(command);
-            }
-        }
-
-        return list.ToArray();
-    }
-
-    /// <summary>
-    /// Gets a command definition based on the name of the command.
-    /// </summary>
-    /// <param name="name">The name of the command. Can be an alias.</param>
-    /// <returns>If found, the command entry; otherwise, <see langword="null"/>.</returns>
-    public ComplexCommandEntry? GetDefinition(string name)
-    {
-        if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var x))
+        if (!_complexCommands.TryGetValue(alias.ToUpperInvariant(), out var x))
         {
             x = null;
         }
@@ -119,15 +87,10 @@ public class CommandManager
         return x;
     }
 
-    /// <summary>
-    /// Determines whether a definition with the specified name exists, and such definition supports the current
-    /// operating system.
-    /// </summary>
-    /// <param name="name">The name to check.</param>
-    /// <returns><see langword="true"/> if definition exists; otherwise, <see langword="false"/>.</returns>
-    public bool HasDefinition(string name)
+    /// <inheritdoc />
+    public bool HasDefinition(string alias)
     {
-        if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var def))
+        if (!_complexCommands.TryGetValue(alias.ToUpperInvariant(), out var def))
         {
             return false;
         }
@@ -139,99 +102,6 @@ public class CommandManager
         else
         {
             return true;
-        }
-    }
-
-    /// <summary>
-    /// Gets a command implementation type.
-    /// </summary>
-    /// <param name="name">The name of the command. Can be an alias.</param>
-    /// <returns>The command implementation type, if found; otherwise, <see langword="null"/>.</returns>
-    public Type? GetComplex(string name)
-    {
-        if (!_complexCommands.TryGetValue(name.ToUpperInvariant(), out var x))
-        {
-            x = null;
-        }
-
-        if (x?.OSPlatform.IsEmpty() == false && !Array.Exists(x.OSPlatform, OperatingSystem.IsOSPlatform))
-        {
-            return null;
-        }
-
-        return x?.Type;
-    }
-
-    /// <summary>
-    /// Registers a command.
-    /// </summary>
-    /// <param name="type">The command implementation type.</param>
-    /// <exception cref="ArgumentException">The command implementation type or its set of attributes are invalid.</exception>
-    /// <exception cref="InvalidOperationException">The command implementation type is invalid.</exception>
-    /// <remarks>
-    /// <para>
-    /// You will need to add a correct set of attributes to the properties and the type itself in order for it to correctly register and function.
-    /// For more information, consult the documentation or the IceShell source code.
-    /// </para>
-    /// </remarks>
-    public void RegisterComplex(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-
-        var platforms = new List<string>();
-
-        // Step 1: Search command attributes
-        var attributes = type.GetCustomAttributes(typeof(ComplexCommandAttribute), false);
-
-        if (attributes.Length != 1)
-        {
-            throw new ArgumentException(Languages.FormatMessage("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName ?? type.Name), nameof(type));
-        }
-
-        // Step 2: Search platform attributes
-        foreach (var attr in type.GetCustomAttributes(typeof(SupportedOSPlatformAttribute), false))
-        {
-            if (attr is SupportedOSPlatformAttribute os)
-            {
-                platforms.Add(os.PlatformName);
-            }
-        }
-
-        // Step 3: Search alias attributes
-        var aliasAttr = type.GetCustomAttributes(typeof(CommandAliasAttribute), false);
-
-        // Step 4: Create definitions
-        var definition = GetDefine(type);
-
-        // Step 5: Verify definition
-        if (definition.VariableValues && (definition.VariableValueBuffer == null
-            || !definition.VariableValueBuffer.PropertyType.IsAssignableFrom(typeof(ReadOnlyCollection<string>))))
-        {
-            throw new InvalidOperationException(string.Format(Languages.Get("api_var_values_no_buffer"), type.FullName));
-        }
-
-        // Now begin registering
-        var intf = type.GetInterface(nameof(ICommand));
-
-        if (intf != typeof(ICommand))
-        {
-            throw ExceptionHelper.CommandNoInterface(type, nameof(ICommand));
-        }
-
-        if (attributes[0] is not ComplexCommandAttribute attribute)
-        {
-            throw new ArgumentException(string.Format(Languages.Get("api_command_invalid_attribute"), type.FullName), nameof(type));
-        }
-
-        _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
-
-        // Register all of its aliases
-        foreach (var attr in aliasAttr)
-        {
-            if (attr is CommandAliasAttribute alias)
-            {
-                _complexCommands.Add(alias.Alias.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
-            }
         }
     }
 
@@ -301,5 +171,73 @@ public class CommandManager
         }
 
         return definition;
+    }
+
+    /// <inheritdoc />
+    public void Register(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+
+        var platforms = new List<string>();
+
+        // Step 1: Search command attributes
+        var attributes = type.GetCustomAttributes(typeof(ComplexCommandAttribute), false);
+
+        if (attributes.Length != 1)
+        {
+            throw new ArgumentException(Languages.FormatMessage("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName ?? type.Name), nameof(type));
+        }
+
+        // Step 2: Search platform attributes
+        foreach (var attr in type.GetCustomAttributes(typeof(SupportedOSPlatformAttribute), false))
+        {
+            if (attr is SupportedOSPlatformAttribute os)
+            {
+                platforms.Add(os.PlatformName);
+            }
+        }
+
+        // Step 3: Search alias attributes
+        var aliasAttr = type.GetCustomAttributes(typeof(CommandAliasAttribute), false);
+
+        // Step 4: Create definitions
+        var definition = GetDefine(type);
+
+        // Step 5: Verify definition
+        if (definition.VariableValues && (definition.VariableValueBuffer == null
+            || !definition.VariableValueBuffer.PropertyType.IsAssignableFrom(typeof(ReadOnlyCollection<string>))))
+        {
+            throw new InvalidOperationException(string.Format(Languages.Get("api_var_values_no_buffer"), type.FullName));
+        }
+
+        // Now begin registering
+        var intf = type.GetInterface(nameof(ICommand));
+
+        if (intf != typeof(ICommand))
+        {
+            throw ExceptionHelper.CommandNoInterface(type, nameof(ICommand));
+        }
+
+        if (attributes[0] is not ComplexCommandAttribute attribute)
+        {
+            throw new ArgumentException(string.Format(Languages.Get("api_command_invalid_attribute"), type.FullName), nameof(type));
+        }
+
+        _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
+
+        // Register all of its aliases
+        foreach (var attr in aliasAttr)
+        {
+            if (attr is CommandAliasAttribute alias)
+            {
+                _complexCommands.Add(alias.Alias.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public bool Any()
+    {
+        return _complexCommands.Count > 0;
     }
 }

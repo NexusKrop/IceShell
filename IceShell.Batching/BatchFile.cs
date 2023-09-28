@@ -13,13 +13,13 @@ using System.Linq;
 
 public class BatchFile : ICommandExecutor
 {
-    public BatchFile(IList<BatchLineCompound> lines, IDictionary<string, int> labels)
+    public BatchFile(IList<CommandSectionCompound> lines, IDictionary<string, int> labels)
     {
         _lines = lines;
         _labels = labels;
     }
 
-    private readonly IList<BatchLineCompound> _lines;
+    private readonly IList<CommandSectionCompound> _lines;
     private readonly IDictionary<string, int> _labels;
 
     public bool SupportsJump => true;
@@ -28,7 +28,7 @@ public class BatchFile : ICommandExecutor
 
     public static BatchFile Parse(IEnumerable<string> lines, CommandDispatcher dispatcher)
     {
-        var retVal = new List<BatchLineCompound>();
+        var retVal = new List<CommandSectionCompound>();
         var labels = new Dictionary<string, int>();
         var lineNum = 0;
 
@@ -39,7 +39,7 @@ public class BatchFile : ICommandExecutor
             // Double comments
             if (line.StartsWith("::"))
             {
-                retVal.Add(BatchLineCompound.Empty());
+                retVal.Add(CommandSectionCompound.Empty());
                 continue;
             }
 
@@ -47,11 +47,11 @@ public class BatchFile : ICommandExecutor
             if (line.StartsWith(':'))
             {
                 labels.Add(line[1..], lineNum);
-                retVal.Add(BatchLineCompound.Empty());
+                retVal.Add(CommandSectionCompound.Empty());
                 continue;
             }
 
-            retVal.Add(CommandDispatcher.ParseLine(line));
+            retVal.Add(dispatcher.ParseLine(line));
         }
 
         return new(retVal, labels);

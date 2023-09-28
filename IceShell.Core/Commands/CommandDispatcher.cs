@@ -3,12 +3,13 @@
 
 namespace IceShell.Core.Commands;
 
+using IceShell.Core.Api;
 using IceShell.Core.CLI.Languages;
 using IceShell.Core.Exceptions;
 using IceShell.Parsing;
 using NexusKrop.IceCube.Util.Enumerables;
-using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.CLI;
+using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
@@ -20,49 +21,55 @@ using NewCommandParser = Parsing.CommandParser;
 /// <summary>
 /// Provides a service to shells that parses and executes commands on its behalf.
 /// </summary>
-public class CommandDispatcher
+public class CommandDispatcher : ICommandDispatcher
 {
+    private readonly CommandManager _manager;
     private readonly IShell _shell;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandDispatcher"/> class.
     /// </summary>
     /// <param name="shell">The shell to act on behalf of.</param>
-    public CommandDispatcher(IShell shell)
+    /// <param name="registerManagerDefaults">If <see langword="true"/>, the default commands for the manager will be registered.</param>
+    public CommandDispatcher(IShell shell, bool registerManagerDefaults = true)
     {
         _shell = shell;
+        _manager = new CommandManager(registerManagerDefaults);
     }
+
+    /// <inheritdoc />
+    public ICommandManager CommandManager => _manager;
 
     /// <summary>
     /// Parses a single line of command or a call to external program.
     /// </summary>
     /// <param name="line">The line to parse.</param>
     /// <returns>The parsed BatchLine.</returns>
-    public static BatchLineCompound ParseLine(string line)
+    public CommandSectionCompound ParseLine(string line)
     {
         var statements = new LineParser().ParseLine(line);
 
-        var rawCompound = NewCommandParser.ParseCompound(statements, Shell.CommandManager.HasDefinition);
+        var rawCompound = NewCommandParser.ParseCompound(statements, CommandManager.HasDefinition);
 
-        var sysCompound = new List<BatchLine>();
+        var sysCompound = new List<CommandSection>();
 
         foreach (var state in rawCompound)
         {
             if (state.Type == SegmentType.File)
             {
-                sysCompound.Add(new BatchLine(new List<SyntaxStatement>(state.FileStatements!), state.NextAction));
+                sysCompound.Add(new CommandSection(new List<SyntaxStatement>(state.FileStatements!), state.NextAction));
             }
             else if (state.Type == SegmentType.Command)
             {
-                var definition = Shell.CommandManager.GetDefinition(state.Command!.Name)
+                var definition = CommandManager.GetDefinition(state.Command!.Name)
                     ?? throw new InvalidOperationException("Check parser, invalid command");
 
                 var argument = new CommandArgument(state.Command!, definition.Definition);
                 var result = argument.Parse();
 
-                var cmdInfo = new ParsedCommand(result, definition);
+                var cmdInfo = new CommandUnit(result, definition);
 
-                sysCompound.Add(new BatchLine(cmdInfo, state.Command!.Name, state.NextAction));
+                sysCompound.Add(new CommandSection(cmdInfo, state.Command!.Name, state.NextAction));
             }
         }
 
@@ -76,7 +83,7 @@ public class CommandDispatcher
     /// <param name="executor">Th executor to act on behalf of.</param>
     /// <returns>The return code of the commands. Returns zero if success.</returns>
     /// <exception cref="CommandFormatException">Action never ends, or other kinds of command failures.</exception>
-    public int Execute(BatchLineCompound compound, ICommandExecutor executor)
+    public int Execute(CommandSectionCompound compound, ICommandExecutor executor)
     {
         var inAction = false;
         var nextAction = SyntaxNextAction.None;
@@ -125,28 +132,28 @@ public class CommandDispatcher
     /// <summary>
     /// Executes the specified batch line.
     /// </summary>
-    /// <param name="line">The line to execute.</param>
+    /// <param name="section">The line to execute.</param>
     /// <param name="executor">The executor to act on behalf of.</param>
     /// <param name="context">The execution context.</param>
     /// <param name="outStream">The pipe out stream.</param>
     /// <returns>The exit code of the command or process; if failed to start external command, returns <c>-255</c>.</returns>
-    /// <exception cref="ArgumentException">The specified <see cref="BatchLine"/> is invalid.</exception>
+    /// <exception cref="ArgumentException">The specified <see cref="CommandSection"/> is invalid.</exception>
     /// <exception cref="CommandFormatException">The specified command was not found.</exception>
-    public int Execute(BatchLine line, ICommandExecutor executor, out TextReader? outStream, ExecutionContext? context = null)
+    public int Execute(CommandSection section, ICommandExecutor executor, out TextReader? outStream, ExecutionContext? context = null)
     {
-        if (string.IsNullOrWhiteSpace(line.Name))
+        if (string.IsNullOrWhiteSpace(section.Name))
         {
             outStream = null;
             return 0;
         }
 
-        if (line.IsCommand && line.Command != null)
+        if (section.IsCommand && section.Command != null)
         {
-            return Execute(line.Command, executor, context ?? ExecutionContext.Empty, out outStream);
+            return Execute(section.Command, executor, out outStream, context ?? ExecutionContext.Default);
         }
-        else if (line.Statements != null)
+        else if (section.Statements != null)
         {
-            var args = line.Statements.Select(x => x.Content);
+            var args = section.Statements.Select(x => x.Content);
 
             if (!args.Any())
             {
@@ -154,7 +161,7 @@ public class CommandDispatcher
                 return 0;
             }
 
-            var cmdName = line.Statements[0].Content;
+            var cmdName = section.Statements[0].Content;
             var searchResult = PathSearcher.GetSystemExecutableName(Path.Combine(Environment.CurrentDirectory, cmdName));
 
             if (searchResult == null || !File.Exists(searchResult))
@@ -183,7 +190,7 @@ public class CommandDispatcher
         }
         else
         {
-            throw new ArgumentException("Invalid batch line", nameof(line));
+            throw new ArgumentException("Invalid batch line", nameof(section));
         }
     }
 
@@ -193,9 +200,9 @@ public class CommandDispatcher
     /// <param name="command">The command to execute.</param>
     /// <param name="executor">The command executor to act on behalf of.</param>
     /// <param name="context">The context.</param>
-    /// <param name="pipeOut">The pipe output stream.</param>
+    /// <param name="outStream">The pipe output stream.</param>
     /// <returns>The exit code of the command.</returns>
-    public int Execute(ParsedCommand command, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeOut)
+    public int Execute(CommandUnit command, ICommandExecutor executor, out TextReader? outStream, ExecutionContext context)
     {
         var instance = (ICommand)Activator.CreateInstance(command.Command.Type)!;
 
@@ -236,7 +243,7 @@ public class CommandDispatcher
         }
 
         var retVal = instance.Execute(_shell, executor, context, out var pipeStream);
-        pipeOut = pipeStream;
+        outStream = pipeStream;
         return retVal;
     }
 }

@@ -4,19 +4,18 @@
 namespace IceShell.Core.Commands;
 
 using NexusKrop.IceShell.Core.Commands.Complex;
-using static NexusKrop.IceShell.Core.Commands.CommandManager;
 
 /// <summary>
 /// Represents a parsed command.
 /// </summary>
-public record ParsedCommand
+public record CommandUnit
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ParsedCommand"/> structure.
+    /// Initializes a new instance of the <see cref="CommandUnit"/> structure.
     /// </summary>
     /// <param name="parseResult">The argument parse result.</param>
     /// <param name="command">The command to execute.</param>
-    public ParsedCommand(ArgumentParseResult parseResult, ComplexCommandEntry command)
+    public CommandUnit(ArgumentParseResult parseResult, CommandEntry command)
     {
         ArgumentParseResult = parseResult;
         Command = command;
@@ -30,5 +29,5 @@ public record ParsedCommand
     /// <summary>
     /// Gets the command to execute.
     /// </summary>
-    public ComplexCommandEntry Command { get; set; }
+    public CommandEntry Command { get; set; }
 }

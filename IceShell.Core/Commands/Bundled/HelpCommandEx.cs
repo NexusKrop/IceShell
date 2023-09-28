@@ -33,19 +33,19 @@ public class HelpCommandEx : ICommand
 
         if (string.IsNullOrWhiteSpace(commandName))
         {
-            return ExecuteSummary();
+            return ExecuteSummary(shell);
         }
 
-        return ExecuteDetailed(commandName);
+        return ExecuteDetailed(shell, commandName);
     }
 
-    private static int ExecuteDetailed(string commandName)
+    private static int ExecuteDetailed(IShell shell, string commandName)
     {
-        var commandType = Shell.CommandManager.GetDefinition(commandName);
+        var commandType = shell.Dispatcher.CommandManager.GetDefinition(commandName);
 
         if (commandType == null)
         {
-            System.Console.WriteLine("No help entry for this command. Did you mean \"{0} /?\" or \"{0} --help\"?", commandName ?? "");
+            Console.WriteLine("No help entry for this command. Did you mean \"{0} /?\" or \"{0} --help\"?", commandName ?? "");
             return 1;
         }
 
@@ -55,28 +55,33 @@ public class HelpCommandEx : ICommand
         return 0;
     }
 
-    private int ExecuteSummary()
+    private static int ExecuteSummary(IShell shell)
     {
-        if (!Shell.CommandManager.CommandEntries.Any())
+        if (!shell.Dispatcher.CommandManager.Any())
         {
             System.Console.WriteLine("No registered commands.");
             return 0;
         }
 
-        System.Console.WriteLine("For more information on a specific command, type \"help <command>\"");
+        Console.WriteLine("For more information on a specific command, type \"help <command>\"");
 
         var grid = new Grid();
         grid.AddColumn();
         grid.AddColumn();
         grid.AddRow(" ", " ");
 
-        var keysEnumerable = Shell.CommandManager.CommandEntries.Keys;
+        var keysEnumerable = shell.Dispatcher.CommandManager.CommandAliases;
         var keys = new List<string>(keysEnumerable);
         keys.Sort();
 
         foreach (var x in keys)
         {
-            var item = Shell.CommandManager.CommandEntries[x];
+            var item = shell.Dispatcher.CommandManager.GetDefinition(x);
+
+            if (item == null)
+            {
+                continue;
+            }
 
             grid.AddRow(x, item.Description ?? "No description available.");
         }

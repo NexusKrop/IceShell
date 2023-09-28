@@ -15,8 +15,8 @@ public class CommandManagerTests
     public void HasDefinition_BasicFeature()
     {
         var manager = new CommandManager(false);
+        manager.Register(typeof(EchoCommandEx));
 
-        manager.RegisterComplex(typeof(EchoCommandEx));
         Assert.Multiple(() =>
         {
             Assert.That(manager.HasDefinition("echo"), Is.True);

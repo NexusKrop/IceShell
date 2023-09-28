@@ -4,6 +4,7 @@
 namespace IceShell.Core.Api;
 
 using IceShell.Core.CLI.Languages;
+using IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.CLI;
 using System;
 using System.Collections.Generic;
@@ -76,13 +77,13 @@ public class ModuleManager
     /// <summary>
     /// Initializes a modules. This finalizes the process of module startups.
     /// </summary>
-    public void InitializeModules()
+    public void InitializeModules(ICommandDispatcher dispatcher)
     {
         foreach (var module in _modules)
         {
             try
             {
-                module.Initialize();
+                module.Initialize(dispatcher);
             }
             catch (Exception ex)
             {

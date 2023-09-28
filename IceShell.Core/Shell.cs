@@ -9,7 +9,6 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Exceptions;
 using global::IceShell.Settings;
-using IceShell.Core.Commands;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Completion;
@@ -70,11 +69,6 @@ public class Shell : IShell
     }
 
     // TODO replace those global stuff with interfaces and instance properties
-
-    /// <summary>
-    /// Gets the global <see cref="CommandManager"/>.
-    /// </summary>
-    public static CommandManager CommandManager { get; } = new();
 
     /// <summary>
     /// Gets the global <see cref="ModuleManager"/>.
@@ -138,7 +132,7 @@ public class Shell : IShell
     {
         try
         {
-            var batchLine = CommandDispatcher.ParseLine(line);
+            var batchLine = Dispatcher.ParseLine(line);
 
             Dispatcher.Execute(batchLine, this);
         }
@@ -156,7 +150,7 @@ public class Shell : IShell
     }
 
     /// <inheritdoc />
-    public int Execute(BatchLineCompound compound, ICommandExecutor? actualExecutor = null)
+    public int Execute(CommandSectionCompound compound, ICommandExecutor? actualExecutor = null)
     {
         return Dispatcher.Execute(compound, actualExecutor ?? this);
     }
@@ -169,10 +163,10 @@ public class Shell : IShell
     public int RunInteractive()
     {
         ReadLine.HistoryEnabled = true;
-        ReadLine.AutoCompletionHandler = new ShellCompletionHandler(CommandManager, DIR_CACHE);
+        ReadLine.AutoCompletionHandler = new ShellCompletionHandler(Dispatcher.CommandManager, DIR_CACHE);
 
         ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "modules"));
-        ModuleManager.InitializeModules();
+        ModuleManager.InitializeModules(Dispatcher);
 
         // show date and time if allowed
         if (_settings.DisplayDateTimeOnStartUp)

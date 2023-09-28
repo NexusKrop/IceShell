@@ -9,24 +9,24 @@ using System.Collections.Generic;
 /// <summary>
 /// Represents a line of command.
 /// </summary>
-public record BatchLine
+public record CommandSection
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="BatchLine"/> record.
+    /// Initializes a new instance of the <see cref="CommandSection"/> record.
     /// </summary>
-    public BatchLine()
+    public CommandSection()
     {
         IsCommand = false;
         Name = string.Empty;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="BatchLine"/> record, with a parsed internal command.
+    /// Initializes a new instance of the <see cref="CommandSection"/> record, with a parsed internal command.
     /// </summary>
     /// <param name="parsedCommand">The parsed internal command.</param>
     /// <param name="commandName">The name of the command.</param>
     /// <param name="nextAction">The action to perform to the next command.</param>
-    public BatchLine(ParsedCommand parsedCommand, string commandName, SyntaxNextAction nextAction = SyntaxNextAction.None)
+    public CommandSection(CommandUnit parsedCommand, string commandName, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
         IsCommand = true;
         Command = parsedCommand;
@@ -35,12 +35,12 @@ public record BatchLine
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="BatchLine"/> record, with a list of statements to pass to
+    /// Initializes a new instance of the <see cref="CommandSection"/> record, with a list of statements to pass to
     /// an external program.
     /// </summary>
     /// <param name="statements">The list of statements containing the name of the command.</param>
     /// <param name="nextAction">The action to perform to the next command.</param>
-    public BatchLine(IList<SyntaxStatement> statements, SyntaxNextAction nextAction = SyntaxNextAction.None)
+    public CommandSection(IList<SyntaxStatement> statements, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
         IsCommand = false;
         Statements = statements;
@@ -66,7 +66,7 @@ public record BatchLine
     /// <summary>
     /// Gets the parsed command.
     /// </summary>
-    public ParsedCommand? Command { get; }
+    public CommandUnit? Command { get; }
 
     /// <summary>
     /// Gets the action to perform to the next command in the compound.

@@ -5,13 +5,12 @@ namespace IceShell.Batching;
 
 using IceShell.Batching.Commands;
 using IceShell.Core.Api;
-using NexusKrop.IceShell.Core;
 
 public class BatchingModule : IModule
 {
-    public void Initialize()
+    public void Initialize(ICommandDispatcher dispatcher)
     {
-        Shell.CommandManager.RegisterComplex(typeof(GotoCommand));
-        Shell.CommandManager.RegisterComplex(typeof(CallCommand));
+        dispatcher.CommandManager.Register(typeof(GotoCommand));
+        dispatcher.CommandManager.Register(typeof(CallCommand));
     }
 }

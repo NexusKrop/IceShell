@@ -36,5 +36,5 @@ public record ExecutionContext
     /// <summary>
     /// An empty <see cref="ExecutionContext"/>.
     /// </summary>
-    public static readonly ExecutionContext Empty = new(null, SyntaxNextAction.None);
+    public static readonly ExecutionContext Default = new(null, SyntaxNextAction.None);
 }

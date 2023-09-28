@@ -65,7 +65,7 @@ if (args.Length == 0)
 }
 else if (args.Length == 1)
 {
-    Shell.ModuleManager.InitializeModules();
+    Shell.ModuleManager.InitializeModules(shell.Dispatcher);
     shell.Execute(args[0]);
 }
 
