@@ -1,9 +1,10 @@
-﻿// Copyright (C) NexusKrop & contributors 2023
+// Copyright (C) NexusKrop & contributors 2023
 // See "COPYING.txt" for licence
 
 namespace NexusKrop.IceShell.Core.Completion;
 
 using NexusKrop.IceCube;
+using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Completion.Cache;
 using ReadLineReboot;

@@ -7,6 +7,7 @@ using IceShell.Core.CLI.Languages;
 using IceShell.Core.Exceptions;
 using IceShell.Parsing;
 using NexusKrop.IceCube;
+using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands.Complex;

@@ -11,6 +11,7 @@ using global::IceShell.Core.Exceptions;
 using global::IceShell.Settings;
 using IceShell.Core.Commands;
 using NexusKrop.IceCube;
+using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Completion;
 using NexusKrop.IceShell.Core.Completion.Cache;

@@ -9,7 +9,7 @@ using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Bundled;
 using global::IceShell.Core.Commands.Complex;
 using global::IceShell.Core.Exceptions;
-using NexusKrop.IceCube;
+using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.Commands.Bundled;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;

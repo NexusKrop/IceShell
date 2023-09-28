@@ -13,6 +13,7 @@ using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Exceptions;
+using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;

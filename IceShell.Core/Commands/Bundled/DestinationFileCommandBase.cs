@@ -9,6 +9,7 @@ using IceShell.Core.Exceptions;
 using Microsoft.Extensions.FileSystemGlobbing;
 using NexusKrop.IceCube;
 using NexusKrop.IceCube.Exceptions;
+using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
