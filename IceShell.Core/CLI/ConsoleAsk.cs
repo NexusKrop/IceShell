@@ -3,12 +3,9 @@
 
 namespace NexusKrop.IceShell.Core.CLI;
 
+using global::IceShell.Core.Api;
 using Spectre.Console;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Provides methods for providing interactive questions.
@@ -17,7 +14,7 @@ public static class ConsoleAsk
 {
     /// <summary>
     /// Asks the user for Yes or No, with the specified message. If user did not provide Yes or No, the question
-    /// is repeated.
+    /// is repeated indefinitely until the user provided a correct answer.
     /// </summary>
     /// <param name="message">The message.</param>
     /// <returns><see langword="true"/> if Yes, and <see langword="false"/> if No.</returns>
@@ -34,19 +31,22 @@ public static class ConsoleAsk
 
             Console.Write($"{message} (Y/N) ");
 
-            var key = Console.ReadKey();
+            var key = Console.ReadLine();
+
             Console.WriteLine();
 
-            if (key.Key == ConsoleKey.Y)
+            switch (SystemService.MatchYesNo(key ?? string.Empty))
             {
-                return true;
-            }
-            else if (key.Key == ConsoleKey.N)
-            {
-                return false;
-            }
+                case YesNoAnswer.Invalid:
+                    incorrectRun = true;
+                    continue;
 
-            incorrectRun = true;
+                case YesNoAnswer.Yes:
+                    return true;
+
+                case YesNoAnswer.No:
+                    return false;
+            }
         }
     }
 }
