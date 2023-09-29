@@ -22,11 +22,6 @@ public class ShellSettings
     public bool DisplayShellInfoOnStartUp { get; set; }
 
     /// <summary>
-    /// Gets or sets whether to use a custom, platform-agnostic (to user only) path system.
-    /// </summary>
-    public bool UseCustomPathSystem { get; set; }
-
-    /// <summary>
     /// Gets or sets the language file to use.
     /// </summary>
     public string Language { get; set; } = "en";
@@ -41,7 +36,6 @@ public class ShellSettings
 
         var data = new IniData();
         data["Shell"]["DisplayDateTimeOnStartup"] = DisplayDateTimeOnStartUp.ToString();
-        data["Shell"][nameof(UseCustomPathSystem)] = UseCustomPathSystem.ToString();
         data["Shell"][nameof(Language)] = Language;
         data["Shell"][nameof(DisplayShellInfoOnStartUp)] = DisplayShellInfoOnStartUp.ToString();
 
@@ -59,15 +53,12 @@ public class ShellSettings
 
         var data = parser.ReadFile(file);
 
-        var result = new ShellSettings
+        return new ShellSettings
         {
             // Add data here
             DisplayDateTimeOnStartUp = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]),
-            UseCustomPathSystem = bool.Parse(data["Shell"][nameof(UseCustomPathSystem)]),
             Language = data["Shell"][nameof(Language)],
             DisplayShellInfoOnStartUp = bool.Parse(data["Shell"][nameof(DisplayShellInfoOnStartUp)])
         };
-
-        return result;
     }
 }

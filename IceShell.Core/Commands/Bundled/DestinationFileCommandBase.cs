@@ -53,11 +53,11 @@ public abstract class DestinationFileCommandBase : ICommand
 
         for (int i = 0; i < Buffer.Count; i++)
         {
-            var str = PathSearcher.ShellToSystem(Buffer[i]);
+            var str = Buffer[i];
 
             if (i == Buffer.Count - 1)
             {
-                destination = Path.GetFullPath(PathSearcher.ShellToSystem(str));
+                destination = Path.GetFullPath(str);
                 continue;
             }
 

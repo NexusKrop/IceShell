@@ -65,7 +65,7 @@ public class DeleteFileCommandEx : ICommand
 
         if (Targets.Count == 1)
         {
-            searchDir = Path.GetDirectoryName(PathSearcher.ShellToSystem(Targets[0]))!;
+            searchDir = Path.GetDirectoryName(Targets[0])!;
         }
         else
         {
@@ -82,7 +82,7 @@ public class DeleteFileCommandEx : ICommand
         // Match via file glob
         var matcher = new Matcher();
 
-        Targets.ForEach(x => matcher.AddInclude(PathSearcher.ShellToSystem(x)));
+        Targets.ForEach(x => matcher.AddInclude(x));
 
         var matchingResult = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(searchDir ?? Environment.CurrentDirectory)));
 

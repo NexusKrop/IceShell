@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.FileSystem;
 
 using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Exceptions;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ public static class PathSearcher
 
     private static readonly IReadOnlySet<string> PATHS;
 
-    internal static bool UseCustomPathSystem { get; set; }
+    internal const bool UseCustomPathSystem = false;
 
 #pragma warning disable S3963
     // This is a big chunk of complex code that SonarLint is too dumb to detect.
@@ -96,10 +97,10 @@ public static class PathSearcher
     }
 
     /// <summary>
-    /// Throws <see cref="FormatException"/> if the specified path is not a valid file name in shell path format.
+    /// Throws <see cref="CommandFormatException"/> if the specified path is not a valid path to a file.
     /// </summary>
-    /// <param name="path">The path to check</param>
-    /// <exception cref="FormatException">The specified path is invalid.</exception>
+    /// <param name="path">The path to check.</param>
+    /// <exception cref="CommandFormatException">The specified path is invalid.</exception>
     public static void EnsureFileName(string path)
     {
         CheckPath(path);
@@ -109,82 +110,11 @@ public static class PathSearcher
             return;
         }
 
-#pragma warning disable S3267
-        // I do not see if LINQ is here anywhere near clear and concise.
-        foreach (var ch in Path.GetInvalidFileNameChars())
+        // This is some clean and precise ;)
+        if (Array.Exists(Path.GetInvalidFileNameChars(), path.Contains))
         {
-            if (path.Contains(ch))
-            {
-                throw new FormatException(Languages.Get("generic_path_invalid"));
-            }
+            throw new CommandFormatException(Languages.Get("generic_path_invalid"));
         }
-#pragma warning restore S3267
-    }
-
-    /// <summary>
-    /// Converts a platform-dependent system path to its shell path equivalent.
-    /// </summary>
-    /// <param name="path">The system path to convert from.</param>
-    /// <returns>The shell path equivalent of the specified system path.</returns>
-    public static string SystemToShell(string path)
-    {
-        if (!UseCustomPathSystem || OperatingSystem.IsWindows())
-        {
-            return path;
-        }
-
-        if (OperatingSystem.IsLinux() && path.StartsWith('/'))
-        {
-            return SystemToShell($"sys:{path}");
-        }
-
-        return path.Replace(Path.DirectorySeparatorChar, SHELL_SEPARATOR);
-    }
-
-    /// <summary>
-    /// Converts a shell path to its platform-dependent equivalent.
-    /// </summary>
-    /// <param name="path">The shell path to convert from.</param>
-    /// <returns>The platform-dependent equivalent of the specified shell path.</returns>
-    public static string ShellToSystem(string? path)
-    {
-        var actualPath = path ?? "";
-
-        if (!UseCustomPathSystem && (!actualPath.Contains('\\') && !actualPath.StartsWith('@')))
-        {
-            if (path == $"~{Path.DirectorySeparatorChar}")
-            {
-                return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            }
-
-            return actualPath;
-        }
-
-        CheckPath(actualPath);
-
-        if (path == "~\\")
-        {
-            return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        }
-
-        if (OperatingSystem.IsWindows())
-        {
-            return actualPath;
-        }
-
-        if (OperatingSystem.IsLinux() && actualPath.StartsWith("sys:\\"))
-        {
-            return ShellToSystem(actualPath.Remove(0, 4));
-        }
-
-        if (actualPath.StartsWith('~'))
-        {
-            var realDestination = actualPath.Remove(0, 1);
-            return ShellToSystem(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                realDestination));
-        }
-
-        return actualPath.Replace(SHELL_SEPARATOR, Path.DirectorySeparatorChar);
     }
 
     /// <summary>

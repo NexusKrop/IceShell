@@ -8,6 +8,7 @@ using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
 using global::IceShell.Core.Exceptions;
+using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
@@ -30,8 +31,9 @@ public class MakeDirectoryCommand : ICommand
     {
         pipeStream = null;
 
-        var dir = PathSearcher.ShellToSystem(DirectoryName);
+        var dir = DirectoryName;
 
+        Checks.ArgNotNull(DirectoryName);
         CommandChecks.NothingExists(dir);
 
         try

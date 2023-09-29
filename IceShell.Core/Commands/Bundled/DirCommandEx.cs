@@ -228,7 +228,7 @@ internal class DirCommandEx : ICommand
     private void Execute(bool revealHidden)
     {
         // Print DOS-like table title, sans the volume information (too complex).
-        Console.WriteLine(Languages.Get("dir_directory_of"), PathSearcher.SystemToShell(_dir));
+        Console.WriteLine(Languages.Get("dir_directory_of"), _dir);
         Console.WriteLine();
 
         var windows = OperatingSystem.IsWindows();

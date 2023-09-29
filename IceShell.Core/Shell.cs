@@ -187,7 +187,7 @@ public class Shell : IShell
 
         while (!_exit)
         {
-            var prompt = this.Prompt.Replace("%P", PathSearcher.SystemToShell(Environment.CurrentDirectory), true, null)
+            var prompt = this.Prompt.Replace("%P", Environment.CurrentDirectory, true, null)
                 .Replace("%G", ">", true, null)
                 .Replace("%L", "<", true, null);
 

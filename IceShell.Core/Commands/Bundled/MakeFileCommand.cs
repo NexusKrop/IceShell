@@ -8,6 +8,7 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Exceptions;
+using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
@@ -28,10 +29,11 @@ public class MakeFileCommand : ICommand
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
         pipeStream = null;
-        var actual = PathSearcher.ShellToSystem(Name);
+        var actual = Name;
 
-        CommandChecks.FileNotExists(actual);
-        CommandChecks.DirectoryNotExists(actual);
+        Checks.ArgNotNull(actual);
+        CommandChecks.FileNotExists(actual!);
+        CommandChecks.DirectoryNotExists(actual!);
 
         try
         {

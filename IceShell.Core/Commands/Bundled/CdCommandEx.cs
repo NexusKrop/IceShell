@@ -37,11 +37,11 @@ public class CdCommandEx : ICommand
         if (string.IsNullOrWhiteSpace(Destination))
         {
             // Print current directory if no current directory is provided
-            Console.WriteLine(PathSearcher.SystemToShell(Environment.CurrentDirectory));
+            Console.WriteLine(Environment.CurrentDirectory);
             return 0;
         }
 
-        var target = PathSearcher.ShellToSystem(Destination ?? "");
+        var target = Destination ?? "";
 
         if (!Directory.Exists(target))
         {
