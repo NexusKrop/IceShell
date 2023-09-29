@@ -12,6 +12,9 @@ An alternative, cross-platform shell written in C#, and inspired by DOS.
 
 ### Release builds
 
+Before you download a release build, please do note that this project is in early development, and thus developer builds are much
+newer than release builds.
+
 Releases can be found at [the releases page](https://github.com/NexusKrop/IceShell/releases).
 
 ### Development builds
