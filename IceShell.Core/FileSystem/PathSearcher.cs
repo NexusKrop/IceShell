@@ -73,20 +73,25 @@ public static class PathSearcher
     }
 
     /// <summary>
-    /// Determines whether the specified shell path points to the root of a drive or the file system
-    /// (depending on the operating system).
+    /// Determines whether the specified shell path points to the root of a file system.
     /// </summary>
     /// <param name="path">The path to check.</param>
-    /// <returns><see langword="true"/> if the specified shell path points to the root of a drive or the file system; otherwise, <see langword="false"/>.</returns>
-    public static bool IsRootedShell(string path)
+    /// <remarks>
+    /// <para>
+    /// In Windows, each volume is considered a file system; in POSIX systems, there is only one file system being considered and that
+    /// is the root volume.
+    /// </para>
+    /// </remarks>
+    /// <returns><see langword="true"/> if the specified shell path points to the root of a file system; otherwise, <see langword="false"/>.</returns>
+    public static bool IsRooted(ReadOnlySpan<char> path)
     {
         if (OperatingSystem.IsWindows())
         {
-            return Path.IsPathRooted(path);
+            return char.IsAsciiLetter(path[0]) && path[1] == ':' && path[2] == Path.DirectorySeparatorChar;
         }
         else
         {
-            return path.StartsWith(SHELL_SEPARATOR);
+            return path[0] == Path.DirectorySeparatorChar;
         }
     }
 
@@ -99,7 +104,7 @@ public static class PathSearcher
     {
         CheckPath(path);
 
-        if (IsRootedShell(path))
+        if (IsRooted(path))
         {
             return;
         }
