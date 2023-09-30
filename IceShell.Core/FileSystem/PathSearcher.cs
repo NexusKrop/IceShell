@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 /// <summary>
 /// Provides utilities for a custom path system.
@@ -71,6 +72,74 @@ public static class PathSearcher
         {
             throw new FormatException(Languages.Get("generic_path_invalid"));
         }
+    }
+
+    /// <summary>
+    /// Evaluate a path and expands all environment variables within.
+    /// </summary>
+    /// <param name="path">The path to expand.</param>
+    /// <param name="lenient">If <see langword="true"/>, unknown or malformed environment variables will not cause <see cref="CommandFormatException"/> to be thrown.</param>
+    /// <returns>The expanded path.</returns>
+    public static string ExpandPath(ReadOnlySpan<char> path, bool lenient = false)
+    {
+        var inVariable = false;
+        var builder = new StringBuilder();
+        var varBuilder = new StringBuilder();
+
+        for (int i = 0; i < path.Length; i++)
+        {
+            var x = path[i];
+
+            if (x == '%')
+            {
+                if (!inVariable)
+                {
+                    // Begin an environment variable.
+                    inVariable = true;
+                    continue;
+                }
+                else
+                {
+                    // End an environment variable.
+                    inVariable = false;
+
+                    // Get variable name and clear builder to reuse.
+                    var variableName = varBuilder.ToString();
+                    varBuilder.Clear();
+
+                    if (!string.IsNullOrEmpty(variableName))
+                    {
+                        var envVar = Environment.GetEnvironmentVariable(variableName);
+
+                        if (envVar == null && !lenient)
+                        {
+                            throw ExceptionHelper.UnknownEnvironmentVariable(variableName);
+                        }
+
+                        builder.Append(envVar ?? string.Empty);
+                        continue;
+                    }
+
+                    // If otherwise, this is hereby escaped.
+                }
+            }
+
+            if (inVariable)
+            {
+                varBuilder.Append(x);
+            }
+            else
+            {
+                builder.Append(x);
+            }
+        }
+
+        if (inVariable && !lenient)
+        {
+            throw ExceptionHelper.WithMessage("generic_env_variable_never_end");
+        }
+
+        return builder.ToString();
     }
 
     /// <summary>

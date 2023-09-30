@@ -30,7 +30,12 @@ public class Languages
     /// <returns></returns>
     public LanguageFile Current()
     {
-        return LanguageFiles[_shellSettings.Language];
+        if (!LanguageFiles.TryGetValue(_shellSettings.Language, out var value))
+        {
+            return LanguageFile.Empty;
+        }
+
+        return value;
     }
 
     /// <summary>

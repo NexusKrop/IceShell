@@ -1,5 +1,6 @@
 namespace IceShell.Tests;
 
+using IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.FileSystem;
 
 public class PathSearcherTests
@@ -86,5 +87,51 @@ public class PathSearcherTests
     public void IsRooted_RootFileSystemChild()
     {
         Assert.That(PathSearcher.IsRooted("/bin/sh"), Is.True);
+    }
+
+    [Test]
+    public void ExpandPath_Variable()
+    {
+        var testVar = "ICESHELL_TEST_000_EXPANDPATH";
+        var testName = "IceShell000Test";
+
+        Environment.SetEnvironmentVariable(testName, testVar);
+
+        var expanded = PathSearcher.ExpandPath("%IceShell000Test%");
+
+        Assert.That(expanded, Is.EqualTo(testVar));
+    }
+
+    [Test]
+    public void ExpandPath_Escape()
+    {
+        Assert.That(PathSearcher.ExpandPath("%%"),
+            Is.EqualTo("%"));
+    }
+
+    [Test]
+    public void ExpandPath_Complex()
+    {
+        var testVar = "ICESHELL_TEST_001_COMPLEX";
+        var testName = "IceShell001Test";
+
+        Environment.SetEnvironmentVariable(testName, testVar);
+
+        Assert.That(PathSearcher.ExpandPath("%IceShell001Test%%%"),
+            Is.EqualTo("ICESHELL_TEST_001_COMPLEX%"));
+    }
+
+    [Test]
+    public void ExpandPath_NonLenient_PathNeverEnds()
+    {
+        Assert.Throws<CommandFormatException>(() => PathSearcher.ExpandPath("%"));
+    }
+
+    [Test]
+    public void ExpandPath_NonLenient_NonExistingVariable()
+    {
+        Environment.SetEnvironmentVariable("IceShell002Test", null);
+
+        Assert.Throws<CommandFormatException>(() => PathSearcher.ExpandPath("%IceShell002Test%", false));
     }
 }
