@@ -243,6 +243,7 @@ public class CommandDispatcher : ICommandDispatcher
             if (!option.HasValue)
             {
                 option.Property.SetValue(instance, true);
+                continue;
             }
 
             option.Property.SetValue(instance, obj);
