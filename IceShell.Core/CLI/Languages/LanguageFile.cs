@@ -11,6 +11,11 @@ using Kajabity.Tools.Java;
 public class LanguageFile
 {
     /// <summary>
+    /// Gets an empty language file.
+    /// </summary>
+    public static readonly LanguageFile Empty = new(new JavaProperties());
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="LanguageFile"/> class.
     /// </summary>
     /// <param name="properties">The properties file.</param>

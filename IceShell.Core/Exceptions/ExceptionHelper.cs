@@ -12,6 +12,10 @@ internal static class ExceptionHelper
     public static Exception WithName(string message, char name) => new CommandFormatException(string.Format(message, name));
     public static Exception WithName(string message, string? name) => new CommandFormatException(string.Format(message, name ?? "null"));
 
+    public static Exception WithMessage(string message) => new CommandFormatException(Languages.Get(message));
+
+    public static Exception UnknownEnvironmentVariable(string name) => new CommandFormatException(string.Format(Languages.Get("generic_unresolved_env_variable"), name));
+
     public static Exception BadDirectory(string directory) => new CommandFormatException(Languages.GenericBadDirectory(directory));
     public static Exception UnauthorizedWrite() => new CommandFormatException(Languages.Get("generic_unauthorized_write"));
 
