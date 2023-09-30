@@ -9,6 +9,7 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Exceptions;
 using global::IceShell.Settings;
+using global::IceShell.Parsing;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Completion;
@@ -18,6 +19,7 @@ using ReadLineReboot;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.ComponentModel;
 
 /// <summary>
 /// Represents the command-line interactive shell, the core of IceShell.
@@ -102,13 +104,13 @@ public class Shell : IShell
     /// <param name="fileName">The name of the executable. Subdirectories are prohibited.</param>
     /// <param name="args">The arguments to pass to the executable.</param>
     /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
-    public static bool ExecuteOnPath(string fileName, string[]? args)
+    public static int ExecuteOnPath(string fileName, IEnumerable<string>? args)
     {
         var actual = PathSearcher.SearchExecutable(fileName);
 
         if (actual == null)
         {
-            return false;
+            return -255;
         }
 
         var startInfo = new ProcessStartInfo(fileName)
@@ -118,9 +120,15 @@ public class Shell : IShell
 
         args?.ForEach(startInfo.ArgumentList.Add);
 
-        Process.Start(startInfo)?.WaitForExit();
+        var proc = Process.Start(startInfo);
 
-        return true;
+        if (proc == null)
+        {
+            return -500;
+        }
+
+        proc.WaitForExit();
+        return proc.ExitCode;
     }
 
     /// <summary>
@@ -139,6 +147,11 @@ public class Shell : IShell
         catch (CommandFormatException ex)
         {
             ConsoleOutput.PrintShellError(string.Format("{0}", ex.Message));
+        }
+        catch (Win32Exception x) when (OperatingSystem.IsWindows() && x.NativeErrorCode == 740)
+        {
+            // 740 = Operating requires elevation
+            ConsoleOutput.PrintShellError(string.Format(Languages.Get("shell_require_elevation"), Languages.Get("shell_windows_elevation_help")));
         }
         catch (Exception ex)
         {
@@ -213,5 +226,18 @@ public class Shell : IShell
     public void Jump(string label)
     {
         throw new NotSupportedException();
+    }
+
+    /// <inheritdoc />
+    public int LocalExecute(CommandSection section)
+    {
+        if (section.Statements == null)
+        {
+            return ExecuteOnPath(section.Name, null);
+        }
+
+        return ExecuteOnPath(section.Name, section.Statements
+            .Select(x => x.Content)
+            .Where(x => x != section.Name));
     }
 }

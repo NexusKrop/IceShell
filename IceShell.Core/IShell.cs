@@ -41,4 +41,11 @@ public interface IShell : ICommandExecutor
     /// <param name="actualExecutor">The executor to have this instance act on behalf of. If <see langword="null"/>, this instance will execute commands on its own behalf.</param>
     /// <returns>The return code of the command. Zero means success.</returns>
     int Execute(CommandSectionCompound compound, ICommandExecutor? actualExecutor = null);
+
+    /// <summary>
+    /// Executes a local file or external command.
+    /// </summary>
+    /// <param name="section">The section to execute.</param>
+    /// <returns>The exit code.</returns>
+    int LocalExecute(CommandSection section);
 }

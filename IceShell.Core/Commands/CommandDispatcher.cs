@@ -99,7 +99,23 @@ public class CommandDispatcher : ICommandDispatcher
                 lastOutStream = null;
             }
 
-            var exitCode = Execute(line, executor, out var pipeStream, context);
+            int exitCode;
+            TextReader? pipeStream = null;
+
+            if (line.IsCommand)
+            {
+                exitCode = Execute(line, executor, out pipeStream, context);
+            }
+            else
+            {
+                if (nextAction == SyntaxNextAction.Redirect)
+                {
+                    // TODO Not implemented
+                    throw new NotImplementedException();
+                }
+
+                exitCode = _shell.LocalExecute(line);
+            }
 
             if (exitCode != 0 && inAction)
             {
