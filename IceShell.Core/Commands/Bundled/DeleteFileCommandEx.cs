@@ -82,7 +82,7 @@ public class DeleteFileCommandEx : ICommand
         // Match via file glob
         var matcher = new Matcher();
 
-        Targets.ForEach(x => matcher.AddInclude(x));
+        Targets.ForEach(x => matcher.AddInclude(PathSearcher.ExpandVariables(x)));
 
         var matchingResult = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(searchDir ?? Environment.CurrentDirectory)));
 

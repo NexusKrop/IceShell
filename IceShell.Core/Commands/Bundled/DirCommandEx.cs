@@ -145,7 +145,7 @@ internal class DirCommandEx : ICommand
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
         pipeStream = null;
-        var realTarget = TargetDir ?? Directory.GetCurrentDirectory();
+        var realTarget = PathSearcher.ExpandVariables(TargetDir) ?? Directory.GetCurrentDirectory();
 
         // All chunked out ones need fix
 

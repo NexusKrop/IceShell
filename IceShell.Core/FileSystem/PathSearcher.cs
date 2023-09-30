@@ -80,7 +80,7 @@ public static class PathSearcher
     /// <param name="path">The path to expand.</param>
     /// <param name="lenient">If <see langword="true"/>, unknown or malformed environment variables will not cause <see cref="CommandFormatException"/> to be thrown.</param>
     /// <returns>The expanded path.</returns>
-    public static string ExpandPath(ReadOnlySpan<char> path, bool lenient = false)
+    public static string ExpandVariables(ReadOnlySpan<char> path, bool lenient = false)
     {
         var inVariable = false;
         var builder = new StringBuilder();

@@ -62,12 +62,12 @@ public class CommandArgument
 
             if (!optionDef.HasValue && option.Value != null)
             {
-                throw ExceptionHelper.WithName(Languages.Get("argument_value_required"), option.Identifier);
+                throw ExceptionHelper.WithName(Languages.Get("argument_option_no_value"), option.Identifier);
             }
 
             if (optionDef.HasValue && option.Value == null)
             {
-                throw ExceptionHelper.WithName(Languages.Get("argument_option_no_value"), option.Identifier);
+                throw ExceptionHelper.WithName(Languages.Get("argument_value_required"), option.Identifier);
             }
 
             result.Option(optionDef, option.Value);

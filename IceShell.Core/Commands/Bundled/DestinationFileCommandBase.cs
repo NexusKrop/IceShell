@@ -53,7 +53,7 @@ public abstract class DestinationFileCommandBase : ICommand
 
         for (int i = 0; i < Buffer.Count; i++)
         {
-            var str = Buffer[i];
+            var str = PathSearcher.ExpandVariables(Buffer[i]);
 
             if (i == Buffer.Count - 1)
             {

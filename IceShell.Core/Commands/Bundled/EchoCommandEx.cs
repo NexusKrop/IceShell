@@ -7,6 +7,7 @@ using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.FileSystem;
 using System;
 
 /// <summary>
@@ -25,6 +26,12 @@ public class EchoCommandEx : ICommand
     [Value("message", position: 0, required: false)]
     public string? Message { get; set; }
 
+    /// <summary>
+    /// Whether to expand environment variables.
+    /// </summary>
+    [Option('E', false)]
+    public bool ExpandVariables { get; set; }
+
     /// <inheritdoc/>
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
@@ -32,7 +39,14 @@ public class EchoCommandEx : ICommand
 
         if (context.Retrieval == null)
         {
-            Console.WriteLine(Message ?? Environment.NewLine);
+            var finalText = Message;
+
+            if (ExpandVariables && Message != null)
+            {
+                finalText = PathSearcher.ExpandVariables(Message, true);
+            }
+
+            Console.WriteLine(finalText ?? Environment.NewLine);
         }
         else
         {

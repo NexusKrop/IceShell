@@ -97,7 +97,7 @@ public class PathSearcherTests
 
         Environment.SetEnvironmentVariable(testName, testVar);
 
-        var expanded = PathSearcher.ExpandPath("%IceShell000Test%");
+        var expanded = PathSearcher.ExpandVariables("%IceShell000Test%");
 
         Assert.That(expanded, Is.EqualTo(testVar));
     }
@@ -105,7 +105,7 @@ public class PathSearcherTests
     [Test]
     public void ExpandPath_Escape()
     {
-        Assert.That(PathSearcher.ExpandPath("%%"),
+        Assert.That(PathSearcher.ExpandVariables("%%"),
             Is.EqualTo("%"));
     }
 
@@ -117,14 +117,14 @@ public class PathSearcherTests
 
         Environment.SetEnvironmentVariable(testName, testVar);
 
-        Assert.That(PathSearcher.ExpandPath("%IceShell001Test%%%"),
+        Assert.That(PathSearcher.ExpandVariables("%IceShell001Test%%%"),
             Is.EqualTo("ICESHELL_TEST_001_COMPLEX%"));
     }
 
     [Test]
     public void ExpandPath_NonLenient_PathNeverEnds()
     {
-        Assert.Throws<CommandFormatException>(() => PathSearcher.ExpandPath("%"));
+        Assert.Throws<CommandFormatException>(() => PathSearcher.ExpandVariables("%"));
     }
 
     [Test]
@@ -132,6 +132,6 @@ public class PathSearcherTests
     {
         Environment.SetEnvironmentVariable("IceShell002Test", null);
 
-        Assert.Throws<CommandFormatException>(() => PathSearcher.ExpandPath("%IceShell002Test%", false));
+        Assert.Throws<CommandFormatException>(() => PathSearcher.ExpandVariables("%IceShell002Test%", false));
     }
 }

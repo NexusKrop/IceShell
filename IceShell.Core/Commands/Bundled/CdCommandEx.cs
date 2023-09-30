@@ -41,7 +41,7 @@ public class CdCommandEx : ICommand
             return 0;
         }
 
-        var target = Destination ?? "";
+        var target = PathSearcher.ExpandVariables(Destination) ?? "";
 
         if (!Directory.Exists(target))
         {

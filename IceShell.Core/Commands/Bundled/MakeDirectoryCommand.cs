@@ -31,7 +31,7 @@ public class MakeDirectoryCommand : ICommand
     {
         pipeStream = null;
 
-        var dir = DirectoryName;
+        var dir = PathSearcher.ExpandVariables(DirectoryName);
 
         Checks.ArgNotNull(DirectoryName);
         CommandChecks.NothingExists(dir);

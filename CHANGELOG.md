@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for redirecting output of an internal command to another internal command.
 - Added support for `DIR` command to emit machine readable format.
 - Added an option in the configuration to display shell interpreter version info on start-up.
+- Added API support for expanding environment variables.
 
 ### Changed
 
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed `[red][/]` formatting being displayed to the user.
+- Fixed an issue resulted in external commands no longer working.
 - `DIR` command will now fail if a directory was specified, and the specified directory does not exist.
 
 ## [v0.1.0-alpha]

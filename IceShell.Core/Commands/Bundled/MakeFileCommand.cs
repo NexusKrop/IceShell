@@ -29,7 +29,7 @@ public class MakeFileCommand : ICommand
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
         pipeStream = null;
-        var actual = Name;
+        var actual = PathSearcher.ExpandVariables(Name);
 
         Checks.ArgNotNull(actual);
         CommandChecks.FileNotExists(actual!);

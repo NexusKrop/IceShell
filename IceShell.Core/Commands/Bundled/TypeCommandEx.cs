@@ -6,7 +6,9 @@ namespace NexusKrop.IceShell.Core.Commands.Bundled;
 using global::IceShell.Core;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
+using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.FileSystem;
 
 /// <summary>
 /// Defines a command that prints out the contents of a file.
@@ -29,9 +31,15 @@ public class TypeCommandEx : ICommand
     /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
-        CommandChecks.FileExists(ArgFile!);
+        if (string.IsNullOrWhiteSpace(ArgFile))
+        {
+            throw ExceptionHelper.ExceptedString();
+        }
 
-        ExecuteStreamed(ArgFile!, out pipeStream);
+        var realFile = PathSearcher.ExpandVariables(ArgFile!);
+        CommandChecks.FileExists(realFile);
+
+        ExecuteStreamed(realFile, out pipeStream);
 
         return 0;
     }

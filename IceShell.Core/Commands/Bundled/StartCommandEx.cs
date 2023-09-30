@@ -9,6 +9,7 @@ using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
+using NexusKrop.IceShell.Core.FileSystem;
 using System.ComponentModel;
 
 /// <summary>
@@ -33,14 +34,16 @@ public class StartCommandEx : ICommand
             throw new CommandFormatException(Languages.RequiresValue(0));
         }
 
-        if (!File.Exists(Target))
+        var realTarget = PathSearcher.ExpandVariables(Target);
+
+        if (!File.Exists(realTarget))
         {
-            throw new CommandFormatException(Languages.InvalidFile(Target!));
+            throw new CommandFormatException(Languages.InvalidFile(realTarget));
         }
 
         try
         {
-            IceCube.Util.Shell.ShellExecute(Target);
+            IceCube.Util.Shell.ShellExecute(realTarget);
         }
         catch (Win32Exception x) when (x.NativeErrorCode == 1155)
         {
