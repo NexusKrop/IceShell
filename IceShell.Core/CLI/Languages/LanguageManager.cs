@@ -81,7 +81,7 @@ public class Languages
     /// Gets the message of specified name from the current language file.
     /// </summary>
     /// <param name="messageName">The name of the message.</param>
-    /// <returns>The message string.</returns>
+    /// <returns>The message string. If the message does not exist, returns the <paramref name="messageName"/> instead.</returns>
     public static string Get(string messageName)
     {
         return Instance.Current().Get(messageName);

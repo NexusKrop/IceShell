@@ -29,8 +29,14 @@ public class LanguageFile
 
     /// <inheritdoc cref="Languages.Get(string)" />
     /// <param name="key">The key of the message.</param>
+    /// <returns>The message string. If the message does not exist, returns the <paramref name="key"/> instead.</returns>
     public string Get(string key)
     {
-        return _properties[key];
+        if (!_properties.TryGetValue(key, out var value))
+        {
+            return key;
+        }
+
+        return value;
     }
 }
