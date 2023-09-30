@@ -141,7 +141,7 @@ public class LineParser
             if (!_currentEscape)
             {
                 // Escape character.
-                if (ch == EscapeChar)
+                if (ch == EscapeChar && _currentQuote)
                 {
                     _currentEscape = true;
                     continue;

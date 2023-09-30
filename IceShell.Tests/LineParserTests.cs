@@ -33,4 +33,13 @@ public class LineParserTests
 
         Assert.That(retVal, Is.Empty);
     }
+
+    [Test]
+    public void Parser_NoEscapeOutsideQuote()
+    {
+        var parser = new LineParser();
+        var retVal = parser.ParseLine("Hey\\Hey");
+
+        Assert.That(retVal[0], Is.EqualTo(new SyntaxStatement("Hey\\Hey", false)));
+    }
 }
