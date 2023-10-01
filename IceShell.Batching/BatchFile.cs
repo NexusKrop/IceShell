@@ -4,6 +4,7 @@
 namespace IceShell.Batching;
 
 using IceShell.Core;
+using IceShell.Core.Api;
 using IceShell.Core.CLI.Languages;
 using IceShell.Core.Commands;
 using IceShell.Core.Exceptions;
@@ -26,7 +27,7 @@ public class BatchFile : ICommandExecutor
 
     public int CurrentLine { get; private set; }
 
-    public static BatchFile Parse(IEnumerable<string> lines, CommandDispatcher dispatcher)
+    public static BatchFile Parse(IEnumerable<string> lines, ICommandDispatcher dispatcher)
     {
         var retVal = new List<CommandSectionCompound>();
         var labels = new Dictionary<string, int>();
