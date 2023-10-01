@@ -53,12 +53,34 @@ public class ShellSettings
 
         var data = parser.ReadFile(file);
 
+        return LoadFrom(data);
+    }
+
+    /// <summary>
+    /// Creates an instance of <see cref="ShellSettings"/> with the specified <see cref="IniData"/>.
+    /// </summary>
+    /// <param name="data">The data to read from.</param>
+    /// <returns>An instance of <see cref="ShellSettings"/> based on the specified <see cref="IniData"/>.</returns>
+    public static ShellSettings LoadFrom(IniData data)
+    {
         return new ShellSettings
         {
             // Add data here
-            DisplayDateTimeOnStartUp = bool.Parse(data["Shell"]["DisplayDateTimeOnStartup"]),
-            Language = data["Shell"][nameof(Language)],
-            DisplayShellInfoOnStartUp = bool.Parse(data["Shell"][nameof(DisplayShellInfoOnStartUp)])
+            DisplayDateTimeOnStartUp = bool.Parse(GetSettingSafe(data, "Shell", "DisplayDateTimeOnStartup", "false")),
+            Language = GetSettingSafe(data, "Shell", nameof(Language), "en"),
+            DisplayShellInfoOnStartUp = bool.Parse(GetSettingSafe(data, "Shell", nameof(DisplayShellInfoOnStartUp), "false"))
         };
+    }
+
+    private static string GetSettingSafe(IniData data, string key, string name, string defaultValue)
+    {
+        var section = data[key];
+
+        if (!section.ContainsKey(name))
+        {
+            section[name] = defaultValue;
+        }
+
+        return section[name];
     }
 }
