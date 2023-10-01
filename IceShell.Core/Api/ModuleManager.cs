@@ -5,6 +5,7 @@ namespace IceShell.Core.Api;
 
 using IceShell.Core.CLI.Languages;
 using NexusKrop.IceShell.Core.CLI;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -12,11 +13,22 @@ using System.Reflection;
 /// <summary>
 /// Provides module management interface and service for shell environments.
 /// </summary>
-public class ModuleManager
+public class ModuleManager : IModuleManager
 {
     private readonly List<IModule> _modules = new();
+    private readonly ICommandDispatcher _commandDispatcher;
 
-    internal void LoadModules(string directory)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModuleManager"/> class.
+    /// </summary>
+    /// <param name="commandDispatcher">The dispatcher.</param>
+    public ModuleManager(ICommandDispatcher commandDispatcher)
+    {
+        _commandDispatcher = commandDispatcher;
+    }
+
+    /// <inheritdoc />
+    public void LoadDirectory(string directory)
     {
         if (!Directory.Exists(directory))
         {
@@ -28,7 +40,7 @@ public class ModuleManager
         {
             try
             {
-                LoadModuleFrom(file);
+                LoadAssembly(file);
             }
             catch (BadImageFormatException)
             {
@@ -44,22 +56,13 @@ public class ModuleManager
         }
     }
 
-    /// <summary>
-    /// Registers the specified module.
-    /// </summary>
-    /// <param name="module">The module to register.</param>
+    /// <inheritdoc />
     public void AddModule(IModule module)
     {
         _modules.Add(module);
     }
 
-    /// <summary>
-    /// Attempts to create the instance of the specified module, and then registers the module.
-    /// </summary>
-    /// <param name="type">The type of the module to register.</param>
-    /// <remarks>
-    /// This method fails silently if the type specified is not a module.
-    /// </remarks>
+    /// <inheritdoc />
     public void AddModule(Type type)
     {
         var moduleI = type.GetInterface(nameof(IModule));
@@ -76,32 +79,20 @@ public class ModuleManager
     /// <summary>
     /// Calls the initialization function for all modules. This finalizes the process of module initialization process.
     /// </summary>
+    [Obsolete("Use Initialize instead.")]
     public void InitializeModules(ICommandDispatcher dispatcher)
     {
-        foreach (var module in _modules)
-        {
-            try
-            {
-                module.Initialize(dispatcher);
-            }
-            catch (Exception ex)
-            {
-                ConsoleOutput.WriteLineColour(string.Format(Languages.Get("init_module_fail"), module.GetType().Name), ConsoleColor.Red);
-                ConsoleOutput.PrintShellError(ex.ToString());
-            }
-        }
+        Initialize();
     }
 
     /// <summary>
     /// Loads all modules in the specified assembly.
     /// </summary>
     /// <param name="assembly">The assembly.</param>
+    [Obsolete("Use LoadAssembly(Assembly) instead.")]
     public void LoadModuleFrom(Assembly assembly)
     {
-        foreach (var type in assembly.GetTypes())
-        {
-            AddModule(type);
-        }
+        LoadAssembly(assembly);
     }
 
     /// <summary>
@@ -111,7 +102,14 @@ public class ModuleManager
     /// <remarks>
     /// This method throws same exceptions as of <see cref="Assembly.LoadFrom(string)"/>.
     /// </remarks>
+    [Obsolete("Use LoadAssembly(string) instead.")]
     public void LoadModuleFrom(string file)
+    {
+        LoadAssembly(file);
+    }
+
+    /// <inheritdoc/>
+    public void LoadAssembly(string file)
     {
 #pragma warning disable S3885
         // This was never intended to be anywhere near predictable
@@ -119,6 +117,32 @@ public class ModuleManager
         var assembly = Assembly.LoadFrom(file);
 #pragma warning restore S3885
 
-        LoadModuleFrom(assembly);
+        LoadAssembly(assembly);
+    }
+
+    /// <inheritdoc/>
+    public void LoadAssembly(Assembly assembly)
+    {
+        foreach (var type in assembly.GetTypes())
+        {
+            AddModule(type);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Initialize()
+    {
+        foreach (var module in _modules)
+        {
+            try
+            {
+                module.Initialize(_commandDispatcher);
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLineInterpolated($"[red]{string.Format(Languages.Get("init_module_fail"), module.GetType().Name)}[/]");
+                ConsoleOutput.PrintShellError(ex.ToString());
+            }
+        }
     }
 }

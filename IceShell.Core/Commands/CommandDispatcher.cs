@@ -40,11 +40,7 @@ public class CommandDispatcher : ICommandDispatcher
     /// <inheritdoc />
     public ICommandManager CommandManager => _manager;
 
-    /// <summary>
-    /// Parses a single line of command or a call to external program.
-    /// </summary>
-    /// <param name="line">The line to parse.</param>
-    /// <returns>The parsed BatchLine.</returns>
+    /// <inheritdoc />
     public CommandSectionCompound ParseLine(string line)
     {
         var statements = new LineParser().ParseLine(line);

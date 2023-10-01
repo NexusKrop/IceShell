@@ -4,6 +4,7 @@
 namespace IceShell.Core.Api;
 
 using IceShell.Core.Commands;
+using IceShell.Core.Exceptions;
 
 /// <summary>
 /// Represents a command dispatcher.
@@ -43,4 +44,12 @@ public interface ICommandDispatcher
     /// <param name="context">The execution context of this execution.</param>
     /// <returns>The return code of the section. Usually, <c>0</c> means success.</returns>
     int Execute(CommandUnit command, ICommandExecutor executor, out TextReader? outStream, ExecutionContext context);
+
+    /// <summary>
+    /// Parse the specified line of command to a <see cref="CommandSectionCompound"/>.
+    /// </summary>
+    /// <param name="line">The line to parse from.</param>
+    /// <returns>A new instance of <see cref="CommandSectionCompound"/>.</returns>
+    /// <exception cref="CommandFormatException">A malformed or invalid command was found. For more information, consult the message of the exception.</exception>
+    CommandSectionCompound ParseLine(string line);
 }

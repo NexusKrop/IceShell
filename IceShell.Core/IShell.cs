@@ -3,6 +3,7 @@
 
 namespace IceShell.Core;
 
+using IceShell.Core.Api;
 using IceShell.Core.Commands;
 
 /// <summary>
@@ -18,7 +19,12 @@ public interface IShell : ICommandExecutor
     /// <summary>
     /// Gets the command dispatcher for this instance.
     /// </summary>
-    CommandDispatcher Dispatcher { get; }
+    ICommandDispatcher Dispatcher { get; }
+
+    /// <summary>
+    /// Gets the module manager for this instance.
+    /// </summary>
+    IModuleManager ModuleManager { get; }
 
     /// <summary>
     /// Instructs the active shell process to stop receiving new commands after the current one

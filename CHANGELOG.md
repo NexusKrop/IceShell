@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improved support for recognising values that are POSIX paths, instead of integrated command option arguments.
 - End of options statement (`--`) can no longer be quoted.
+- Escaping is now disallowed outside quoted strings.
 
 ### Fixed
 

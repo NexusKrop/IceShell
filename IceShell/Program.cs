@@ -30,9 +30,9 @@ if (File.Exists(configPath))
     }
     catch (Exception ex)
     {
-        System.Console.WriteLine("Unable to load config file!");
-        System.Console.WriteLine(ex);
-        System.Console.WriteLine();
+        Console.WriteLine("Unable to load config file!");
+        Console.WriteLine(ex);
+        Console.WriteLine();
     }
 }
 
@@ -57,7 +57,7 @@ Languages.SetInstanceConfig(sh);
 
 var shell = new Shell(sh);
 
-Shell.ModuleManager.AddModule(new BatchingModule());
+shell.ModuleManager.AddModule(new BatchingModule());
 
 if (args.Length == 0)
 {
@@ -65,7 +65,7 @@ if (args.Length == 0)
 }
 else if (args.Length == 1)
 {
-    Shell.ModuleManager.InitializeModules(shell.Dispatcher);
+    shell.ModuleManager.Initialize();
     shell.Execute(args[0]);
 }
 

@@ -46,12 +46,6 @@ public class Shell : IShell
 
     private static readonly DirCache DIR_CACHE = new(Environment.CurrentDirectory);
 
-    /// <inheritdoc />
-    public string Prompt { get; set; }
-
-    /// <inheritdoc />
-    public CommandDispatcher Dispatcher { get; }
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Shell"/> class, with the default settings.
     /// </summary>
@@ -67,15 +61,18 @@ public class Shell : IShell
     {
         _settings = settings;
         Prompt = DefaultPrompt;
-        Dispatcher = new(this);
+        Dispatcher = new CommandDispatcher(this);
+        ModuleManager = new ModuleManager(Dispatcher);
     }
 
-    // TODO replace those global stuff with interfaces and instance properties
+    /// <inheritdoc />
+    public IModuleManager ModuleManager { get; }
 
-    /// <summary>
-    /// Gets the global <see cref="ModuleManager"/>.
-    /// </summary>
-    public static ModuleManager ModuleManager { get; } = new();
+    /// <inheritdoc />
+    public string Prompt { get; set; }
+
+    /// <inheritdoc />
+    public ICommandDispatcher Dispatcher { get; }
 
     /// <inheritdoc />
     public bool SupportsJump => false;
@@ -178,8 +175,8 @@ public class Shell : IShell
         ReadLine.HistoryEnabled = true;
         ReadLine.AutoCompletionHandler = new ShellCompletionHandler(Dispatcher.CommandManager, DIR_CACHE);
 
-        ModuleManager.LoadModules(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "modules"));
-        ModuleManager.InitializeModules(Dispatcher);
+        ModuleManager.LoadDirectory(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "modules"));
+        ModuleManager.Initialize();
 
         // show date and time if allowed
         if (_settings.DisplayDateTimeOnStartUp)
