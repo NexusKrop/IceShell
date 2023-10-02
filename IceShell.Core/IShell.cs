@@ -54,4 +54,12 @@ public interface IShell : ICommandExecutor
     /// <param name="section">The section to execute.</param>
     /// <returns>The exit code.</returns>
     int LocalExecute(CommandSection section);
+
+    /// <summary>
+    /// Executes an external command and redirect its output.
+    /// </summary>
+    /// <param name="section">The section to execute.</param>
+    /// <param name="output">The output stream reader.</param>
+    /// <returns>The exit code.</returns>
+    int LocalExecuteRedirect(CommandSection section, out TextReader? output);
 }

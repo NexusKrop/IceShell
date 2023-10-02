@@ -129,6 +129,45 @@ public class Shell : IShell
     }
 
     /// <summary>
+    /// Executes an executable located in <c>PATH</c>.
+    /// </summary>
+    /// <param name="fileName">The name of the executable. Subdirectories are prohibited.</param>
+    /// <param name="args">The arguments to pass to the executable.</param>
+    /// <param name="reader">The reader to read the output.</param>
+    /// <returns><see langword="true"/> if a valid executable was found; otherwise, <see langword="false"/>.</returns>
+    public static int ExecuteOnPathRedirect(string fileName, IEnumerable<string>? args, out TextReader? reader)
+    {
+        var actual = PathSearcher.SearchExecutable(fileName);
+
+        if (actual == null)
+        {
+            reader = null;
+            return -255;
+        }
+
+        var startInfo = new ProcessStartInfo(fileName)
+        {
+            WorkingDirectory = Environment.CurrentDirectory,
+            RedirectStandardOutput = true
+        };
+
+        args?.ForEach(startInfo.ArgumentList.Add);
+
+        var proc = Process.Start(startInfo);
+
+        if (proc == null)
+        {
+            reader = null;
+            return -500;
+        }
+
+        proc.WaitForExit();
+
+        reader = proc.StandardOutput;
+        return proc.ExitCode;
+    }
+
+    /// <summary>
     /// Parses and then executes the specified user input.
     /// </summary>
     /// <param name="line">The input.</param>
@@ -236,5 +275,19 @@ public class Shell : IShell
         return ExecuteOnPath(section.Name, section.Statements
             .Select(x => x.Content)
             .Where(x => x != section.Name));
+    }
+
+    /// <inheritdoc/>
+    public int LocalExecuteRedirect(CommandSection section, out TextReader? output)
+    {
+        if (section.Statements == null)
+        {
+            return ExecuteOnPathRedirect(section.Name, null, out output);
+        }
+
+        return ExecuteOnPathRedirect(section.Name, section.Statements
+            .Select(x => x.Content)
+            .Where(x => x != section.Name),
+            out output);
     }
 }

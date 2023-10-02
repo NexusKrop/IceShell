@@ -104,13 +104,27 @@ public class CommandDispatcher : ICommandDispatcher
             }
             else
             {
+                // TODO: Output from last command to standard input to next command.
+                // See https://github.com/NexusKrop/IceShell/issues/14.
+
                 if (nextAction == SyntaxNextAction.Redirect)
                 {
-                    // TODO Not implemented
-                    throw new NotImplementedException();
-                }
+                    exitCode = _shell.LocalExecuteRedirect(line, out var output);
 
-                exitCode = _shell.LocalExecute(line);
+                    if (output == null)
+                    {
+                        // In this case, the Shell failed to launch the process (see Shell.ExecuteOnPathRedirect).
+                        // We return -1000 to indicate failure in this case.
+
+                        exitCode = -1000;
+                    }
+
+                    pipeStream = output;
+                }
+                else
+                {
+                    exitCode = _shell.LocalExecute(line);
+                }
             }
 
             if (exitCode != 0 && inAction)
