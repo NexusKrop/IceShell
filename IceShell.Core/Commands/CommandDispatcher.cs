@@ -82,7 +82,12 @@ public class CommandDispatcher : ICommandDispatcher
     public int Execute(CommandSectionCompound compound, ICommandExecutor executor)
     {
         var inAction = false;
+
+        // This nextAction variable is the NextAction of the *previous* command.
+        // For the NextAction for the current command, use context.NextAction.
         var nextAction = SyntaxNextAction.None;
+
+        // The redirected standard output of the last command.
         TextReader? lastOutStream = null;
 
         foreach (var line in compound)
@@ -95,7 +100,12 @@ public class CommandDispatcher : ICommandDispatcher
                 lastOutStream = null;
             }
 
-            int exitCode;
+            // This default value (-2000) indicates that the entire routine below somehow did not run or was
+            // interrupted.
+            //
+            // This is only useful in diagnostics if the process *did not start*! If the process did start,
+            // the process it self can return -2000! Please do not assert this.
+            int exitCode = -2000;
             TextReader? pipeStream = null;
 
             if (line.IsCommand)
@@ -104,26 +114,33 @@ public class CommandDispatcher : ICommandDispatcher
             }
             else
             {
-                // TODO: Output from last command to standard input to next command.
-                // See https://github.com/NexusKrop/IceShell/issues/14.
+                var startInfo = Executive.CreateStartInfo(line);
 
-                if (nextAction == SyntaxNextAction.Redirect)
+                // RedirectTo: Redirect from last section to this section.
+                var redirectTo = inAction && nextAction == SyntaxNextAction.Redirect && context.Retrieval != null;
+
+                // RedirectFrom: Redirect from this section to next section.
+                var redirectFrom = context.NextAction == SyntaxNextAction.Redirect;
+
+                startInfo.RedirectStandardOutput = redirectFrom;
+                startInfo.RedirectStandardInput = redirectTo;
+
+                var process = Process.Start(startInfo)
+                    ?? throw new InvalidOperationException("Failed to create process.");
+
+                // The redirection of the standard input from last command.
+                if (redirectTo)
                 {
-                    exitCode = _shell.LocalExecuteRedirect(line, out var output);
-
-                    if (output == null)
-                    {
-                        // In this case, the Shell failed to launch the process (see Shell.ExecuteOnPathRedirect).
-                        // We return -1000 to indicate failure in this case.
-
-                        exitCode = -1000;
-                    }
-
-                    pipeStream = output;
+                    process.StandardInput.Write(context.Retrieval!.ReadToEnd());
+                    context.Retrieval.Dispose();
                 }
-                else
+
+                process.WaitForExit();
+
+                // The redirection of the standard output from this command.
+                if (redirectFrom)
                 {
-                    exitCode = _shell.LocalExecute(line);
+                    pipeStream = process.StandardOutput;
                 }
             }
 

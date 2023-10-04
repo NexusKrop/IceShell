@@ -278,7 +278,7 @@ public class Shell : IShell
     }
 
     /// <inheritdoc/>
-    public int LocalExecuteRedirect(CommandSection section, out TextReader? output)
+    public int LocalExecuteRedirectOut(CommandSection section, out TextReader? output)
     {
         if (section.Statements == null)
         {
