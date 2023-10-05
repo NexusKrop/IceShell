@@ -22,6 +22,9 @@ public static class PathSearcher
     /// </summary>
     public const char SHELL_SEPARATOR = '\\';
 
+    internal const string ComFileExtensionFormat = "{0}.com";
+    internal const string ExeFileExtensionFormat = "{0}.exe";
+
     private static readonly IReadOnlySet<string> PATHS;
 
     internal const bool UseCustomPathSystem = false;
@@ -190,12 +193,39 @@ public static class PathSearcher
     /// Gets the name of the executable file of the specified name.
     /// </summary>
     /// <param name="name">The name.</param>
-    /// <returns>The name of the executable file.</returns>
-    public static string GetSystemExecutableName(string name)
+    /// <returns>The name of the executable file, or <see langword="null" /> if none were found.</returns>
+    /// <remarks>
+    /// <para>
+    /// On Windows, this command searches for an executable based on the following order (of extension):
+    /// <list type="bullet">
+    ///     <item><c>.exe</c></item>
+    ///     <item><c>.com</c></item>
+    /// </list>
+    /// If none of above exists, this method returns <see langword="null" /> (as files without extension names
+    /// are not considered executable type in Windows).
+    /// </para>
+    /// <para>
+    /// On all other operating systems, this method returns the name exactly.
+    /// </para>
+    /// </remarks>
+    public static string? GetSystemExecutableName(string name)
     {
         if (OperatingSystem.IsWindows() && !Path.HasExtension(name))
         {
-            return string.Format("{0}.exe", name);
+            var exeFile = string.Format(ExeFileExtensionFormat, name);
+            var comFile = string.Format(ComFileExtensionFormat, name);
+
+            if (File.Exists(exeFile))
+            {
+                return exeFile;
+            }
+
+            if (File.Exists(comFile))
+            {
+                return comFile;
+            }
+
+            return null;
         }
 
         return name;
