@@ -148,6 +148,14 @@ public class CommandDefinition
         return builder.ToString();
     }
 
+    /// <summary>
+    /// Registers a new option to this definition.
+    /// </summary>
+    /// <param name="name">The specifier of the option.</param>
+    /// <param name="hasValue">If <see langword="true"/>, the option is a value option; otherwise, it is a switch option.</param>
+    /// <param name="property">The property to bind with the option.</param>
+    /// <param name="required">If <see langword="true"/>, the existence of this option will be enforced.</param>
+    /// <returns>This instance (for chaining purposes).</returns>
     public CommandDefinition Option(char name, bool hasValue, PropertyInfo property, bool required = false)
     {
         Option(new(name, hasValue, property, required));
@@ -155,6 +163,11 @@ public class CommandDefinition
         return this;
     }
 
+    /// <summary>
+    /// Registers a new option to this definition.
+    /// </summary>
+    /// <param name="option">The definition of the option to register.</param>
+    /// <returns>This instance (for chaining purposes).</returns>
     public CommandDefinition Option(ComplexOptionDefinition option)
     {
         Options.Add(option.ShortName, option);
@@ -193,7 +206,7 @@ public class CommandDefinition
     /// Instructs the parsing routine that checks for required arguments will be done by the command rather than
     /// the parsing routine, and the parsing routine should only check options.
     /// </summary>
-    /// <returns>The current <see cref="ComplexArgument"/> instance.</returns>
+    /// <returns>The current <see cref="CommandDefinition"/> instance.</returns>
     public CommandDefinition VarValues()
     {
         VariableValues = true;
@@ -201,10 +214,10 @@ public class CommandDefinition
     }
 
     /// <summary>
-    /// Instructs the parsing routine that that the first variable will be a greedy string value, and all others
+    /// Instructs the parsing routine that the first variable will be a greedy string value, and all others
     /// will not be parsed.
     /// </summary>
-    /// <returns>The current <see cref="ComplexArgument"/> instance.</returns>
+    /// <returns>The current <see cref="CommandDefinition"/> instance.</returns>
     public CommandDefinition Greedy()
     {
         GreedyString = true;
