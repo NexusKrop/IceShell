@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for `DIR` command to emit machine readable format.
 - Added an option in the configuration to display shell interpreter version info on start-up.
 - Added API support for expanding environment variables.
+- Added support for `CTRL` + `C` interruption.
+  - When a process launched from the shell is currently running, IceShell either sends `SIGTERM` on Linux (if configured to do so) or kills the process in other cases.
+  - Otherwise, the shell exits immediately.
 
 ### Changed
 

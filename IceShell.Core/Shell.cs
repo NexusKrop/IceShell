@@ -234,7 +234,7 @@ public class Shell : IShell
         // Add an empty line afterwards
         Console.WriteLine();
 
-        while (!_exit)
+        while (!_exit && !Executive.Interrupt)
         {
             var prompt = this.Prompt.Replace("%P", Environment.CurrentDirectory, true, null)
                 .Replace("%G", ">", true, null)

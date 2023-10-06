@@ -135,6 +135,7 @@ public class CommandDispatcher : ICommandDispatcher
                     context.Retrieval.Dispose();
                 }
 
+                Executive.WatchProcess(process);
                 process.WaitForExit();
 
                 // The redirection of the standard output from this command.

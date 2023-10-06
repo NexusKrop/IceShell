@@ -22,6 +22,12 @@ public class ShellSettings
     public bool DisplayShellInfoOnStartUp { get; set; }
 
     /// <summary>
+    /// Gets or sets whether the shell will attempt to terminate the current subprocess instead of
+    /// killing it whenever possible.
+    /// </summary>
+    public bool TerminateUponInterrupt { get; set; }
+
+    /// <summary>
     /// Gets or sets the language file to use.
     /// </summary>
     public string Language { get; set; } = "en";

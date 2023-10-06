@@ -2,6 +2,7 @@
 // See "COPYING.txt" for licence
 
 using IceShell.Batching;
+using IceShell.Core;
 using IceShell.Core.CLI.Languages;
 using IceShell.Settings;
 using NexusKrop.IceShell.Core;
@@ -54,6 +55,7 @@ if (sh == null)
 
 Languages.Instance.Load();
 Languages.SetInstanceConfig(sh);
+Executive.Attach();
 
 var shell = new Shell(sh);
 
