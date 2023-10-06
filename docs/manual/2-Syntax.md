@@ -1,8 +1,12 @@
 # Syntax
 
-The IceShell syntax is inspired by Windows Command Prompt and MS-DOS.
+The IceShell syntax is inspired by Windows Command Prompt and MS-DOS. All internal commands uses this syntax unless otherwise noted.
 
-The Command Syntax is used for all commands that is bundled with IceShell. Overall, a command that uses all syntaxes looks like this:
+External commands does not use this syntax. For detailed information regarding their own syntax please try append `/?`, `-?`, `--help` after the name of that
+external command. IceShell does not translate between syntaxes for this purpose; everything IceShell does when calling external commands are just to parse your input to
+list of statements, search for the external command, and pass the parsed statements to the external command.
+
+The entire syntax looks like the following example:
 
 ```plain
 command /O /V:value /Q:"quoted value" -- value0 value1 value2
@@ -19,6 +23,8 @@ If an option was quoted (note: this does not refer to value options with a quote
 ```text
 "/O:value"
 ```
+
+All options after the 'end of options statement' (`--`) are ignored and passed to commands as values.
 
 ### Value Options
 

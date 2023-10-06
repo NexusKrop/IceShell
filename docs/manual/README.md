@@ -3,8 +3,9 @@
 This is the October 2023 edition of the IceShell Reference documentation.
 
 0. [Introduction](0-Introduction.md)
-1. [Syntax](1-Syntax.md)
-2. [Built-in Commands](2-BuiltIn-Commands.md)
+1. [Definitions](1-Definitions.md)
+2. [Syntax](2-Syntax.md)
+3. [Built-in Commands](3-BuiltIn-Commands.md)
 
 - [Appendix A: Security](Appendix-A-Security.md)
 
