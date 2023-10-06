@@ -6,6 +6,7 @@ using IceShell.Core;
 using IceShell.Core.CLI.Languages;
 using IceShell.Settings;
 using NexusKrop.IceShell.Core;
+using ReadLineReboot;
 using Spectre.Console;
 
 if (args.Length > 1)
@@ -61,14 +62,17 @@ var shell = new Shell(sh);
 
 shell.ModuleManager.AddModule(new BatchingModule());
 
+var retCode = -255;
+
 if (args.Length == 0)
 {
-    return shell.RunInteractive();
+    retCode = shell.RunInteractive();
 }
 else if (args.Length == 1)
 {
     shell.ModuleManager.Initialize();
-    return shell.Execute(args[0]);
+    retCode = shell.Execute(args[0]);
 }
 
-return -255;
+Executive.Exit(retCode);
+return retCode;

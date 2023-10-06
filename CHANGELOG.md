@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for `CTRL` + `C` interruption.
   - When a process launched from the shell is currently running, IceShell either sends `SIGTERM` on Linux (if configured to do so) or kills the process in other cases.
   - Otherwise, the shell exits immediately.
+- Added support for saving and restoring command history.
+- Added `SIGTERM` handling support for GNU/Linux.
 
 ### Changed
 
@@ -29,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - End of options statement (`--`) can no longer be quoted.
 - Escaping is now disallowed outside quoted strings.
 - `DIR` command will now fail if a directory was specified, and the specified directory does not exist.
+- Command history is now limited 100 items. 
 
 ### Fixed
 
