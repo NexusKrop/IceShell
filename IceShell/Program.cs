@@ -55,7 +55,7 @@ if (sh == null)
 
 Languages.Instance.Load();
 Languages.SetInstanceConfig(sh);
-Executive.Attach();
+Executive.Attach(sh);
 
 var shell = new Shell(sh);
 
@@ -68,7 +68,7 @@ if (args.Length == 0)
 else if (args.Length == 1)
 {
     shell.ModuleManager.Initialize();
-    shell.Execute(args[0]);
+    return shell.Execute(args[0]);
 }
 
 return -255;

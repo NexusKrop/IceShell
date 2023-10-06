@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Addressed an issue resulted in Spectre.Console mark-ups no longer rendered properly in error reporting.
 - Addressed an issue resulted in external commands no longer working.
+- Addressed an issue where `-255` is always returned (instead of the exit code of the command executed) when the `iceshell` executable is used to execute command rather than launching the interactive shell.
 
 ## [v0.1.0-alpha]
 
