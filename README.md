@@ -8,6 +8,10 @@
 
 An alternative, cross-platform shell written in C#, and inspired by DOS.
 
+## Usage
+
+See the [IceShell Reference](docs\manual\README.md). Alternatively, type `help` in the IceShell.
+
 ## Installation
 
 ### Release builds
