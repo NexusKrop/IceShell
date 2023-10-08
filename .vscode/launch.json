@@ -11,9 +11,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/IceShell/bin/Debug/net7.0/IceShell.dll",
+            "program": "${workspaceFolder}/src/IceShell/bin/Debug/net7.0/IceShell.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/IceShell",
+            "cwd": "${workspaceFolder}/src/IceShell",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "externalTerminal",
             "stopAtEntry": false
