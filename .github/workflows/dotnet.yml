@@ -21,14 +21,14 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/IceShell.sln
     - name: Build
-      run: dotnet build --no-restore --property:VersionPrefix=72.72.${{ github.run_number }} --version-suffix cibuild --configuration Debug
+      run: dotnet build src/IceShell.sln --no-restore --property:VersionPrefix=72.72.${{ github.run_number }} --version-suffix cibuild --configuration Debug
     - name: Test
-      run: dotnet test --no-build --verbosity normal --property:CollectCoverage=true
+      run: dotnet test src/IceShell.sln --no-build --verbosity normal --property:CollectCoverage=true
     - name: Package Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
         name: build-bin
-        path: IceShell/bin/Debug/net7.0
+        path: src/IceShell/bin/Debug/net7.0
         if-no-files-found: warn
