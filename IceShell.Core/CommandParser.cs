@@ -10,6 +10,7 @@ using System.Text;
 /// <summary>
 /// Provides command parsing infrastructure to interactive shells.
 /// </summary>
+[Obsolete("Use IceShell.Parsing infrastructure instead.")]
 public class CommandParser
 {
     /// <summary>
@@ -141,7 +142,7 @@ public class CommandParser
     {
         if (!CanRead())
         {
-            throw new CommandFormatException(Languages.Get("reader_excepts_string"));
+            throw new CommandFormatException(LangMessage.Get("reader_excepts_string"));
         }
 
         var builder = new StringBuilder();
@@ -217,7 +218,7 @@ public class CommandParser
 
         if (Peek() != DOUBLE_QUOTE)
         {
-            throw new CommandFormatException(Languages.Get("reader_excepts_begin_of_quote"));
+            throw new CommandFormatException(LangMessage.Get("reader_excepts_begin_of_quote"));
         }
 
         var builder = new StringBuilder();
@@ -230,7 +231,7 @@ public class CommandParser
         {
             if (!CanRead())
             {
-                throw new CommandFormatException(Languages.Get("reader_quoted_string_never_ends"));
+                throw new CommandFormatException(LangMessage.Get("reader_quoted_string_never_ends"));
             }
 
             var c = Read();

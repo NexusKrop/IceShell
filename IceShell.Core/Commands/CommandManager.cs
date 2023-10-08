@@ -185,7 +185,7 @@ public class CommandManager : ICommandManager
 
         if (attributes.Length != 1)
         {
-            throw new ArgumentException(Languages.FormatMessage("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName ?? type.Name), nameof(type));
+            throw new ArgumentException(LangMessage.GetFormat("api_more_than_one_attribute", nameof(ComplexCommandAttribute), type.FullName ?? type.Name), nameof(type));
         }
 
         // Step 2: Search platform attributes
@@ -207,7 +207,7 @@ public class CommandManager : ICommandManager
         if (definition.VariableValues && (definition.VariableValueBuffer == null
             || !definition.VariableValueBuffer.PropertyType.IsAssignableFrom(typeof(ReadOnlyCollection<string>))))
         {
-            throw new InvalidOperationException(string.Format(Languages.Get("api_var_values_no_buffer"), type.FullName));
+            throw new InvalidOperationException(LangMessage.GetFormat("api_var_values_no_buffer", type.FullName ?? "<null>"));
         }
 
         // Now begin registering
@@ -220,7 +220,7 @@ public class CommandManager : ICommandManager
 
         if (attributes[0] is not ComplexCommandAttribute attribute)
         {
-            throw new ArgumentException(string.Format(Languages.Get("api_command_invalid_attribute"), type.FullName), nameof(type));
+            throw new ArgumentException(LangMessage.GetFormat("api_command_invalid_attribute", type.FullName ?? "<null>"), nameof(type));
         }
 
         _complexCommands.Add(attribute.Name.ToUpperInvariant(), new(type, platforms.ToArray(), definition, attribute.Description));

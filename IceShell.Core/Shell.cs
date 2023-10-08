@@ -187,7 +187,7 @@ public class Shell : IShell
         catch (Win32Exception x) when (OperatingSystem.IsWindows() && x.NativeErrorCode == 740)
         {
             // 740 = Operating requires elevation
-            ConsoleOutput.PrintShellError(string.Format(Languages.Get("shell_require_elevation"), Languages.Get("shell_windows_elevation_help")));
+            ConsoleOutput.PrintShellError(string.Format(LangMessage.Get("shell_require_elevation"), LangMessage.Get("shell_windows_elevation_help")));
         }
         catch (Exception ex)
         {
@@ -222,13 +222,13 @@ public class Shell : IShell
         {
             var time = DateTime.Now;
 
-            Console.WriteLine(Languages.Get("shell_current_date"), time.ToShortDateString());
-            Console.WriteLine(Languages.Get("shell_current_time"), time.ToShortTimeString());
+            Console.WriteLine(LangMessage.Get("shell_current_date"), time.ToShortDateString());
+            Console.WriteLine(LangMessage.Get("shell_current_time"), time.ToShortTimeString());
         }
 
         if (_settings.DisplayShellInfoOnStartUp)
         {
-            Console.WriteLine(Languages.Get("ver_line_0"), AppVersion);
+            Console.WriteLine(LangMessage.Get("ver_line_0"), AppVersion);
         }
 
         // Add an empty line afterwards

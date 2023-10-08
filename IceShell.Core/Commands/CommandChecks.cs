@@ -3,7 +3,6 @@
 
 namespace IceShell.Core.Commands;
 
-using IceShell.Core.CLI.Languages;
 using IceShell.Core.Exceptions;
 
 /// <summary>
@@ -19,7 +18,7 @@ public static class CommandChecks
     {
         if (!File.Exists(file))
         {
-            throw ExceptionHelper.WithName(Languages.Get("generic_file_not_found"), file);
+            throw ExceptionHelper.FileNotFound(file);
         }
     }
 
@@ -31,7 +30,7 @@ public static class CommandChecks
     {
         if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
         {
-            throw ExceptionHelper.WithName(Languages.Get("generic_directory_not_found"), directory);
+            throw ExceptionHelper.BadDirectory(directory ?? "<null>");
         }
     }
 
@@ -54,7 +53,7 @@ public static class CommandChecks
     {
         if (File.Exists(file))
         {
-            throw ExceptionHelper.WithName(Languages.Get("generic_file_exists"), file);
+            throw ExceptionHelper.FileAlreadyExists(file);
         }
     }
 
@@ -66,7 +65,7 @@ public static class CommandChecks
     {
         if (Directory.Exists(directory))
         {
-            throw ExceptionHelper.WithName(Languages.Get("generic_directory_exists"), directory);
+            throw ExceptionHelper.DirectoryAlreadyExists(directory);
         }
     }
 }

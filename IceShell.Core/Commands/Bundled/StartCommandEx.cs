@@ -8,6 +8,7 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Exceptions;
+using NexusKrop.IceCube.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System.ComponentModel;
@@ -31,15 +32,12 @@ public class StartCommandEx : ICommand
 
         if (Target == null)
         {
-            throw new CommandFormatException(Languages.RequiresValue(0));
+            throw ExceptionHelper.RequiresValue(0);
         }
 
         var realTarget = PathSearcher.ExpandVariables(Target);
 
-        if (!File.Exists(realTarget))
-        {
-            throw new CommandFormatException(Languages.InvalidFile(realTarget));
-        }
+        CommandChecks.FileExists(realTarget);
 
         try
         {
@@ -47,7 +45,7 @@ public class StartCommandEx : ICommand
         }
         catch (Win32Exception x) when (x.NativeErrorCode == 1155)
         {
-            throw new CommandFormatException(Languages.Get("start_bad_assoc"));
+            throw new CommandFormatException(LangMessage.Get("start_bad_assoc"));
         }
 
         return 0;

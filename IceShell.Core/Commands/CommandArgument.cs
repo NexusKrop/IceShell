@@ -57,17 +57,17 @@ public class CommandArgument
         {
             if (!_definition.Options.TryGetValue(option.Identifier, out var optionDef))
             {
-                throw ExceptionHelper.WithName(Languages.Get("argument_no_such_option"), option.Identifier);
+                throw ExceptionHelper.WithName(LangMessage.Get("argument_no_such_option"), option.Identifier);
             }
 
             if (!optionDef.HasValue && option.Value != null)
             {
-                throw ExceptionHelper.WithName(Languages.Get("argument_option_no_value"), option.Identifier);
+                throw ExceptionHelper.WithName(LangMessage.Get("argument_option_no_value"), option.Identifier);
             }
 
             if (optionDef.HasValue && option.Value == null)
             {
-                throw ExceptionHelper.WithName(Languages.Get("argument_value_required"), option.Identifier);
+                throw ExceptionHelper.WithName(LangMessage.Get("argument_value_required"), option.Identifier);
             }
 
             result.Option(optionDef, option.Value);
@@ -88,7 +88,7 @@ public class CommandArgument
 
         if (_command.Values.Count < requiredArgCount)
         {
-            throw new CommandFormatException(Languages.ArgumentLowerThanCount(_command.Values.Count, requiredArgCount));
+            throw new CommandFormatException(LangMessage.MsgTooFewArguments(_command.Values.Count, requiredArgCount));
         }
 
         var index = 0;
@@ -99,7 +99,7 @@ public class CommandArgument
             // Check if too many arguments
             if (!_definition.GreedyString && index >= _definition.Values.Count)
             {
-                throw new CommandFormatException(Languages.ArgumentSurpassingCount(index + 1, _definition.Values.Count));
+                throw new CommandFormatException(LangMessage.MsgTooManyArguments(index + 1, _definition.Values.Count));
             }
 
             if (_definition.GreedyString && index == _definition.Values.Count - 1)

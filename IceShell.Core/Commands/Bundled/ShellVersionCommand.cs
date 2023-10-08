@@ -18,10 +18,10 @@ public class ShellVersionCommand : ICommand
     /// <inheritdoc />
     public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
     {
-        Console.WriteLine(Languages.Get("ver_line_0"), Shell.AppVersion);
-        Console.WriteLine(Languages.Get("ver_line_1"), Environment.OSVersion.VersionString);
+        Console.WriteLine(LangMessage.Get("ver_line_0"), Shell.AppVersion);
+        Console.WriteLine(LangMessage.Get("ver_line_1"), Environment.OSVersion.VersionString);
         Console.WriteLine();
-        Console.WriteLine(Languages.Get("ver_line_2"));
+        Console.WriteLine(LangMessage.Get("ver_line_2"));
 
         pipeStream = null;
         return 0;

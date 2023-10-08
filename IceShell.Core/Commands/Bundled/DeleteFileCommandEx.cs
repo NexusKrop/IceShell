@@ -38,7 +38,7 @@ public class DeleteFileCommandEx : ICommand
     {
         try
         {
-            if (Prompt && !ConsoleAsk.YesNo(Languages.DeletePrompt(file)))
+            if (Prompt && !ConsoleAsk.YesNo(LangMessage.GetFormat("del_prompt", file)))
             {
                 return;
             }
@@ -47,7 +47,7 @@ public class DeleteFileCommandEx : ICommand
         }
         catch (UnauthorizedAccessException)
         {
-            throw new CommandFormatException(Languages.UnauthorizedFile(file));
+            throw new CommandFormatException(LangMessage.MsgUnauthorizedFile(file));
         }
     }
 
@@ -58,7 +58,7 @@ public class DeleteFileCommandEx : ICommand
 
         if (Targets?.Any() != true)
         {
-            throw new CommandFormatException(Languages.RequiresValue(0));
+            throw ExceptionHelper.RequiresValue(0);
         }
 
         string searchDir;

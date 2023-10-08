@@ -72,7 +72,7 @@ public class BatchFile : ICommandExecutor
 
             if (shell.Execute(line, this) != 0)
             {
-                throw new CommandFormatException(string.Format(Languages.Get("batch_not_successful"), CurrentLine + 1));
+                throw new CommandFormatException(string.Format(LangMessage.Get("batch_not_successful"), CurrentLine + 1));
             }
         }
     }
@@ -81,7 +81,7 @@ public class BatchFile : ICommandExecutor
     {
         if (!_labels.TryGetValue(label, out var labelLine))
         {
-            throw new CommandFormatException(string.Format(Languages.Get("batch_goto_no_such_label"), label));
+            throw new CommandFormatException(string.Format(LangMessage.Get("batch_goto_no_such_label"), label));
         }
 
         if (labelLine > _lines.Count)

@@ -46,7 +46,7 @@ public abstract class DestinationFileCommandBase : ICommand
 
         if (Buffer == null || Buffer.Count < 2)
         {
-            throw new CommandFormatException(Languages.RequiresValue(0));
+            throw new CommandFormatException(LangMessage.MsgMissingValue(0));
         }
 
         var matcher = new Matcher();
@@ -93,7 +93,7 @@ public abstract class DestinationFileCommandBase : ICommand
 
         if (!destIsDir && toCopy.Count > 2)
         {
-            throw new CommandFormatException(Languages.CopyIsFileMore());
+            throw new CommandFormatException(LangMessage.MsgDestinationFileButMultipleSource());
         }
 
         toCopy.ForEach(x => DoOperation(x.Key, x.Value));

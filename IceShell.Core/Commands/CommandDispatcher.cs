@@ -162,7 +162,7 @@ public class CommandDispatcher : ICommandDispatcher
 
         if (inAction)
         {
-            throw new CommandFormatException(Languages.ActionNeverComplete());
+            throw new CommandFormatException(LangMessage.MsgActionNeverComplete());
         }
 
         if (lastOutStream != null)
@@ -210,7 +210,7 @@ public class CommandDispatcher : ICommandDispatcher
 
             if (searchResult == null || !File.Exists(searchResult))
             {
-                throw new CommandFormatException(Languages.UnknownCommand(cmdName));
+                throw new CommandFormatException(LangMessage.MsgUnknownCommand(cmdName));
             }
 
             var processInfo = new ProcessStartInfo(searchResult);
@@ -222,7 +222,7 @@ public class CommandDispatcher : ICommandDispatcher
 
             if (process == null)
             {
-                ConsoleOutput.PrintShellError(Languages.Get("shell_unable_start_process"));
+                ConsoleOutput.PrintShellError(LangMessage.MsgUnableStartProcess());
                 outStream = null;
                 return -255;
             }

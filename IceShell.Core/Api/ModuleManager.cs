@@ -140,7 +140,7 @@ public class ModuleManager : IModuleManager
             }
             catch (Exception ex)
             {
-                AnsiConsole.MarkupLineInterpolated($"[red]{string.Format(Languages.Get("init_module_fail"), module.GetType().Name)}[/]");
+                AnsiConsole.MarkupLineInterpolated($"[red]{string.Format(LanguageService.Get("init_module_fail"), module.GetType().Name)}[/]");
                 ConsoleOutput.PrintShellError(ex.ToString());
             }
         }

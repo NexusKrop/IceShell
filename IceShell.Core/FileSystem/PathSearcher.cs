@@ -25,7 +25,7 @@ public static class PathSearcher
     internal const string ComFileExtensionFormat = "{0}.com";
     internal const string ExeFileExtensionFormat = "{0}.exe";
 
-    private static readonly IReadOnlySet<string> PATHS;
+    private static readonly IEnumerable<string> PATHS;
 
     internal const bool UseCustomPathSystem = false;
 
@@ -43,19 +43,16 @@ public static class PathSearcher
             // Doing so will cause the shell cannot find anything in PATH because
             // there was no PATH.
 
-            AnsiConsole.MarkupLineInterpolated(FormattableStringFactory.Create("<red>{0}</red>", Languages.Get("shell_no_path")));
+            AnsiConsole.MarkupLineInterpolated(FormattableStringFactory.Create("<red>{0}</red>", LangMessage.Get("shell_no_path")));
             Console.WriteLine();
 
-            // 2023/08/17, WithLithum - not sure what I was doing here but
-            // I'll keep this comment in case I remember.
+            // Set PATHS to an empty string enumerable.
 
-            // We will still set PATHS to a
+            PATHS = Enumerable.Empty<string>();
         }
         else
         {
-            var splitted = path.Split(Path.PathSeparator);
-
-            foreach (var p in splitted)
+            foreach (var p in path.Split(Path.PathSeparator))
             {
                 result.Add(p);
             }
@@ -65,15 +62,17 @@ public static class PathSearcher
     }
 
     /// <summary>
-    /// Ensures that the specified shell path is invalid.
+    /// Ensures that the specified path is invalid.
     /// </summary>
     /// <param name="path">The path to check.</param>
-    /// <exception cref="FormatException">The shell path is invalid.</exception>
+    /// <exception cref="FormatException">The path is invalid.</exception>
     public static void CheckPath(string path)
     {
-        if (path.Contains('/'))
+        var invalidPathChars = Path.GetInvalidPathChars();
+
+        if (path.Any(x => invalidPathChars.Contains(x)))
         {
-            throw new FormatException(Languages.Get("generic_path_invalid"));
+            throw ExceptionHelper.InvalidPath();
         }
     }
 
@@ -185,7 +184,7 @@ public static class PathSearcher
         // This is some clean and precise ;)
         if (Array.Exists(Path.GetInvalidFileNameChars(), path.Contains))
         {
-            throw new CommandFormatException(Languages.Get("generic_path_invalid"));
+            throw ExceptionHelper.InvalidPath();
         }
     }
 

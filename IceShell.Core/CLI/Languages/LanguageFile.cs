@@ -26,13 +26,14 @@ public class LanguageFile
 
     private readonly JavaProperties _properties;
 
-    /// <inheritdoc cref="Languages.UnknownCommand(string)"/>
+    /// <inheritdoc cref="LanguageService.UnknownCommand(string)"/>
+    [Obsolete("Use LangMessage to get 'shell_unknown_command' instead.")]
     public string UnknownCommand(string command)
     {
         return string.Format(_properties["shell_unknown_command"], command);
     }
 
-    /// <inheritdoc cref="Languages.Get(string)" />
+    /// <inheritdoc cref="LanguageService.Get(string)" />
     /// <param name="key">The key of the message.</param>
     /// <returns>The message string. If the message does not exist, returns the <paramref name="key"/> instead.</returns>
     public string Get(string key)
@@ -43,5 +44,26 @@ public class LanguageFile
         }
 
         return value;
+    }
+
+    /// <summary>
+    /// Gets the message associated with the specified key.
+    /// </summary>
+    /// <param name="key">The key.</param>
+    /// <param name="result">The message, if exists.</param>
+    /// <returns><see langword="true"/> if this language file contains the specified key; otherwise <see langword="false"/>.</returns>
+    public bool TryGet(string key, out string? result)
+    {
+        return _properties.TryGetValue(key, out result);
+    }
+
+    /// <summary>
+    /// Determines whether this language file contains a message with the specified key.
+    /// </summary>
+    /// <param name="key">The key.</param>
+    /// <returns><see langword="true"/> if the message exists; otherwise, <see langword="false"/>.</returns>
+    public bool Contains(string key)
+    {
+        return _properties.ContainsKey(key);
     }
 }

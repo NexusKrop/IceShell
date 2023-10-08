@@ -22,7 +22,7 @@ public class GotoCommand : ICommand
 
         if (!executor.SupportsJump)
         {
-            throw new CommandFormatException(Languages.Get("batch_goto_not_supported"));
+            throw new CommandFormatException(LanguageService.Get("batch_goto_not_supported"));
         }
 
         executor.Jump(Label!);

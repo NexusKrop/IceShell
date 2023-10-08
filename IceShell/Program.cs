@@ -54,8 +54,8 @@ if (sh == null)
     }
 }
 
-Languages.Instance.Load();
-Languages.SetInstanceConfig(sh);
+LanguageService.Instance.Load();
+LanguageService.SetInstanceConfig(sh);
 Executive.Attach(sh);
 
 var shell = new Shell(sh);

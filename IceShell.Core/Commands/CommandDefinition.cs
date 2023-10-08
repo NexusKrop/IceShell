@@ -67,7 +67,7 @@ public class CommandDefinition
         Console.WriteLine();
         Console.WriteLine(GetUsage(cmdName));
 
-        var noDescText = Languages.Get("help_no_description");
+        var noDescText = LangMessage.Get("help_no_description");
 
         if (Values.Any())
         {

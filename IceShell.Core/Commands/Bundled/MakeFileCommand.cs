@@ -42,7 +42,7 @@ public class MakeFileCommand : ICommand
         }
         catch (UnauthorizedAccessException)
         {
-            throw new CommandFormatException(Languages.Get("generic_unauthorized_write"));
+            throw ExceptionHelper.UnauthorizedWrite();
         }
 
         return 0;

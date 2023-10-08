@@ -45,6 +45,7 @@ public class HelpCommandEx : ICommand
 
         if (commandType == null)
         {
+            // TODO LOCALISE THIS
             Console.WriteLine("No help entry for this command. Did you mean \"{0} /?\" or \"{0} --help\"?", commandName ?? "");
             return 1;
         }
@@ -59,10 +60,12 @@ public class HelpCommandEx : ICommand
     {
         if (!shell.Dispatcher.CommandManager.Any())
         {
+            // TODO localise this
             System.Console.WriteLine("No registered commands.");
             return 0;
         }
 
+        // TODO localise this
         Console.WriteLine("For more information on a specific command, type \"help <command>\"");
 
         var grid = new Grid();
