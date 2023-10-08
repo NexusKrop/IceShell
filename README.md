@@ -6,7 +6,8 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/NexusKrop/IceShell?style=flat-square)
 [![License](https://img.shields.io/github/license/NexusKrop/IceShell?style=flat-square)](COPYING.txt)
 
-An alternative, cross-platform shell written in C#, and inspired by DOS.
+A cross-platform shell interpreter written in C#, and is inspired by Windows Command Prompt and
+MS-DOS `command.com`.
 
 ## Usage
 
@@ -34,13 +35,7 @@ See [BUILDING](BUILDING.md) file.
 
 ## Contributing
 
-For code contributions, pull requests are welcome. For major changes, please open an issue first to discuss what
-you like to change.
-
-You can work on issues that have the tag `Status: Open` or `Status: Help wanted`. See [Issues](https://github.com/NexusKrop/IceShell/issues).
-You may also report bugs or suggest features through the Issues page.
-
-Check the [Contributing Guide](CONTRIBUTING.md) for more information.
+We welcome contributions! See the [Contributing Guide](CONTRIBUTING.md) for more information.
 
 ## License
 

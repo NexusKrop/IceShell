@@ -17,6 +17,7 @@ command /O /V:value /Q:"quoted value" -- value0 value1 value2
 Options are either with value or without value. Options with a value are called _value options_; options without a value are called _switch options_.
 
 Options are identified by a forward slash `/` (IceShell automatically determines the difference between unquoted Unix paths), a character that identifies the option, and optionally a colon `:` and then a value (either quoted or unquoted).
+Option identifiers are _case-sensitive_.
 
 If an option was quoted (note: this does not refer to value options with a quoted value), IceShell will ignored the option pass the quoted option as value (in case you want to explicitly pass a Unix path). For example, the following "option" will be treated as a value:
 

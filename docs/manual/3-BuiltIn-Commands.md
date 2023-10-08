@@ -4,11 +4,13 @@
 >
 > This section is a work in progress.
 
-This section describes all built-in commands that are available in IceShell.
+This section describes all built-in commands that are available in IceShell and its default modules.
 
-## Shell Operation Commands
+## CALL
 
-### CD
+_Part of the Batching Module_
+
+## CD
 
 Changes the current working directory. If a directory was not specified, displays the
 current working directory.
@@ -17,15 +19,71 @@ current working directory.
 cd [directory]
 ```
 
-#### Arguments
+### Arguments
 
 - **directory**: _Optional_. The directory to change to.
 
-#### Exit Code
+### Exit Code
 
 Always succeed.
 
-### ECHO
+## CLS
+
+Clears the terminal screen.
+
+```cmd
+cls
+```
+
+### Exit Code
+
+Always succeeds.
+
+## COPY
+
+## DEL
+
+Deletes one or more files.
+
+```cmd
+DEL [/P] <files...>
+```
+
+### Arguments
+
+- **files**: A list of files to delete.
+
+### Options
+
+- `/P`: If specified, prompts user to confirm before each deletion.
+
+### Exit Code
+
+Returns zero on success and non-zero on failure. For detailed error information, check the exception message.
+
+## DIR
+
+Lists the contents of the current or specified directory.
+
+```cmd
+dir [directory] [/d:date-format] [/t:time-format] [/h]
+```
+
+### Arguments
+
+- **directory**: _Optional_. The directory to list. If unspecified, lists the current directory.
+
+### Options
+
+- `/d`: Specifies the date format. If unspecified, uses the default format (`YYYY/mm/dd`). 
+- `/t`: Specifies the time format. If unspecified, uses the default format (`HH:mm:ss`).
+- `/h`: If specified, displays hidden files and directories. On Windows, hidden means being attributed with "hidden" attribute, while on *NIX systems, are ones with name starting with a dot `.`.
+
+### Exit Code
+
+Returns zero on success and non-zero on failure. For detailed error information, check the exception message.
+
+## ECHO
 
 Prints the specified message or redirected output from last command to standard output.
 
@@ -33,15 +91,15 @@ Prints the specified message or redirected output from last command to standard 
 echo [message]
 ```
 
-#### Arguments
+### Arguments
 
 - **message**: _Optional_. The message to display.
 
-#### Exit Code
+### Exit Code
 
 Always succeeds.
 
-### EXIT
+## EXIT
 
 Exits the IceShell. After this command succeeds, IceShell will terminate.
 
@@ -49,25 +107,31 @@ Exits the IceShell. After this command succeeds, IceShell will terminate.
 exit
 ```
 
-#### Exit Code
+### Exit Code
 
 Always succeeds.
 
-### VER
+## GOTO
 
-Displays the IceShell version along with some Operating System information.
+_Part of the Batching Module_
 
-```bat
-ver
+## HELP
+
+Displays help information.
+
+```cmd
+help [command]
 ```
 
-#### Exit Code
+### Arguments
 
-Always succeed.
+- **command**: _Optional._ The command to show help message. If unspecified, displays a list of commands and their description.
 
-## File Operation Commands
+### Exit Code
 
-### MKDIR
+Returns zero on success and non-zero on failure. For detailed error information, check the exception message.
+
+## MKDIR
 
 Creates a directory or a tree of directories. The user must be authorised to create the file,
 and the directories shall not exist.
@@ -76,15 +140,15 @@ and the directories shall not exist.
 mkdir <directory>
 ```
 
-#### Arguments
+### Arguments
 
 - **directory**: The directory or tree of directories to create.
 
-#### Exit Code
+### Exit Code
 
 Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
 
-### MKFILE
+## MKFILE
 
 Creates a file. The user must be authorised to create the file, and the file specified should not be exist.
 
@@ -92,13 +156,35 @@ Creates a file. The user must be authorised to create the file, and the file spe
 mkfile <file>
 ```
 
-#### Arguments
+### Arguments
 
 - **file**: _Required_. The file to create.
 
-#### Exit Code
+### Exit Code
 
 Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+
+## MOVE
+
+## PROMPT
+
+## REM
+
+## START
+
+## TYPE
+
+## VER
+
+Displays the IceShell version along with some Operating System information.
+
+```bat
+ver
+```
+
+### Exit Code
+
+Always succeed.
 
 ---
 
