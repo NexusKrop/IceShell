@@ -155,6 +155,7 @@ public static class PathSearcher
     /// </para>
     /// </remarks>
     /// <returns><see langword="true"/> if the specified shell path points to the root of a file system; otherwise, <see langword="false"/>.</returns>
+    [Obsolete("Use Path.IsPathFullyQualified")]
     public static bool IsRooted(ReadOnlySpan<char> path)
     {
         if (OperatingSystem.IsWindows())
@@ -176,7 +177,7 @@ public static class PathSearcher
     {
         CheckPath(path);
 
-        if (IsRooted(path))
+        if (Path.IsPathFullyQualified(path))
         {
             return;
         }

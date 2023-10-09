@@ -21,7 +21,7 @@ public static class Executive
     internal static ProcessStartInfo CreateStartInfo(CommandSection section)
     {
         return CreateStartInfo(section.Name,
-            !(section.Name.StartsWith('.') || PathSearcher.IsRooted(section.Name)),
+            !(section.Name.StartsWith('.') || Path.IsPathFullyQualified(section.Name)),
             section.Statements?.Select(x => x.Content) ?? Enumerable.Empty<string>());
     }
 
