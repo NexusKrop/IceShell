@@ -166,9 +166,33 @@ Returns `0` if succeeds, non-zero otherwise. Check the message of the error for 
 
 ## MOVE
 
+Move or rename one or more files.
+
+```cmd
+move [/F] <files...>
+```
+
+### Arguments
+
+- **files**: _Requried_. The files to move.
+
+### Exit Code
+
+Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+
 ## PROMPT
 
 ## REM
+
+Does nothing.
+
+```REM
+rem [any argument...]
+```
+
+### Exit Code
+
+Always succeed.
 
 ## START
 
