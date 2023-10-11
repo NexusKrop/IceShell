@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -45,8 +46,7 @@ public class HelpCommandEx : ICommand
 
         if (commandType == null)
         {
-            // TODO LOCALISE THIS
-            Console.WriteLine("No help entry for this command. Did you mean \"{0} /?\" or \"{0} --help\"?", commandName ?? "");
+            Console.WriteLine(LangMessage.Get("help_not_found"), commandName ?? "");
             return 1;
         }
 
@@ -60,13 +60,11 @@ public class HelpCommandEx : ICommand
     {
         if (!shell.Dispatcher.CommandManager.Any())
         {
-            // TODO localise this
-            System.Console.WriteLine("No registered commands.");
+            Console.WriteLine(LangMessage.Get("help_no_commands"));
             return 0;
         }
 
-        // TODO localise this
-        Console.WriteLine("For more information on a specific command, type \"help <command>\"");
+        Console.WriteLine(LangMessage.Get("help_summary_more_information"));
 
         var grid = new Grid();
         grid.AddColumn();
@@ -75,6 +73,7 @@ public class HelpCommandEx : ICommand
 
         var keysEnumerable = shell.Dispatcher.CommandManager.CommandAliases;
         var keys = new List<string>(keysEnumerable);
+        var noDescMessage = LangMessage.Get("help_no_description");
         keys.Sort();
 
         foreach (var x in keys)
@@ -86,7 +85,7 @@ public class HelpCommandEx : ICommand
                 continue;
             }
 
-            grid.AddRow(x, item.Description ?? "No description available.");
+            grid.AddRow(x, item.Description ?? noDescMessage);
         }
 
         AnsiConsole.Write(grid);

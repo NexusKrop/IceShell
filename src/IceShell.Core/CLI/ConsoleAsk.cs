@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.CLI;
 
 using global::IceShell.Core.Api;
+using global::IceShell.Core.CLI.Languages;
 using Spectre.Console;
 using System;
 
@@ -26,8 +27,7 @@ public static class ConsoleAsk
         {
             if (incorrectRun)
             {
-                // TODO localise
-                AnsiConsole.MarkupLine("[red]Invalid answer! Y for Yes, and N for No![/]");
+                AnsiConsole.MarkupLine($"[red]{Markup.Escape(LangMessage.Get("generic_not_yes_no"))}[/]");
             }
 
             Console.Write($"{message} (Y/N) ");
