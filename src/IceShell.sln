@@ -9,12 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceShell.Core", "IceShell.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{6A7F1333-527F-493D-9F6B-8A5E04153755}"
 	ProjectSection(SolutionItems) = preProject
-		BUILDING.md = BUILDING.md
+		..\BUILDING.md = ..\BUILDING.md
 		..\CHANGELOG.md = ..\CHANGELOG.md
-		CONTRIBUTING.md = CONTRIBUTING.md
-		COPYING.txt = COPYING.txt
-		README.md = README.md
-		SECURITY.md = SECURITY.md
+		..\CODE_OF_CONDUCT.md = ..\CODE_OF_CONDUCT.md
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\COPYING.txt = ..\COPYING.txt
+		..\README.md = ..\README.md
+		..\SECURITY.md = ..\SECURITY.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceShell.Tests", "IceShell.Tests\IceShell.Tests.csproj", "{EF3E201C-E738-4D41-B881-5923C47287AC}"

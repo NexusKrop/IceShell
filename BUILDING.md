@@ -1,32 +1,19 @@
 # Building Guidelines
 
-IceShell depends on [IceCube](https://github.com/NexusKrop/IceCube) which is hosted on our MyGet feed.
-
 ## With .NET CLI
 
-Building IceShell with CLI requires .NET 6.0 SDK or later.
-
-### Add MyGet source
-
-Add the [MyGet](https://www.myget.org/feed/Details/nexuskrop) feed by using
-the following command:
-
-```sh
-dotnet nuget add source https://www.myget.org/F/nexuskrop/api/v3/index.json --name NexusKrop MyGet
-```
-
-### Build
+Building IceShell with CLI requires .NET 7.0 SDK or later.
 
 - Navigate to your solution folder.
 - Run `dotnet build`.
-- Binaries should be in `NexusKrop.IceShell\bin`.
+- Binaries should be available in `IceShell/src/IceShell/bin`.
 
 ## With Visual Studio
 
-It is recommended that you execute the following command in IDE Terminal:
+Building IceShell with Visual Studio requires Visual Studio 2022 or later,
+with .NET Desktop Development workload.
 
-```sh
-dotnet nuget add source https://www.myget.org/F/nexuskrop/api/v3/index.json --name NexusKrop MyGet
-```
-
-And then build the project.
+- Open solution in Visual Studio.
+- (Optional) Click `Debug` on the launch bar and change it to `Release`.
+- Click Build -> Build Solution.
+- Binaries should be available in `IceShell/src/IceShell/bin`.
