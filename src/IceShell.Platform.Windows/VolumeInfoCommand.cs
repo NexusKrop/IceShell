@@ -1,0 +1,54 @@
+namespace IceShell.Platform.Windows;
+
+using IceShell.Core;
+using IceShell.Core.Commands;
+using IceShell.Core.Commands.Attributes;
+using NexusKrop.IceShell.Core.Commands.Complex;
+using Spectre.Console;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
+using Vanara.PInvoke;
+
+[ComplexCommand("vol", "[Windows] Get information about a volume.")]
+internal class VolumeInfoCommand : ICommand
+{
+    [Value("volume", false, 0)]
+    public string? VolumePath { get; set; }
+
+    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    {
+        pipeStream = null;
+        VolumePath ??= Environment.CurrentDirectory;
+
+        if (Directory.Exists(VolumePath) && VolumePath.Length > 3)
+        {
+            VolumePath = VolumePath[..3];
+        }
+
+        var realVolumePath = VolumePath.EndsWith('\\') ? VolumePath : $"{VolumePath}\\";
+
+        if (!Kernel32.GetVolumeInformation(realVolumePath,
+            out var volumeName,
+            out var serialNumber,
+            out var maximumComponentLength,
+            out var flags,
+            out var fileSystemName))
+        {
+            throw new Win32Exception(Marshal.GetLastPInvokeError());
+        }
+
+        var table = new Table();
+        table.AddColumns("Key", "Value");
+        table.AddRow("Volume Name", Markup.Escape(string.IsNullOrWhiteSpace(volumeName) ?
+            "<none>" :
+            volumeName));
+        table.AddRow("Maximum Component Length", maximumComponentLength.ToString());
+        table.AddRow("Serial Number", serialNumber.ToString("x8"));
+        table.AddRow("File System", Markup.Escape(fileSystemName));
+
+        AnsiConsole.Write(table);
+
+        return 0;
+    }
+}
