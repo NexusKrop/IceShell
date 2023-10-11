@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Otherwise, the shell exits immediately.
 - Added support for saving and restoring command history.
 - Added `SIGTERM` handling support for GNU/Linux.
+- Added support for Enum argument conversion.
 
 ### Changed
 

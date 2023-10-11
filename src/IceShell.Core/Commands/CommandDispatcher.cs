@@ -5,8 +5,10 @@ namespace IceShell.Core.Commands;
 
 using IceShell.Core.Api;
 using IceShell.Core.CLI.Languages;
+using IceShell.Core.Commands.Argument;
 using IceShell.Core.Exceptions;
 using IceShell.Parsing;
+using Microsoft.VisualBasic.FileIO;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
@@ -25,6 +27,9 @@ public class CommandDispatcher : ICommandDispatcher
 {
     private readonly CommandManager _manager;
     private readonly IShell _shell;
+
+    // TODO make full conversion engine.
+    private readonly EnumerationConverter _converter = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandDispatcher"/> class.
@@ -279,9 +284,15 @@ public class CommandDispatcher : ICommandDispatcher
 
         foreach (var value in command.Command.Definition.Values)
         {
-            if (!command.ArgumentParseResult.Values.TryGetValue(value, out var obj))
+            if (!command.ArgumentParseResult.Values.TryGetValue(value, out var obj)
+                || obj == null)
             {
                 continue;
+            }
+
+            if (value.Property.PropertyType.IsEnum)
+            {
+                _converter.Convert(obj, value.Property, instance);
             }
 
             value.Property.SetValue(instance, obj);
