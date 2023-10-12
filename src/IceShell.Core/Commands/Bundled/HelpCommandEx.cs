@@ -73,19 +73,20 @@ public class HelpCommandEx : ICommand
 
         var keysEnumerable = shell.Dispatcher.CommandManager.CommandAliases;
         var keys = new List<string>(keysEnumerable);
-        var noDescMessage = LangMessage.Get("help_no_description");
         keys.Sort();
 
-        foreach (var x in keys)
+        var noDescMessage = LangMessage.Get("help_no_description");
+
+        foreach (var cmdName in keys)
         {
-            var item = shell.Dispatcher.CommandManager.GetDefinition(x);
+            var item = shell.Dispatcher.CommandManager.GetDefinition(cmdName);
 
             if (item == null)
             {
                 continue;
             }
 
-            grid.AddRow(x, item.Description ?? noDescMessage);
+            grid.AddRow(Markup.Escape(cmdName), Markup.Escape(item.Description ?? noDescMessage));
         }
 
         AnsiConsole.Write(grid);
