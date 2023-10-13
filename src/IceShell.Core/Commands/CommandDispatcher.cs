@@ -28,8 +28,7 @@ public class CommandDispatcher : ICommandDispatcher
     private readonly CommandManager _manager;
     private readonly IShell _shell;
 
-    // TODO make full conversion engine.
-    private readonly EnumerationConverter _converter = new();
+    private readonly ArgumentConvertService _convertService = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandDispatcher"/> class.
@@ -40,6 +39,12 @@ public class CommandDispatcher : ICommandDispatcher
     {
         _shell = shell;
         _manager = new CommandManager(registerManagerDefaults);
+
+        if (registerManagerDefaults)
+        {
+            _convertService.RegisterConverter(typeof(Enum), new EnumArgumentConverter());
+            _convertService.RegisterConverter(typeof(string), new StringConverter());
+        }
     }
 
     /// <inheritdoc />
@@ -257,9 +262,10 @@ public class CommandDispatcher : ICommandDispatcher
             command.Command.Definition.VariableValueBuffer.SetValue(instance, command.ArgumentParseResult.VariableValues.AsReadOnly());
         }
 
+        // Process option arguments.
         foreach (var option in command.Command.Definition.Options.Select(x => x.Value))
         {
-            if (!command.ArgumentParseResult.Options.TryGetValue(option, out var obj))
+            if (!command.ArgumentParseResult.Options.TryGetValue(option, out var argStr))
             {
                 if (!option.HasValue)
                 {
@@ -275,23 +281,27 @@ public class CommandDispatcher : ICommandDispatcher
                 continue;
             }
 
-            option.Property.SetValue(instance, obj);
+            if (!_convertService.TryConvert(argStr ?? "", option.Property, instance))
+            {
+                throw ExceptionHelper.WithMessage(LangMessage.GetFormat("generic_arg_cannot_resolve", argStr ?? "<null>"));
+            }
         }
 
-        foreach (var value in command.Command.Definition.Values)
+        // Process value arguments.
+        foreach (var definition in command.Command.Definition.Values)
         {
-            if (!command.ArgumentParseResult.Values.TryGetValue(value, out var obj)
-                || obj == null)
+            if (!command.ArgumentParseResult.Values.TryGetValue(definition, out var argStr)
+                || argStr == null)
             {
                 continue;
             }
 
-            if (value.Property.PropertyType.IsEnum)
+            if (!_convertService.TryConvert(argStr, definition.Property, instance))
             {
-                _converter.Convert(obj, value.Property, instance);
+                throw ExceptionHelper.WithMessage(LangMessage.GetFormat("generic_arg_cannot_resolve", argStr));
             }
 
-            value.Property.SetValue(instance, obj);
+            definition.Property.SetValue(instance, argStr);
         }
 
         var retVal = instance.Execute(_shell, executor, context, out var pipeStream);

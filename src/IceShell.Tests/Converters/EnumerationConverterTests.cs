@@ -16,7 +16,7 @@ public class EnumerationConverterTests
     [Test]
     public void Convert_InvalidValue()
     {
-        var converter = new EnumerationConverter();
+        var converter = new EnumArgumentConverter();
 
         Assert.Throws<CommandFormatException>(() =>
         {
@@ -27,7 +27,7 @@ public class EnumerationConverterTests
     [Test]
     public void Convert_ValidValue()
     {
-        var converter = new EnumerationConverter();
+        var converter = new EnumArgumentConverter();
 
         Assert.DoesNotThrow(() =>
         {

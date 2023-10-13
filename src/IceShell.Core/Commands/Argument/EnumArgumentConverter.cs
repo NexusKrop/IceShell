@@ -9,7 +9,7 @@ using System.Reflection;
 /// <summary>
 /// Supports enumeration argument conversion.
 /// </summary>
-public class EnumerationConverter : IArgumentConverter
+public class EnumArgumentConverter : IArgumentConverter
 {
     /// <inheritdoc />
     /// <exception cref="InvalidOperationException">The property is not an enumeration.</exception>
