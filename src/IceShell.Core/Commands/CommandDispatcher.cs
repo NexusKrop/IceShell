@@ -156,11 +156,7 @@ public class CommandDispatcher : ICommandDispatcher
                 return exitCode;
             }
 
-            if (line.NextAction == SyntaxNextAction.Redirect)
-            {
-                lastOutStream = pipeStream;
-            }
-
+            lastOutStream = pipeStream;
             nextAction = line.NextAction;
             inAction = nextAction != SyntaxNextAction.None;
         }
