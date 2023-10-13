@@ -1,6 +1,13 @@
 {
     "cSpell.language": "en-GB",
     "cSpell.words": [
+        "iceshell",
         "Krop"
-    ]
+    ],
+    "markdownlint.config": {
+        "MD024": {
+            "allow_different_nesting": true
+        },
+        "MD036": false
+    }
 }

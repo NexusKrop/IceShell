@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Otherwise, the shell exits immediately.
 - Added support for saving and restoring command history.
 - Added `SIGTERM` handling support for GNU/Linux.
-- 
+- Added `SET` command to set environment variable
 
 ### Changed
 
@@ -37,8 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Addressed an issue resulted in Spectre.Console mark-ups no longer rendered properly in error reporting.
-- Addressed an issue resulted in external commands no longer working.
+- Addressed an issue resulted in external commands no longer being recognised.
 - Addressed an issue where `-255` is always returned (instead of the exit code of the command executed) when the `iceshell` executable is used to execute command rather than launching the interactive shell.
+- Addressed an issue where `HELP` command fails in certain conditions due to markup syntaxes in command aliases and descriptions being recognised.
 
 ## [v0.1.0-alpha]
 

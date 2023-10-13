@@ -10,6 +10,24 @@ This section describes all built-in commands that are available in IceShell and 
 
 _Part of the Batching Module_
 
+Executes a batch program in the current execution context. If any command in the batch program fails,
+then the batch program itself fails.
+
+```bat
+call <file>
+```
+
+### Arguments
+
+- **file**: The batch program to execute.
+
+### Exit Code
+
+Returns zero if the batch program succeeds; otherwise returns the exit code of
+the failing (last executed) command in the batch program.
+
+<!-- ======================================= -->
+
 ## CD
 
 Changes the current working directory. If a directory was not specified, displays the
@@ -27,6 +45,8 @@ cd [directory]
 
 Always succeed.
 
+<!-- ======================================= -->
+
 ## CLS
 
 Clears the terminal screen.
@@ -39,7 +59,29 @@ cls
 
 Always succeeds.
 
+<!-- ======================================= -->
+
 ## COPY
+
+Copies one or more files.
+
+```bat
+COPY [/F] <files...>
+```
+
+### Arguments
+
+- **files**: The files to move.
+
+### Options
+
+- `/F`: If specified, overwrites existing files at destination.
+
+### Exit Code
+
+Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+
+<!-- ======================================= -->
 
 ## DEL
 
@@ -60,6 +102,8 @@ DEL [/P] <files...>
 ### Exit Code
 
 Returns zero on success and non-zero on failure. For detailed error information, check the exception message.
+
+<!-- ======================================= -->
 
 ## DIR
 
@@ -83,6 +127,8 @@ dir [directory] [/d:date-format] [/t:time-format] [/h]
 
 Returns zero on success and non-zero on failure. For detailed error information, check the exception message.
 
+<!-- ======================================= -->
+
 ## ECHO
 
 Prints the specified message or redirected output from last command to standard output.
@@ -99,6 +145,8 @@ echo [message]
 
 Always succeeds.
 
+<!-- ======================================= -->
+
 ## EXIT
 
 Exits the IceShell. After this command succeeds, IceShell will terminate.
@@ -111,9 +159,27 @@ exit
 
 Always succeeds.
 
+<!-- ======================================= -->
+
 ## GOTO
 
 _Part of the Batching Module_
+
+If supported, skip to the specified label.
+
+```bat
+GOTO <label>
+```
+
+### Arguments
+
+- **label**: The label to skip to.
+
+### Exit Code
+
+Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+
+<!-- ======================================= -->
 
 ## HELP
 
@@ -130,6 +196,8 @@ help [command]
 ### Exit Code
 
 Returns zero on success and non-zero on failure. For detailed error information, check the exception message.
+
+<!-- ======================================= -->
 
 ## MKDIR
 
@@ -148,6 +216,8 @@ mkdir <directory>
 
 Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
 
+<!-- ======================================= -->
+
 ## MKFILE
 
 Creates a file. The user must be authorised to create the file, and the file specified should not be exist.
@@ -164,6 +234,8 @@ mkfile <file>
 
 Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
 
+<!-- ======================================= -->
+
 ## MOVE
 
 Move or rename one or more files.
@@ -174,19 +246,41 @@ move [/F] <files...>
 
 ### Arguments
 
-- **files**: _Requried_. The files to move.
+- **files**: The files to move.
+
+### Options
+
+- `/F`: If specified, overwrites existing files at destination.
 
 ### Exit Code
 
 Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
 
+<!-- ======================================= -->
+
 ## PROMPT
+
+Displays or modified the current prompt.
+
+```bat
+PROMPT [prompt]
+```
+
+### Arguments
+
+- **prompt**: _Optional._ The prompt to change to.
+
+### Exit Code
+
+Always succeed.
+
+<!-- ======================================= -->
 
 ## REM
 
 Does nothing.
 
-```REM
+```bat
 rem [any argument...]
 ```
 
@@ -194,9 +288,44 @@ rem [any argument...]
 
 Always succeed.
 
+<!-- ======================================= -->
+
+## SET
+
+Gets or sets an environment variable.
+
+```bat
+SET <name> [value]
+```
+
+### Arguments
+
+- **name**: The name of the environment variable.
+- **value**: _Optional_. The value to set to. If not specified, outputs the value of the variable.
+
+### Exit Code
+
+Returns `0` if the command succeeds, non-zero otherwise. Check the message of the error for details.
+
+<!-- ======================================= -->
+
 ## START
 
+Starts the specified file via the default application associated for the type of the file, or if the file is a program, starts the program and immediately returns without waiting for its exit or handing the console to it.
+
+```bat
+START <file>
+```
+
+### Exit Code
+
+Returns `0` if the command succeeds, non-zero otherwise. Check the message of the error for details.
+
+<!-- ======================================= -->
+
 ## TYPE
+
+<!-- ======================================= -->
 
 ## VER
 
