@@ -21,7 +21,7 @@ public class SetCommandTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(set.Execute(Mock.Of<IShell>(), Mock.Of<ICommandExecutor>(), ExecutionContext.Default, out _), Is.EqualTo(0));
+            Assert.That(set.Execute(Mock.Of<IShell>(), Mock.Of<ICommandExecutor>(), ExecutionContext.Default).ExitCode, Is.EqualTo(0));
             Assert.That(Environment.GetEnvironmentVariable(TestVarName), Is.EqualTo("ICESHELL_DEV_TEST_VALUE"));
         });
     }
