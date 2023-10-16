@@ -22,28 +22,26 @@ public interface ICommandDispatcher
     /// </summary>
     /// <param name="compound">The compound to execute.</param>
     /// <param name="executor">The executor to act on behalf of.</param>
-    /// <returns>The return code of the commands. Usually, <c>0</c> means success.</returns>
-    int Execute(CommandSectionCompound compound, ICommandExecutor executor);
+    /// <returns>The execution result.</returns>
+    CommandResult Execute(CommandSectionCompound compound, ICommandExecutor executor);
 
     /// <summary>
     /// Executes the specified command section.
     /// </summary>
     /// <param name="section">The section to execute.</param>
     /// <param name="executor">The executor to act on behalf of.</param>
-    /// <param name="outStream">The text reader to read the output of the command.</param>
     /// <param name="context">The execution context of this execution. Each context must be specific to execution of each section.</param>
-    /// <returns>The return code of the section. Usually, <c>0</c> means success.</returns>
-    int Execute(CommandSection section, ICommandExecutor executor, out TextReader? outStream, ExecutionContext? context = null);
+    /// <returns>The execution result.</returns>
+    CommandResult Execute(CommandSection section, ICommandExecutor executor, ExecutionContext? context = null);
 
     /// <summary>
     /// Executes the specified unit.
     /// </summary>
     /// <param name="command">The unit to execute.</param>
     /// <param name="executor">The executor to act on behalf of.</param>
-    /// <param name="outStream">The text reader to read the output of the command.</param>
     /// <param name="context">The execution context of this execution.</param>
-    /// <returns>The return code of the section. Usually, <c>0</c> means success.</returns>
-    int Execute(CommandUnit command, ICommandExecutor executor, out TextReader? outStream, ExecutionContext context);
+    /// <returns>The execution result.</returns>
+    CommandResult Execute(CommandUnit command, ICommandExecutor executor, ExecutionContext context);
 
     /// <summary>
     /// Parse the specified line of command to a <see cref="CommandSectionCompound"/>.

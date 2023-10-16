@@ -1,6 +1,7 @@
 namespace IceShell.Platform.Windows;
 
 using IceShell.Core;
+using IceShell.Core.Api;
 using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -11,14 +12,13 @@ using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 
 [ComplexCommand("vol", "[Windows] Get information about a volume.")]
-internal class VolumeInfoCommand : ICommand
+internal class VolumeInfoCommand : IShellCommand
 {
     [Value("volume", false, 0)]
     public string? VolumePath { get; set; }
 
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
         VolumePath ??= Environment.CurrentDirectory;
 
         if (Directory.Exists(VolumePath) && VolumePath.Length > 3)
@@ -49,6 +49,6 @@ internal class VolumeInfoCommand : ICommand
 
         AnsiConsole.Write(table);
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

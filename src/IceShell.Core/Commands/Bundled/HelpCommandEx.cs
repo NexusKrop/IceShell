@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
@@ -14,7 +15,7 @@ using Spectre.Console;
 /// Provides help information for IceShell commands.
 /// </summary>
 [ComplexCommand("help", "Provides help information for IceShell commands.")]
-public class HelpCommandEx : ICommand
+public class HelpCommandEx : IShellCommand
 {
     /// <summary>
     /// Gets or sets the name of the command that the user wants help information.
@@ -26,10 +27,8 @@ public class HelpCommandEx : ICommand
     public string? CommandName { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         var commandName = CommandName;
 
         if (string.IsNullOrWhiteSpace(commandName))
@@ -40,28 +39,27 @@ public class HelpCommandEx : ICommand
         return ExecuteDetailed(shell, commandName);
     }
 
-    private static int ExecuteDetailed(IShell shell, string commandName)
+    private static CommandResult ExecuteDetailed(IShell shell, string commandName)
     {
         var commandType = shell.Dispatcher.CommandManager.GetDefinition(commandName);
 
         if (commandType == null)
         {
-            Console.WriteLine(LangMessage.Get("help_not_found"), commandName ?? "");
-            return 1;
+            return CommandResult.WithError(CommandErrorCode.BadArgument, LangMessage.GetFormat("help_not_found", commandName ?? ""));
         }
 
         var def = commandType.Definition;
 
         def.PrintHelp(commandName);
-        return 0;
+        return CommandResult.Ok();
     }
 
-    private static int ExecuteSummary(IShell shell)
+    private static CommandResult ExecuteSummary(IShell shell)
     {
         if (!shell.Dispatcher.CommandManager.Any())
         {
             Console.WriteLine(LangMessage.Get("help_no_commands"));
-            return 0;
+            return CommandResult.Ok();
         }
 
         Console.WriteLine(LangMessage.Get("help_summary_more_information"));
@@ -91,6 +89,6 @@ public class HelpCommandEx : ICommand
 
         AnsiConsole.Write(grid);
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

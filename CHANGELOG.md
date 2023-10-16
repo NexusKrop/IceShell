@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Otherwise, the shell exits immediately.
 - Added support for saving and restoring command history.
 - Added `SIGTERM` handling support for GNU/Linux.
-- Added `SET` command to set environment variable
+- Added `SET` command to query and set environment variable.
+- Added support for error codes for internal commands.
 
 ### Changed
 
@@ -33,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Escaping is now disallowed outside quoted strings.
 - `DIR` command will now fail if a directory was specified, and the specified directory does not exist.
 - Command history is now limited 100 items. 
+- `ICommand` interface is now replaced with `IShellCommand` interface.
 
 ### Fixed
 

@@ -58,7 +58,7 @@ public class BatchFile : ICommandExecutor
         return new(retVal, labels);
     }
 
-    public void RunBatch(IShell shell)
+    public CommandResult RunBatch(IShell shell)
     {
         while (CurrentLine < _lines.Count)
         {
@@ -70,11 +70,15 @@ public class BatchFile : ICommandExecutor
                 continue;
             }
 
-            if (shell.Execute(line, this) != 0)
+            var execResult = shell.Execute(line, this);
+
+            if (execResult.ExitCode != 0)
             {
-                throw new CommandFormatException(string.Format(LangMessage.Get("batch_not_successful"), CurrentLine + 1));
+                return execResult;
             }
         }
+
+        return CommandResult.Ok();
     }
 
     public void Jump(string label)

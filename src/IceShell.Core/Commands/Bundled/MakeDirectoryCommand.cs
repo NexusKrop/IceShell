@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
@@ -18,7 +19,7 @@ using System;
 /// </summary>
 [ComplexCommand("mkdir", "Creates a directory, or a tree of directories.")]
 [CommandAlias("md")]
-public class MakeDirectoryCommand : ICommand
+public class MakeDirectoryCommand : IShellCommand
 {
     /// <summary>
     /// Gets or sets the name of the directory or that path syntax that represents the directory tree to create.
@@ -27,10 +28,8 @@ public class MakeDirectoryCommand : ICommand
     public string? DirectoryName { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         var dir = PathSearcher.ExpandVariables(DirectoryName);
 
         Checks.ArgNotNull(DirectoryName);
@@ -45,6 +44,6 @@ public class MakeDirectoryCommand : ICommand
             throw ExceptionHelper.UnauthorizedWrite();
         }
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

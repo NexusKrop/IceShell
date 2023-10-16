@@ -5,6 +5,8 @@
 
 namespace IceShell.Core.CLI.Languages;
 
+using IceShell.Core.Api;
+
 /// <summary>
 /// Provides quick access to <see cref="LanguageService"/>.
 /// </summary>
@@ -191,4 +193,11 @@ public static class LangMessage
     /// </summary>
     /// <returns>The message.</returns>
     public static string InvalidPath() => Get("generic_path_invalid");
+
+    /// <summary>
+    /// Gets the message that is associated with the specified error code.
+    /// </summary>
+    /// <param name="errorCode">The error code.</param>
+    /// <returns>The error code message.</returns>
+    public static string MsgFromErrorCode(CommandErrorCode errorCode) => Get($"generic_command_error_{(int)errorCode}");
 }

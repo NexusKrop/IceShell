@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
@@ -13,13 +14,12 @@ using System;
 /// </summary>
 /// <seealso cref="Console.Clear()"/>
 [ComplexCommand("cls", "Clears the screen.")]
-public class ClearScreenCommandEx : ICommand
+public class ClearScreenCommandEx : IShellCommand
 {
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
         Console.Clear();
-        return 0;
+        return CommandResult.Ok();
     }
 }

@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
@@ -11,13 +12,12 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 /// Quits the IceShell program.
 /// </summary>
 [ComplexCommand("exit", "Quits the IceShell program.")]
-public class ExitCommandEx : ICommand
+public class ExitCommandEx : IShellCommand
 {
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
         shell.Quit();
-        return 0;
+        return CommandResult.Ok();
     }
 }

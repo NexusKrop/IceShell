@@ -4,10 +4,10 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Commands.Complex;
-using global::IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 
@@ -17,7 +17,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 [ComplexCommand("cd", "Displays the name of or changes the current directory.")]
 [CommandAlias("chdir")]
 [GreedyString]
-public class CdCommandEx : ICommand
+public class CdCommandEx : IShellCommand
 {
     /// <summary>
     /// Gets or sets the directory to change the current directory to.
@@ -30,26 +30,24 @@ public class CdCommandEx : ICommand
     public string? Destination { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         if (string.IsNullOrWhiteSpace(Destination))
         {
             // Print current directory if no current directory is provided
             Console.WriteLine(Environment.CurrentDirectory);
-            return 0;
+            return CommandResult.Ok();
         }
 
         var target = PathSearcher.ExpandVariables(Destination) ?? "";
 
         if (!Directory.Exists(target))
         {
-            throw ExceptionHelper.BadDirectory(target);
+            return CommandResult.WithBadDirectory(target);
         }
 
         Shell.ChangeDirectory(target);
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

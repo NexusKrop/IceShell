@@ -19,6 +19,7 @@ using global::IceShell.Core.Commands;
 /// </remarks>
 /// <seealso cref="CommandManager"/>
 /// <seealso cref="ComplexCommandAttribute"/>
+[Obsolete("Please implement IShellCommand instead. Commands still implementing ICommand will not register.", true, DiagnosticId = "ICS0001")]
 public interface ICommand
 {
     /// <summary>

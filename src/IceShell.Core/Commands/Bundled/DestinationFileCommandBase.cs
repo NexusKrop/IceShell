@@ -2,13 +2,12 @@
 // See "COPYING.txt" for licence
 
 namespace IceShell.Core.Commands.Bundled;
-using IceShell.Core.CLI.Languages;
+
+using IceShell.Core.Api;
 using IceShell.Core.Commands;
 using IceShell.Core.Commands.Attributes;
-using IceShell.Core.Exceptions;
 using Microsoft.Extensions.FileSystemGlobbing;
 using NexusKrop.IceCube.Util.Enumerables;
-using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System.Collections.Generic;
 
@@ -16,7 +15,7 @@ using System.Collections.Generic;
 /// Provides a base class for file operation commands that involves multiple sources and a single destination.
 /// </summary>
 [VariableValue]
-public abstract class DestinationFileCommandBase : ICommand
+public abstract class DestinationFileCommandBase : IShellCommand
 {
     /// <summary>
     /// Gets or sets the buffer to store values.
@@ -38,15 +37,13 @@ public abstract class DestinationFileCommandBase : ICommand
     public abstract void DoOperation(string source, string destination);
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         string? destination = null;
 
         if (Buffer == null || Buffer.Count < 2)
         {
-            throw new CommandFormatException(LangMessage.MsgMissingValue(0));
+            return CommandResult.WithMissingValue(0);
         }
 
         var matcher = new Matcher();
@@ -93,11 +90,11 @@ public abstract class DestinationFileCommandBase : ICommand
 
         if (!destIsDir && toCopy.Count > 2)
         {
-            throw new CommandFormatException(LangMessage.MsgDestinationFileButMultipleSource());
+            return CommandResult.WithError(CommandErrorCode.SingleDestinationMultiSource);
         }
 
         toCopy.ForEach(x => DoOperation(x.Key, x.Value));
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

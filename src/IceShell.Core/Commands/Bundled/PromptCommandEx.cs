@@ -3,6 +3,7 @@
 
 namespace IceShell.Core.Commands.Bundled;
 
+using IceShell.Core.Api;
 using IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -12,7 +13,7 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 /// </summary>
 [ComplexCommand("prompt", "Changes the IceShell command prompt.")]
 [GreedyString]
-public class PromptCommandEx : ICommand
+public class PromptCommandEx : IShellCommand
 {
     /// <summary>
     /// Gets or sets the command prompt to change to.
@@ -24,9 +25,8 @@ public class PromptCommandEx : ICommand
     public string? Prompt { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
         var prompt = Prompt;
 
         if (string.IsNullOrWhiteSpace(prompt))
@@ -34,10 +34,10 @@ public class PromptCommandEx : ICommand
             // Reset prompt.
 
             shell.Prompt = Shell.DefaultPrompt;
-            return 0;
+            return CommandResult.Ok();
         }
 
         shell.Prompt = prompt;
-        return 0;
+        return CommandResult.Ok();
     }
 }

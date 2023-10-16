@@ -212,11 +212,11 @@ public class CommandManager : ICommandManager
         }
 
         // Now begin registering
-        var intf = type.GetInterface(nameof(ICommand));
+        var intf = type.GetInterface(nameof(IShellCommand));
 
-        if (intf != typeof(ICommand))
+        if (intf != typeof(IShellCommand))
         {
-            throw ExceptionHelper.CommandNoInterface(type, nameof(ICommand));
+            throw ExceptionHelper.CommandNoInterface(type, nameof(IShellCommand));
         }
 
         if (attributes[0] is not ComplexCommandAttribute attribute)

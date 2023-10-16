@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -13,17 +14,16 @@ using System;
 /// Defines a command that shows the version of the operating system and the shell program.
 /// </summary>
 [ComplexCommand("ver", "Displays the IceShell version.")]
-public class ShellVersionCommand : ICommand
+public class ShellVersionCommand : IShellCommand
 {
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
         Console.WriteLine(LangMessage.Get("ver_line_0"), Shell.AppVersion);
         Console.WriteLine(LangMessage.Get("ver_line_1"), Environment.OSVersion.VersionString);
         Console.WriteLine();
         Console.WriteLine(LangMessage.Get("ver_line_2"));
 
-        pipeStream = null;
-        return 0;
+        return CommandResult.Ok();
     }
 }

@@ -8,6 +8,7 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Parsing;
+using global::IceShell.Core.Api;
 using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
@@ -35,7 +36,7 @@ using System.Text;
 /// </para>
 /// </remarks>
 [ComplexCommand("dir", "Displays a list of files and subdirectories in a directory.")]
-internal class DirCommandEx : ICommand
+internal class DirCommandEx : IShellCommand
 {
     private sealed record class DirTableRow(string ShortDateTime, string Size, string FileName);
 
@@ -142,10 +143,10 @@ internal class DirCommandEx : ICommand
         }
     }
 
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
         var realTarget = string.IsNullOrEmpty(TargetDir) ? Directory.GetCurrentDirectory() : PathSearcher.ExpandVariables(TargetDir);
+        TextReader? pipeStream = null;
 
         // All chunked out ones need fix
 
@@ -175,7 +176,7 @@ internal class DirCommandEx : ICommand
             Execute(RevealHidden);
         }
 
-        return 0;
+        return CommandResult.Ok(pipeStream);
     }
 
     private void Execute(bool revealHidden, out TextReader? pipeStream)

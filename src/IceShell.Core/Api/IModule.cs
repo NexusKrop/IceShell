@@ -3,8 +3,6 @@
 
 namespace IceShell.Core.Api;
 
-using IceShell.Core.Commands;
-
 /// <summary>
 /// Defines a module implementation.
 /// </summary>

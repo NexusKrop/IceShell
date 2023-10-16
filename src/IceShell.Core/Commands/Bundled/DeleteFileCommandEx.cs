@@ -8,6 +8,7 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Exceptions;
+using global::IceShell.Core.Api;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using NexusKrop.IceCube.Util.Enumerables;
@@ -20,7 +21,7 @@ using NexusKrop.IceShell.Core.FileSystem;
 /// </summary>
 [ComplexCommand("del", "Deletes one or more files.")]
 [VariableValue]
-public class DeleteFileCommandEx : ICommand
+public class DeleteFileCommandEx : IShellCommand
 {
     /// <summary>
     /// Gets or sets the list of the targets.
@@ -52,10 +53,8 @@ public class DeleteFileCommandEx : ICommand
     }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         if (Targets?.Any() != true)
         {
             throw ExceptionHelper.RequiresValue(0);
@@ -86,18 +85,11 @@ public class DeleteFileCommandEx : ICommand
 
         var matchingResult = matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(searchDir ?? Environment.CurrentDirectory)));
 
-        matchingResult.Files.ForEach(x =>
-        {
-            targets.Add(x.Path);
-        });
-
-        var failure = false;
+        matchingResult.Files.ForEach(x => targets.Add(x.Path));
 
         if (!targets.Any())
         {
-            Console.WriteLine("No files found for the selected patterns");
-
-            return 1;
+            return CommandResult.WithError(CommandErrorCode.BadFile);
         }
 
         if (targets.Count > 1)
@@ -106,15 +98,11 @@ public class DeleteFileCommandEx : ICommand
             {
                 if (!File.Exists(target))
                 {
-                    failure = true;
-                    System.Console.WriteLine("ERROR: File \"{0}\" does not exist or no permission to access it", target);
-                    continue;
+                    return CommandResult.WithBadFile(target);
                 }
 
                 DeleteFileCommit(target);
             }
-
-            return failure ? 1 : 0;
         }
         else
         {
@@ -127,6 +115,6 @@ public class DeleteFileCommandEx : ICommand
 
         }
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

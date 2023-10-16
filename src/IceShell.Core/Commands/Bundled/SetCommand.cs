@@ -1,5 +1,6 @@
 namespace IceShell.Core.Commands.Bundled;
 
+using IceShell.Core.Api;
 using IceShell.Core.Commands.Attributes;
 using IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -11,7 +12,7 @@ using System.IO;
 /// </summary>
 [ComplexCommand("SET", "Displays or modifies environment variable.")]
 [GreedyString]
-public class SetCommand : ICommand
+public class SetCommand : IShellCommand
 {
     /// <summary>
     /// The name of the variable.
@@ -26,13 +27,13 @@ public class SetCommand : ICommand
     public string? VariableValue { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
+        TextReader? pipeStream = null;
 
         if (string.IsNullOrWhiteSpace(VariableName))
         {
-            throw ExceptionHelper.RequiresValue(0);
+            return CommandResult.WithMissingValue(0);
         }
 
         if (VariableValue is null)
@@ -41,11 +42,11 @@ public class SetCommand : ICommand
 
             pipeStream = envVar == null ? TextReader.Null : new StringReader(envVar);
 
-            return 0;
+            return CommandResult.Ok();
         }
 
         Environment.SetEnvironmentVariable(VariableName, VariableValue);
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

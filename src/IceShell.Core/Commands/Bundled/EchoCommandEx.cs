@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -15,7 +16,7 @@ using System;
 /// </summary>
 [ComplexCommand("echo", "Displays messages.")]
 [GreedyString]
-public class EchoCommandEx : ICommand
+public class EchoCommandEx : IShellCommand
 {
     /// <summary>
     /// Gets or sets the message to display.
@@ -33,10 +34,8 @@ public class EchoCommandEx : ICommand
     public bool ExpandVariables { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         if (context.Retrieval == null)
         {
             var finalText = Message;
@@ -53,6 +52,6 @@ public class EchoCommandEx : ICommand
             Console.WriteLine(context.Retrieval.ReadToEnd());
         }
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

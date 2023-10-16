@@ -1,8 +1,8 @@
 namespace IceShell.Core.Commands.Argument;
 
+using IceShell.Core.Api;
 using IceShell.Core.Exceptions;
 using NexusKrop.IceShell.Core.CLI;
-using NexusKrop.IceShell.Core.Commands.Complex;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -21,7 +21,7 @@ internal class ArgumentConvertService
         _converters.Remove(type);
     }
 
-    internal bool TryConvert(string from, PropertyInfo target, ICommand instance)
+    internal bool TryConvert(string from, PropertyInfo target, IShellCommand instance)
     {
         var targetType = target.PropertyType;
 

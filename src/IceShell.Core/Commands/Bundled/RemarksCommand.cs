@@ -4,16 +4,17 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core.Commands.Complex;
 
 /// <summary>
-/// Defines a command that does nothing and always succeeds. This command is to be used as a comment command.
+/// Defines a command that does nothing and always succeeds. This command is intended to be a comment command.
 /// </summary>
 [ComplexCommand("rm")]
 [GreedyString]
-public class RemarksCommand : ICommand
+public class RemarksCommand : IShellCommand
 {
     /// <summary>
     /// Gets or sets the content of the comment.
@@ -22,9 +23,8 @@ public class RemarksCommand : ICommand
     public string? Comment { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-        return 0;
+        return CommandResult.Ok();
     }
 }

@@ -77,7 +77,7 @@ if (args.Length == 0)
 else if (args.Length == 1)
 {
     shell.ModuleManager.Initialize();
-    retCode = shell.Execute(args[0]);
+    retCode = shell.Execute(args[0]).ExitCode;
 }
 
 Executive.Exit(retCode);

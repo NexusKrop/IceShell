@@ -38,7 +38,7 @@ public interface IShell : ICommandExecutor
     /// <param name="line">The line to parse and execute.</param>
     /// <param name="actualExecutor">The executor to have this instance act on behalf of. If <see langword="null"/>, this instance will execute commands on its own behalf.</param>
     /// <returns>The return code of the command.</returns>
-    int Execute(string line, ICommandExecutor? actualExecutor = null);
+    CommandResult Execute(string line, ICommandExecutor? actualExecutor = null);
 
     /// <summary>
     /// Executes an already passed command compound.
@@ -46,20 +46,5 @@ public interface IShell : ICommandExecutor
     /// <param name="compound">The compound to execute.</param>
     /// <param name="actualExecutor">The executor to have this instance act on behalf of. If <see langword="null"/>, this instance will execute commands on its own behalf.</param>
     /// <returns>The return code of the command. Zero means success.</returns>
-    int Execute(CommandSectionCompound compound, ICommandExecutor? actualExecutor = null);
-
-    /// <summary>
-    /// Executes a local file or external command.
-    /// </summary>
-    /// <param name="section">The section to execute.</param>
-    /// <returns>The exit code.</returns>
-    int LocalExecute(CommandSection section);
-
-    /// <summary>
-    /// Executes an external command and redirect its output.
-    /// </summary>
-    /// <param name="section">The section to execute.</param>
-    /// <param name="output">The output stream reader.</param>
-    /// <returns>The exit code.</returns>
-    int LocalExecuteRedirectOut(CommandSection section, out TextReader? output);
+    CommandResult Execute(CommandSectionCompound compound, ICommandExecutor? actualExecutor = null);
 }

@@ -9,7 +9,6 @@ using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Exceptions;
 using global::IceShell.Settings;
-using global::IceShell.Parsing;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Completion;
@@ -172,13 +171,13 @@ public class Shell : IShell
     /// </summary>
     /// <param name="line">The input.</param>
     /// <param name="actualExecutor">The executor to pass to commands (or have this instance to act on behalf of). If <see langword="null"/>, the Shell will run commands on its own behalf.</param>
-    public int Execute(string line, ICommandExecutor? actualExecutor = null)
+    public CommandResult Execute(string line, ICommandExecutor? actualExecutor = null)
     {
         try
         {
             var batchLine = Dispatcher.ParseLine(line);
 
-            Dispatcher.Execute(batchLine, this);
+            return Dispatcher.Execute(batchLine, this);
         }
         catch (CommandFormatException ex)
         {
@@ -188,18 +187,19 @@ public class Shell : IShell
         {
             // 740 = Operating requires elevation
             ConsoleOutput.PrintShellError(string.Format(LangMessage.Get("shell_require_elevation"), LangMessage.Get("shell_windows_elevation_help")));
+            return CommandResult.WithError(CommandErrorCode.ElevationRequired);
         }
         catch (Exception ex)
         {
             ConsoleOutput.PrintShellError(ex.ToString());
+            return CommandResult.WithException(CommandErrorCode.GenericCommandException, ex);
         }
 
-        // Fallback = fails
-        return 1;
+        return CommandResult.WithError(CommandErrorCode.GenericCommandFail);
     }
 
     /// <inheritdoc />
-    public int Execute(CommandSectionCompound compound, ICommandExecutor? actualExecutor = null)
+    public CommandResult Execute(CommandSectionCompound compound, ICommandExecutor? actualExecutor = null)
     {
         return Dispatcher.Execute(compound, actualExecutor ?? this);
     }
@@ -247,7 +247,21 @@ public class Shell : IShell
                 continue;
             }
 
-            Execute(input, null);
+            var execResult = Execute(input, null);
+
+            // Command failure handling
+            if (execResult.ExitCode != 0 && execResult.ErrorCode != CommandErrorCode.None)
+            {
+                if (!string.IsNullOrWhiteSpace(execResult.Message))
+                {
+                    ConsoleOutput.PrintShellError(execResult.Message);
+                }
+                else
+                {
+                    ConsoleOutput.PrintShellError(LangMessage.MsgFromErrorCode(execResult.ErrorCode));
+                }
+            }
+
             Console.WriteLine();
         }
 
@@ -262,32 +276,5 @@ public class Shell : IShell
     public void Jump(string label)
     {
         throw new NotSupportedException();
-    }
-
-    /// <inheritdoc />
-    public int LocalExecute(CommandSection section)
-    {
-        if (section.Statements == null)
-        {
-            return ExecuteOnPath(section.Name, null);
-        }
-
-        return ExecuteOnPath(section.Name, section.Statements
-            .Select(x => x.Content)
-            .Where(x => x != section.Name));
-    }
-
-    /// <inheritdoc/>
-    public int LocalExecuteRedirectOut(CommandSection section, out TextReader? output)
-    {
-        if (section.Statements == null)
-        {
-            return ExecuteOnPathRedirect(section.Name, null, out output);
-        }
-
-        return ExecuteOnPathRedirect(section.Name, section.Statements
-            .Select(x => x.Content)
-            .Where(x => x != section.Name),
-            out output);
     }
 }

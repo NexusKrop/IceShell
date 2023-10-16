@@ -89,7 +89,7 @@ public class CommandDispatcher : ICommandDispatcher
     /// <param name="executor">Th executor to act on behalf of.</param>
     /// <returns>The return code of the commands. Returns zero if success.</returns>
     /// <exception cref="CommandFormatException">Action never ends, or other kinds of command failures.</exception>
-    public int Execute(CommandSectionCompound compound, ICommandExecutor executor)
+    public CommandResult Execute(CommandSectionCompound compound, ICommandExecutor executor)
     {
         var inAction = false;
 
@@ -115,12 +115,12 @@ public class CommandDispatcher : ICommandDispatcher
             //
             // This is only useful in diagnostics if the process *did not start*! If the process did start,
             // the process it self can return -2000! Please do not assert this.
-            int exitCode = -2000;
+            CommandResult exitCode = CommandResult.WithError(CommandErrorCode.ExternalStartFail);
             TextReader? pipeStream = null;
 
             if (line.IsCommand)
             {
-                exitCode = Execute(line, executor, out pipeStream, context);
+                exitCode = Execute(line, executor, context);
             }
             else
             {
@@ -155,7 +155,7 @@ public class CommandDispatcher : ICommandDispatcher
                 }
             }
 
-            if (exitCode != 0 && inAction)
+            if (exitCode.ExitCode != 0)
             {
                 // Command failure
                 return exitCode;
@@ -176,7 +176,7 @@ public class CommandDispatcher : ICommandDispatcher
             Console.WriteLine(lastOutStream.ReadToEnd());
         }
 
-        return 0;
+        return CommandResult.Ok();
     }
 
     /// <summary>
@@ -185,21 +185,20 @@ public class CommandDispatcher : ICommandDispatcher
     /// <param name="section">The line to execute.</param>
     /// <param name="executor">The executor to act on behalf of.</param>
     /// <param name="context">The execution context.</param>
-    /// <param name="outStream">The pipe out stream.</param>
     /// <returns>The exit code of the command or process; if failed to start external command, returns <c>-255</c>.</returns>
     /// <exception cref="ArgumentException">The specified <see cref="CommandSection"/> is invalid.</exception>
     /// <exception cref="CommandFormatException">The specified command was not found.</exception>
-    public int Execute(CommandSection section, ICommandExecutor executor, out TextReader? outStream, ExecutionContext? context = null)
+    public CommandResult Execute(CommandSection section, ICommandExecutor executor, ExecutionContext? context = null)
     {
         if (string.IsNullOrWhiteSpace(section.Name))
         {
-            outStream = null;
-            return 0;
+            // This indicates a blank line which we will just skip.
+            return CommandResult.Ok();
         }
 
         if (section.IsCommand && section.Command != null)
         {
-            return Execute(section.Command, executor, out outStream, context ?? ExecutionContext.Default);
+            return Execute(section.Command, executor, context ?? ExecutionContext.Default);
         }
         else if (section.Statements != null)
         {
@@ -207,8 +206,8 @@ public class CommandDispatcher : ICommandDispatcher
 
             if (!args.Any())
             {
-                outStream = null;
-                return 0;
+                // This also indicates a blank line.
+                return CommandResult.Ok();
             }
 
             var cmdName = section.Statements[0].Content;
@@ -229,14 +228,12 @@ public class CommandDispatcher : ICommandDispatcher
             if (process == null)
             {
                 ConsoleOutput.PrintShellError(LangMessage.MsgUnableStartProcess());
-                outStream = null;
-                return -255;
+                return CommandResult.WithError(CommandErrorCode.ExternalStartFail);
             }
 
             process.WaitForExit();
 
-            outStream = null;
-            return process.ExitCode;
+            return CommandResult.WithCode(process.ExitCode);
         }
         else
         {
@@ -250,11 +247,10 @@ public class CommandDispatcher : ICommandDispatcher
     /// <param name="command">The command to execute.</param>
     /// <param name="executor">The command executor to act on behalf of.</param>
     /// <param name="context">The context.</param>
-    /// <param name="outStream">The pipe output stream.</param>
     /// <returns>The exit code of the command.</returns>
-    public int Execute(CommandUnit command, ICommandExecutor executor, out TextReader? outStream, ExecutionContext context)
+    public CommandResult Execute(CommandUnit command, ICommandExecutor executor, ExecutionContext context)
     {
-        var instance = (ICommand)Activator.CreateInstance(command.Command.Type)!;
+        var instance = (IShellCommand)Activator.CreateInstance(command.Command.Type)!;
 
         if (command.Command.Definition.VariableValues &&
             command.Command.Definition.VariableValueBuffer != null)
@@ -304,8 +300,6 @@ public class CommandDispatcher : ICommandDispatcher
             definition.Property.SetValue(instance, argStr);
         }
 
-        var retVal = instance.Execute(_shell, executor, context, out var pipeStream);
-        outStream = pipeStream;
-        return retVal;
+        return instance.Execute(_shell, executor, context);
     }
 }

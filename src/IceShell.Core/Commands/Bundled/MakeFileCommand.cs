@@ -4,7 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
-using global::IceShell.Core.CLI.Languages;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
 using global::IceShell.Core.Exceptions;
@@ -17,7 +17,7 @@ using System;
 /// Defines a command that creates an empty file.
 /// </summary>
 [ComplexCommand("mkfile")]
-public class MakeFileCommand : ICommand
+public class MakeFileCommand : IShellCommand
 {
     /// <summary>
     /// Gets or sets the name of the file to create.
@@ -26,9 +26,8 @@ public class MakeFileCommand : ICommand
     public string? Name { get; set; }
 
     /// <inheritdoc/>
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
         var actual = PathSearcher.ExpandVariables(Name);
 
         Checks.ArgNotNull(actual);
@@ -45,6 +44,6 @@ public class MakeFileCommand : ICommand
             throw ExceptionHelper.UnauthorizedWrite();
         }
 
-        return 0;
+        return CommandResult.Ok();
     }
 }

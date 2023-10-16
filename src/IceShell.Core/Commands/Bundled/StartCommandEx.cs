@@ -4,6 +4,7 @@
 namespace NexusKrop.IceShell.Core.Commands.Bundled;
 
 using global::IceShell.Core;
+using global::IceShell.Core.Api;
 using global::IceShell.Core.CLI.Languages;
 using global::IceShell.Core.Commands;
 using global::IceShell.Core.Commands.Attributes;
@@ -17,7 +18,7 @@ using System.ComponentModel;
 /// Starts the specified file or executable program.
 /// </summary>
 [ComplexCommand("start", "Starts the specified file or executable program.")]
-public class StartCommandEx : ICommand
+public class StartCommandEx : IShellCommand
 {
     /// <summary>
     /// Gets or sets the executable or the file to start.
@@ -26,13 +27,11 @@ public class StartCommandEx : ICommand
     public string? Target { get; set; }
 
     /// <inheritdoc />
-    public int Execute(IShell shell, ICommandExecutor executor, ExecutionContext context, out TextReader? pipeStream)
+    public CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context)
     {
-        pipeStream = null;
-
         if (Target == null)
         {
-            throw ExceptionHelper.RequiresValue(0);
+            return CommandResult.WithMissingValue(0);
         }
 
         var realTarget = PathSearcher.ExpandVariables(Target);
@@ -45,9 +44,9 @@ public class StartCommandEx : ICommand
         }
         catch (Win32Exception x) when (x.NativeErrorCode == 1155)
         {
-            throw new CommandFormatException(LangMessage.Get("start_bad_assoc"));
+            return CommandResult.WithError(CommandErrorCode.OperatingSystemError, LangMessage.Get("start_bad_assoc"));
         }
 
-        return 0;
+        return CommandResult.Ok();
     }
 }
