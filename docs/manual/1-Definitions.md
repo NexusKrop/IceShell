@@ -5,6 +5,12 @@
 - _External command_: A external program that uses command line as its interface. These programs can be used within IceShell just like Internal Commands, hence they are external commands.
 - _Internal command_: Commands that are either bundled with IceShell or added to IceShell directly via a module.
 
+## Command Example
+
+- Arguments marked by a pair of angle brackets (for example, `<argument>`) are _required_.
+- Arguments marked by a pair of box brackets (for example, `[argument]`) are _optional_.
+- Arguments not marked by any brackets are literals.
+
 ---
 
 Copyright (C) 2023 IceShell contributors.

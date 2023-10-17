@@ -67,5 +67,9 @@ public enum CommandErrorCode
     /// <summary>
     /// The directory already exists.
     /// </summary>
-    DirectoryExists
+    DirectoryExists,
+    /// <summary>
+    /// The current user does not have the permissions to write to the specified destination.
+    /// </summary>
+    WriteUnauthorized
 }

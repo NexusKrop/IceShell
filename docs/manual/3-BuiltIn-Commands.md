@@ -175,9 +175,13 @@ GOTO <label>
 
 - **label**: The label to skip to.
 
+### Errors
+
+- **12 - OperationNotSupported**: The current context does not support skipping.
+
 ### Exit Code
 
-Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+Returns `0` if succeeds, non-zero otherwise.
 
 <!-- ======================================= -->
 
@@ -204,7 +208,7 @@ Returns zero on success and non-zero on failure. For detailed error information,
 Creates a directory or a tree of directories. The user must be authorised to create the file,
 and the directories shall not exist.
 
-```cmd
+```bat
 mkdir <directory>
 ```
 
@@ -212,9 +216,13 @@ mkdir <directory>
 
 - **directory**: The directory or tree of directories to create.
 
+### Errors
+
+- 
+
 ### Exit Code
 
-Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+Returns `0` if the command succeeds, non-zero otherwise. Check the error code for detailed error.
 
 <!-- ======================================= -->
 
@@ -232,7 +240,7 @@ mkfile <file>
 
 ### Exit Code
 
-Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+Returns `0` if the command succeeds, non-zero otherwise. Check the error code for detailed error.
 
 <!-- ======================================= -->
 
@@ -241,7 +249,7 @@ Returns `0` if succeeds, non-zero otherwise. Check the message of the error for 
 Move or rename one or more files.
 
 ```cmd
-move [/F] <files...>
+move [/F] <files...> <destination>
 ```
 
 ### Arguments
@@ -252,9 +260,15 @@ move [/F] <files...>
 
 - `/F`: If specified, overwrites existing files at destination.
 
+### Errors
+
+- **6 - BadDirectory**: The destination directory does not exist.
+- **7 - SingleDestinationMultiSource**: There are multiple (matches of) source files (pattern), but the destination is not a folder.
+- **8 - SyntaxError**: No file or destination is provided.
+
 ### Exit Code
 
-Returns `0` if succeeds, non-zero otherwise. Check the message of the error for details.
+Returns `0` if the command succeeds, non-zero otherwise. Check the error code for detailed error.
 
 <!-- ======================================= -->
 
@@ -303,9 +317,13 @@ SET <name> [value]
 - **name**: The name of the environment variable.
 - **value**: _Optional_. The value to set to. If not specified, outputs the value of the variable.
 
+### Errors
+
+- **8 - SyntaxError**: The _name_ argument is empty.
+
 ### Exit Code
 
-Returns `0` if the command succeeds, non-zero otherwise. Check the message of the error for details.
+Returns `0` if the command succeeds, non-zero otherwise. Check the error code for detailed error.
 
 <!-- ======================================= -->
 
@@ -325,6 +343,27 @@ Returns `0` if the command succeeds, non-zero otherwise. Check the message of th
 
 ## TYPE
 
+Reads the contents of a text file to the console or other commands.
+
+```bat
+TYPE <file>
+```
+
+### Arguments
+
+- **file**: The name of the file to read.
+
+### Errors
+
+This command may return any of the following error codes:
+
+- **8 - SyntaxError**: The _file_ argument is empty.
+- **9 - BadFile**: The specified _file_ does not exist.
+
+### Exit Code
+
+Returns `0` if the command succeeds, non-zero otherwise. Check the error code for detailed error.
+
 <!-- ======================================= -->
 
 ## VER
@@ -332,7 +371,7 @@ Returns `0` if the command succeeds, non-zero otherwise. Check the message of th
 Displays the IceShell version along with some Operating System information.
 
 ```bat
-ver
+VER
 ```
 
 ### Exit Code

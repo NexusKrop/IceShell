@@ -41,7 +41,7 @@ public class MakeDirectoryCommand : IShellCommand
         }
         catch (UnauthorizedAccessException)
         {
-            throw ExceptionHelper.UnauthorizedWrite();
+            return CommandResult.WithError(CommandErrorCode.WriteUnauthorized);
         }
 
         return CommandResult.Ok();
