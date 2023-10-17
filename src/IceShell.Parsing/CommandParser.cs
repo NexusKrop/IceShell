@@ -15,6 +15,12 @@ public static class CommandParser
     /// </summary>
     public const string EndOfOptionsStatement = "--";
 
+    /// <summary>
+    /// Parses a compound of commands.
+    /// </summary>
+    /// <param name="statements">The statements.</param>
+    /// <param name="isCommandName">A predicate to check if the name provided is a valid command.</param>
+    /// <returns>The parsed compound.</returns>
     public static SyntaxCompound ParseCompound(IReadOnlyList<SyntaxStatement> statements, Predicate<string> isCommandName)
     {
         var thisCompound = new List<SyntaxSegment>();
@@ -22,6 +28,13 @@ public static class CommandParser
 
         foreach (var statement in statements)
         {
+            if (statement.Content == "&&")
+            {
+                EndSegment(SyntaxNextAction.IfSuccessOnly);
+                currentSegment.Clear();
+                continue;
+            }
+
             if (statement.Content == ">")
             {
                 EndSegment(SyntaxNextAction.Redirect);
