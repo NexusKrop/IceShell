@@ -23,7 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore src/IceShell.sln
     - name: Cake Build
-      run: "./src/build.sh --target CIBuild"
+      run: "./src/build-ci.sh --target CIBuild"
     # - name: Build
     #   run: dotnet build src/IceShell.sln --no-restore --property:VersionPrefix=72.72.${{ github.run_number }} --version-suffix cibuild --configuration Debug
     # - name: Test
