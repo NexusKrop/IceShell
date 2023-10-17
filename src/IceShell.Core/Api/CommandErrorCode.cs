@@ -59,5 +59,13 @@ public enum CommandErrorCode
     /// <summary>
     /// The operation is not supported.
     /// </summary>
-    OperationNotSupported
+    OperationNotSupported,
+    /// <summary>
+    /// The file already exists.
+    /// </summary>
+    FileExists,
+    /// <summary>
+    /// The directory already exists.
+    /// </summary>
+    DirectoryExists
 }

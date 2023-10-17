@@ -3,6 +3,7 @@
 
 namespace IceShell.Core.Commands;
 
+using IceShell.Core.Api;
 using IceShell.Core.Exceptions;
 
 /// <summary>
@@ -11,32 +12,32 @@ using IceShell.Core.Exceptions;
 public static class CommandChecks
 {
     /// <summary>
-    /// Throws a <see cref="CommandFormatException"/> if the specified file does not exist.
+    /// Interrupts the command execution if the specified file does not exist.
     /// </summary>
     /// <param name="file">The file to check.</param>
-    public static void FileExists(string file)
+    public static void FileExists(string? file)
     {
         if (!File.Exists(file))
         {
-            throw ExceptionHelper.FileNotFound(file);
+            throw new CommandInterruptException(CommandResult.WithBadFile(file ?? "<null>"));
         }
     }
 
     /// <summary>
-    /// Throws a <see cref="CommandFormatException"/> if the specified directory does exist.
+    /// Interrupts the command execution if the specified directory does exist.
     /// </summary>
     /// <param name="directory">The directory to check.</param>
     public static void DirectoryExists(string? directory)
     {
         if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
         {
-            throw ExceptionHelper.BadDirectory(directory ?? "<null>");
+            throw new CommandInterruptException(CommandResult.WithBadDirectory(directory ?? "<null>"));
         }
     }
 
 
     /// <summary>
-    /// Throws a <see cref="CommandFormatException"/> if a file or directory with the specified name exists.
+    /// Interrupts the command execution if a file or directory with the specified name exists.
     /// </summary>
     /// <param name="name"></param>
     public static void NothingExists(string name)
@@ -46,26 +47,26 @@ public static class CommandChecks
     }
 
     /// <summary>
-    /// Throws a <see cref="CommandFormatException"/> if the specified file does exist.
+    /// Interrupts the command execution if the specified file does exist.
     /// </summary>
     /// <param name="file">The file to check.</param>
     public static void FileNotExists(string file)
     {
         if (File.Exists(file))
         {
-            throw ExceptionHelper.FileAlreadyExists(file);
+            throw new CommandInterruptException(CommandResult.WithExistingFile(file));
         }
     }
 
     /// <summary>
-    /// Throws a <see cref="CommandFormatException"/> if the specified directory does not exist.
+    /// Interrupts the command execution if the specified directory does not exist.
     /// </summary>
     /// <param name="directory">The directory to check.</param>
     public static void DirectoryNotExists(string directory)
     {
         if (Directory.Exists(directory))
         {
-            throw ExceptionHelper.DirectoryAlreadyExists(directory);
+            throw new CommandInterruptException(CommandResult.WithExistingDirectory(directory));
         }
     }
 }

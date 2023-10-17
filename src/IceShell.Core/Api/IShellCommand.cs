@@ -19,5 +19,7 @@ public interface IShellCommand
     /// <param name="executor">The executor that executes this command.</param>
     /// <param name="context">The execution context. It is not required that the context specified is unique for this execution.</param>
     /// <returns>The execution result.</returns>
+    /// <exception cref="IceShell.Core.Exceptions.CommandInterruptException">The command was interrupted.</exception>
+    /// <exception cref="IceShell.Core.Exceptions.CommandFormatException">There was a legacy format error.</exception>
     CommandResult Execute(IShell shell, ICommandExecutor executor, ExecutionContext context);
 }

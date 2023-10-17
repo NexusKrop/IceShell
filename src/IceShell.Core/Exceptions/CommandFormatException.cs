@@ -6,9 +6,12 @@ using System;
 using System.Runtime.Serialization;
 
 /// <summary>
-/// An exception that is thrown when the shell or a command found a syntax error or invalid input, or otherwise a 
-/// runtime error or failure which is caused by invalid, malformed, wrongful or otherwise bad user input.
+/// An exception that is thrown when the shell found a syntax error.
 /// </summary>
+/// <remarks>
+/// If the command encountered a runtime error, the command then should interrupt the command execution (return or throwing <see cref="CommandInterruptException"/>
+/// with appropriate <see cref="IceShell.Core.Api.CommandResult"/> set.
+/// </remarks>
 [Serializable]
 public class CommandFormatException : Exception
 {

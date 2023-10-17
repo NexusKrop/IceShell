@@ -183,6 +183,10 @@ public class Shell : IShell
         {
             ConsoleOutput.PrintShellError(string.Format("{0}", ex.Message));
         }
+        catch (CommandInterruptException ex)
+        {
+            return ex.Result;
+        }
         catch (Win32Exception x) when (OperatingSystem.IsWindows() && x.NativeErrorCode == 740)
         {
             // 740 = Operating requires elevation

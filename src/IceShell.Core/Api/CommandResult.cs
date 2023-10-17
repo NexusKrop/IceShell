@@ -128,4 +128,24 @@ public record struct CommandResult
     {
         return WithError(CommandErrorCode.BadFile, LangMessage.MsgFileNotFound(file));
     }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CommandResult"/> indicating that a directory required was not found.
+    /// </summary>
+    /// <param name="directory">The directory.</param>
+    /// <returns>The result.</returns>
+    public static CommandResult WithExistingDirectory(string directory)
+    {
+        return WithError(CommandErrorCode.DirectoryExists, LangMessage.MsgDirectoryAlreadyExists(directory));
+    }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="CommandResult"/> indicating that a file already exists.
+    /// </summary>
+    /// <param name="file">The file.</param>
+    /// <returns>The result.</returns>
+    public static CommandResult WithExistingFile(string file)
+    {
+        return WithError(CommandErrorCode.FileExists, LangMessage.MsgFileAlreadyExists(file));
+    }
 }
