@@ -8,18 +8,12 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Authors>WithLithum</Authors>
-    <Company>NexusKrop</Company>
     <PackageId>IceShell</PackageId>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageIcon>IceShell_128x.png</PackageIcon>
     <ApplicationIcon>IceShell.ico</ApplicationIcon>
     <AssemblyName>iceshell</AssemblyName>
     <RootNamespace>IceShell</RootNamespace>
-
-    <!-- Versioning -->
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <VersionSuffix>alpha</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>

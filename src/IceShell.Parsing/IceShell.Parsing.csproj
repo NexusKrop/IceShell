@@ -1,10 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <VersionPrefix>0.2.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+    <Title>IceShell Parsing Service</Title>
+    <Product>$(SolutionName)</Product>
+    <Description>IceShell parsing service</Description>
+    <RepositoryUrl>https://github.com/NexusKrop/IceShell.git</RepositoryUrl>
   </PropertyGroup>
 
 </Project>

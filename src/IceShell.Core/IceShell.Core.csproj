@@ -7,11 +7,6 @@
     <Nullable>enable</Nullable>
     <PackageId>IceShell.Core</PackageId>
     <Title>IceShell Core</Title>
-    <Authors>WithLithum</Authors>
-    <Company>NexusKrop</Company>
-    <Product>IceShell</Product>
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <VersionSuffix>alpha</VersionSuffix>
     <RepositoryUrl>https://github.com/NexusKrop/IceShell.git</RepositoryUrl>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
