@@ -27,6 +27,16 @@ public interface IShell : ICommandExecutor
     IModuleManager ModuleManager { get; }
 
     /// <summary>
+    /// Gets the error code returned by the last command.
+    /// </summary>
+    CommandErrorCode LastError { get; }
+
+    /// <summary>
+    /// Gets the exit code returned by the last command.
+    /// </summary>
+    int LastExitCode { get; }
+
+    /// <summary>
     /// Instructs the active shell process to stop receiving new commands after the current one
     /// is complete.
     /// </summary>

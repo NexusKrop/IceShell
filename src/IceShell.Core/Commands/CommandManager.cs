@@ -42,7 +42,8 @@ public class CommandManager : ICommandManager
         typeof(TypeCommandEx),
         typeof(PromptCommandEx),
         typeof(HelpCommandEx),
-        typeof(SetCommand)
+        typeof(SetCommand),
+        typeof(IfCommand)
     };
 
     /// <summary>

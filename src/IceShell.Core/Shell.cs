@@ -76,6 +76,12 @@ public class Shell : IShell
     /// <inheritdoc />
     public bool SupportsJump => false;
 
+    /// <inheritdoc/>
+    public int LastExitCode { get; private set; }
+
+    /// <inheritdoc/>
+    public CommandErrorCode LastError { get; private set; }
+
     /// <summary>
     /// Changes the current directory of this process.
     /// </summary>
@@ -173,33 +179,37 @@ public class Shell : IShell
     /// <param name="actualExecutor">The executor to pass to commands (or have this instance to act on behalf of). If <see langword="null"/>, the Shell will run commands on its own behalf.</param>
     public CommandResult Execute(string line, ICommandExecutor? actualExecutor = null)
     {
+        CommandResult cmdResult = CommandResult.WithError(CommandErrorCode.GenericCommandFail);
+
         try
         {
             var batchLine = Dispatcher.ParseLine(line);
 
-            return Dispatcher.Execute(batchLine, this);
+            cmdResult = Dispatcher.Execute(batchLine, this);
         }
         catch (CommandFormatException ex)
         {
-            ConsoleOutput.PrintShellError(string.Format("{0}", ex.Message));
+            cmdResult = CommandResult.WithError(CommandErrorCode.GenericCommandFail, ex.Message);
         }
         catch (CommandInterruptException ex)
         {
-            return ex.Result;
+            cmdResult = ex.Result;
         }
         catch (Win32Exception x) when (OperatingSystem.IsWindows() && x.NativeErrorCode == 740)
         {
             // 740 = Operating requires elevation
             ConsoleOutput.PrintShellError(string.Format(LangMessage.Get("shell_require_elevation"), LangMessage.Get("shell_windows_elevation_help")));
-            return CommandResult.WithError(CommandErrorCode.ElevationRequired);
+            cmdResult = CommandResult.WithError(CommandErrorCode.ElevationRequired);
         }
         catch (Exception ex)
         {
             ConsoleOutput.PrintShellError(ex.ToString());
-            return CommandResult.WithException(CommandErrorCode.GenericCommandException, ex);
+            cmdResult = CommandResult.WithException(CommandErrorCode.GenericCommandException, ex);
         }
 
-        return CommandResult.WithError(CommandErrorCode.GenericCommandFail);
+        LastExitCode = cmdResult.ExitCode;
+        LastError = cmdResult.ErrorCode;
+        return cmdResult;
     }
 
     /// <inheritdoc />

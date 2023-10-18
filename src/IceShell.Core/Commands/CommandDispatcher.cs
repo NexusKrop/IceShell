@@ -296,8 +296,6 @@ public class CommandDispatcher : ICommandDispatcher
             {
                 throw ExceptionHelper.WithMessage(LangMessage.GetFormat("generic_arg_cannot_resolve", argStr));
             }
-
-            definition.Property.SetValue(instance, argStr);
         }
 
         return instance.Execute(_shell, executor, context);

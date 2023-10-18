@@ -9,31 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Commands
+
+- Introduced `IF` command to check for certain conditions and circumstances.
+- Introduced `SET` command to query and set environment variables.
+- Added support for error codes for internal commands.
+
+#### Syntax
+
 - Added support for "greedy string values" (last value of a command that can contain spaces without having to be quoted).
-- Added support for stream-based mode in `TYPE` command.
-- Added experimental support for redirecting:
-  - The output of an internal command to another internal command;
-  - The output of an internal command to an external command;
-  - The output of an external command to an internal command;
-  - The output of an external command to another external command.
-- Added support for `DIR` command to emit machine readable format.
+- Added a new operator (`&&`) that only executes the command to its right if the command to its left returns exit code 0.
+
+#### Shell
+
+- Added experimental support for redirecting output from and to commands.
 - Added an option in the configuration to display shell interpreter version info on start-up.
-- Added API support for expanding environment variables.
 - Added support for `CTRL` + `C` interruption.
   - When a process launched from the shell is currently running, IceShell either sends `SIGTERM` on Linux (if configured to do so) or kills the process in other cases.
   - Otherwise, the shell exits immediately.
 - Added support for saving and restoring command history.
 - Added `SIGTERM` handling support for GNU/Linux.
-- Added `SET` command to query and set environment variable.
-- Added support for error codes for internal commands.
+
+#### API
+
+- Added API support for expanding environment variables.
 
 ### Changed
+
+#### Commands
+
+- Added support for stream-based mode in `TYPE` command.
+- Added support for `DIR` command to emit machine readable format.
+- `DIR` command will now fail if a directory was specified, and the specified directory does not exist.
+
+#### Syntax
 
 - Improved support for recognising values that are POSIX paths, instead of integrated command option arguments.
 - End of options statement (`--`) can no longer be quoted.
 - Escaping is now disallowed outside quoted strings.
-- `DIR` command will now fail if a directory was specified, and the specified directory does not exist.
-- Command history is now limited 100 items. 
+
+#### Shell
+
+- Command history is now to limited 100 items. 
+
+#### API
+
 - `ICommand` interface is now replaced with `IShellCommand` interface.
 
 ### Fixed
