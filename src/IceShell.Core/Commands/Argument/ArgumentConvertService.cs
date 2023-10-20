@@ -1,3 +1,6 @@
+// Copyright (C) NexusKrop & contributors 2023
+// See "COPYING.txt" for licence
+
 namespace IceShell.Core.Commands.Argument;
 
 using IceShell.Core.Api;
@@ -11,9 +14,10 @@ internal class ArgumentConvertService
 {
     private readonly Dictionary<Type, IArgumentConverter> _converters = new();
 
-    internal void RegisterConverter(Type type, IArgumentConverter converter)
+    internal ArgumentConvertService RegisterConverter(Type type, IArgumentConverter converter)
     {
         _converters.Add(type, converter);
+        return this;
     }
 
     internal void UnregisterConverter(Type type)

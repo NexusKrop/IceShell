@@ -32,4 +32,6 @@ internal static class ExceptionHelper
     public static Exception DirectoryAlreadyExists(string dirName) => new CommandFormatException(LangMessage.MsgDirectoryAlreadyExists(dirName));
 
     public static Exception InvalidPath() => new CommandFormatException(LangMessage.InvalidPath());
+
+    public static Exception CannotResolve(string arg) => new CommandFormatException(LangMessage.MsgCannotResolve(arg));
 }

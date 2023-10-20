@@ -200,4 +200,11 @@ public static class LangMessage
     /// <param name="errorCode">The error code.</param>
     /// <returns>The error code message.</returns>
     public static string MsgFromErrorCode(CommandErrorCode errorCode) => Get($"generic_command_error_{(int)errorCode}");
+
+    /// <summary>
+    /// Gets the message that is displayed when the specified argument cannot be resolved.
+    /// </summary>
+    /// <param name="arg">The argument.</param>
+    /// <returns>The message.</returns>
+    public static string MsgCannotResolve(string arg) => GetFormat("generic_arg_cannot_resolve", arg);
 }

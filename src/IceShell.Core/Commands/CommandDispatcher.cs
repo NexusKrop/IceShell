@@ -42,8 +42,13 @@ public class CommandDispatcher : ICommandDispatcher
 
         if (registerManagerDefaults)
         {
-            _convertService.RegisterConverter(typeof(Enum), new EnumArgumentConverter());
-            _convertService.RegisterConverter(typeof(string), new StringConverter());
+            _convertService.RegisterConverter(typeof(Enum), new EnumArgumentConverter())
+                .RegisterConverter(typeof(string), new StringArgumentConverter())
+                .RegisterConverter(typeof(byte), new ByteArgumentConverter())
+                .RegisterConverter(typeof(sbyte), new SByteArgumentConverter())
+                .RegisterConverter(typeof(short), new Int16ArgumentConverter())
+                .RegisterConverter(typeof(int), new Int32ArgumentConverter())
+                .RegisterConverter(typeof(long), new Int64ArgumentConverter());
         }
     }
 
