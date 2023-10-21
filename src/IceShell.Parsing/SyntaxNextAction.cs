@@ -19,5 +19,9 @@ public enum SyntaxNextAction
     /// <summary>
     /// Only executes next command of this segment is successful.
     /// </summary>
-    IfSuccessOnly
+    IfSuccessOnly,
+    /// <summary>
+    /// Executes the next command regardless of the state of the last command.
+    /// </summary>
+    Continue
 }

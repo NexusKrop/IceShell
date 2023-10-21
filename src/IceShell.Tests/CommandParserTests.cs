@@ -7,6 +7,43 @@ using IceShell.Parsing;
 
 public class CommandParserTests
 {
+    private bool MatchSegment(SyntaxSegment segment, SyntaxNextAction nextAction, string? cmdName = null, Predicate<SyntaxOption>? optionPredicate = null, Predicate<SyntaxStatement>? valuePredicate = null)
+    {
+        if (segment.NextAction != nextAction)
+        {
+            return false;
+        }
+
+        if (cmdName != null && (segment.Command == null || segment.Command.Name != cmdName))
+        {
+            return false;
+        }
+
+        if (optionPredicate != null && segment.Command != null)
+        {
+            foreach (var option in segment.Command.Options)
+            {
+                if (!optionPredicate(option))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (valuePredicate != null && segment.Command != null)
+        {
+            foreach (var value in segment.Command.Values)
+            {
+                if (!valuePredicate(value))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     [Test]
     public void ParseCompound_Simple()
     {
@@ -18,9 +55,12 @@ public class CommandParserTests
         {
             Assert.That(parsed.Segments, Has.Count.EqualTo(2));
 
-            Assert.That(parsed.Segments[0].NextAction, Is.EqualTo(SyntaxNextAction.Redirect));
-            Assert.That(parsed.Segments[0].Command?.Name, Is.EqualTo("test"));
-            Assert.That(parsed.Segments[0].Command?.Options, Is.Empty);
+            Assert.That(MatchSegment(parsed.Segments[0],
+                nextAction: SyntaxNextAction.Redirect,
+                cmdName: "test",
+                optionPredicate: null,
+                valuePredicate: null));
+
             Assert.That(parsed.Segments[0].Command?.Values, Has.Count.EqualTo(1));
             Assert.That(parsed.Segments[0].Command?.Values[0].Content, Is.EqualTo("argument"));
 

@@ -28,21 +28,25 @@ public static class CommandParser
 
         foreach (var statement in statements)
         {
-            if (statement.Content == "&&")
+            if (statement.Content == "&")
+            {
+                EndSegment(SyntaxNextAction.Continue);
+            }
+            else if (statement.Content == "&&")
             {
                 EndSegment(SyntaxNextAction.IfSuccessOnly);
-                currentSegment.Clear();
-                continue;
             }
-
-            if (statement.Content == ">")
+            else if (statement.Content == ">")
             {
                 EndSegment(SyntaxNextAction.Redirect);
-                currentSegment.Clear();
+            }
+            else
+            {
+                currentSegment.Add(statement);
                 continue;
             }
 
-            currentSegment.Add(statement);
+            currentSegment.Clear();
         }
 
         EndSegment(SyntaxNextAction.None);

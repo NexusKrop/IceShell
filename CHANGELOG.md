@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Syntax
+
+- Added support for single AND symbol operator (`&`) which executes the next command regardless of the result of the last command.
+
 #### API
 
-- Added support for `SByte`, `Byte`, `Int16`, `Int32` and `Int64` arguments
+- Added support for `SByte`, `Byte`, `Int16`, `Int32` and `Int64` arguments.
 
 ## [v0.2.0-alpha]
 
