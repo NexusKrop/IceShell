@@ -38,13 +38,13 @@ public record CommandSection
     /// Initializes a new instance of the <see cref="CommandSection"/> record, with a list of statements to pass to
     /// an external program.
     /// </summary>
-    /// <param name="statements">The list of statements containing the name of the command.</param>
+    /// <param name="externalCommand">The external command to execute.</param>
     /// <param name="nextAction">The action to perform to the next command.</param>
-    public CommandSection(IList<SyntaxStatement> statements, SyntaxNextAction nextAction = SyntaxNextAction.None)
+    public CommandSection(ExternalCommandRef externalCommand, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
         IsCommand = false;
-        Statements = statements;
-        Name = statements[0].Content;
+        Statements = externalCommand.Arguments;
+        Name = externalCommand.ReferenceName ?? "";
         NextAction = nextAction;
     }
 
@@ -61,7 +61,7 @@ public record CommandSection
     /// <summary>
     /// Gets a list of statements.
     /// </summary>
-    public IList<SyntaxStatement>? Statements { get; }
+    public IEnumerable<SyntaxStatement>? Statements { get; }
 
     /// <summary>
     /// Gets the parsed command.

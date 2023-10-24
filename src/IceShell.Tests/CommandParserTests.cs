@@ -14,14 +14,14 @@ public class CommandParserTests
             return false;
         }
 
-        if (cmdName != null && (segment.Command == null || segment.Command.Name != cmdName))
+        if (cmdName != null && (segment.InternalCommand == null || segment.InternalCommand.Name != cmdName))
         {
             return false;
         }
 
-        if (optionPredicate != null && segment.Command != null)
+        if (optionPredicate != null && segment.InternalCommand != null)
         {
-            foreach (var option in segment.Command.Options)
+            foreach (var option in segment.InternalCommand.Options)
             {
                 if (!optionPredicate(option))
                 {
@@ -30,9 +30,9 @@ public class CommandParserTests
             }
         }
 
-        if (valuePredicate != null && segment.Command != null)
+        if (valuePredicate != null && segment.InternalCommand != null)
         {
-            foreach (var value in segment.Command.Values)
+            foreach (var value in segment.InternalCommand.Values)
             {
                 if (!valuePredicate(value))
                 {
@@ -61,14 +61,14 @@ public class CommandParserTests
                 optionPredicate: null,
                 valuePredicate: null));
 
-            Assert.That(parsed.Segments[0].Command?.Values, Has.Count.EqualTo(1));
-            Assert.That(parsed.Segments[0].Command?.Values[0].Content, Is.EqualTo("argument"));
+            Assert.That(parsed.Segments[0].InternalCommand?.Values, Has.Count.EqualTo(1));
+            Assert.That(parsed.Segments[0].InternalCommand?.Values[0].Content, Is.EqualTo("argument"));
 
             Assert.That(parsed.Segments[1].NextAction, Is.EqualTo(SyntaxNextAction.None));
-            Assert.That(parsed.Segments[1].Command?.Name, Is.EqualTo("test1"));
-            Assert.That(parsed.Segments[1].Command?.Options, Is.Empty);
-            Assert.That(parsed.Segments[1].Command?.Values, Has.Count.EqualTo(1));
-            Assert.That(parsed.Segments[1].Command?.Values[0].Content, Is.EqualTo("arg2"));
+            Assert.That(parsed.Segments[1].InternalCommand?.Name, Is.EqualTo("test1"));
+            Assert.That(parsed.Segments[1].InternalCommand?.Options, Is.Empty);
+            Assert.That(parsed.Segments[1].InternalCommand?.Values, Has.Count.EqualTo(1));
+            Assert.That(parsed.Segments[1].InternalCommand?.Values[0].Content, Is.EqualTo("arg2"));
         });
     }
 

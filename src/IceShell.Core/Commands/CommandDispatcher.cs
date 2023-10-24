@@ -8,11 +8,9 @@ using IceShell.Core.CLI.Languages;
 using IceShell.Core.Commands.Argument;
 using IceShell.Core.Exceptions;
 using IceShell.Parsing;
-using Microsoft.VisualBasic.FileIO;
 using NexusKrop.IceCube.Util.Enumerables;
 using NexusKrop.IceShell.Core.CLI;
 using NexusKrop.IceShell.Core.Commands;
-using NexusKrop.IceShell.Core.Commands.Complex;
 using NexusKrop.IceShell.Core.FileSystem;
 using System;
 using System.Collections.Generic;
@@ -66,21 +64,21 @@ public class CommandDispatcher : ICommandDispatcher
 
         foreach (var state in rawCompound)
         {
-            if (state.Type == SegmentType.File)
+            if (state.Type == SegmentType.ExternalCommand)
             {
-                sysCompound.Add(new CommandSection(new List<SyntaxStatement>(state.FileStatements!), state.NextAction));
+                sysCompound.Add(new CommandSection(state.ExternalCommand, state.NextAction));
             }
-            else if (state.Type == SegmentType.Command)
+            else if (state.Type == SegmentType.InternalCommand)
             {
-                var definition = CommandManager.GetDefinition(state.Command!.Name)
+                var definition = CommandManager.GetDefinition(state.InternalCommand!.Name)
                     ?? throw new InvalidOperationException("Check parser, invalid command");
 
-                var argument = new CommandArgument(state.Command!, definition.Definition);
+                var argument = new CommandArgument(state.InternalCommand!, definition.Definition);
                 var result = argument.Parse();
 
                 var cmdInfo = new CommandUnit(result, definition);
 
-                sysCompound.Add(new CommandSection(cmdInfo, state.Command!.Name, state.NextAction));
+                sysCompound.Add(new CommandSection(cmdInfo, state.InternalCommand!.Name, state.NextAction));
             }
         }
 
@@ -115,11 +113,6 @@ public class CommandDispatcher : ICommandDispatcher
                 lastOutStream = null;
             }
 
-            // This default value (-2000) indicates that the entire routine below somehow did not run or was
-            // interrupted.
-            //
-            // This is only useful in diagnostics if the process *did not start*! If the process did start,
-            // the process it self can return -2000! Please do not assert this.
             CommandResult exitCode = CommandResult.WithError(CommandErrorCode.ExternalStartFail);
             TextReader? pipeStream = null;
 
@@ -215,7 +208,7 @@ public class CommandDispatcher : ICommandDispatcher
                 return CommandResult.Ok();
             }
 
-            var cmdName = section.Statements[0].Content;
+            var cmdName = section.Name;
             var searchResult = PathSearcher.GetSystemExecutableName(Path.Combine(Environment.CurrentDirectory, cmdName));
 
             if (searchResult == null || !File.Exists(searchResult))

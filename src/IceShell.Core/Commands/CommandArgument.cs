@@ -15,7 +15,7 @@ using System.Text;
 /// </summary>
 public class CommandArgument
 {
-    private readonly SyntaxCommand _command;
+    private readonly SyntaxCommandInvocation _command;
     private readonly CommandDefinition _definition;
 
     /// <summary>
@@ -23,7 +23,7 @@ public class CommandArgument
     /// </summary>
     /// <param name="command">The command syntax to parse.</param>
     /// <param name="definition">The definition of the command.</param>
-    public CommandArgument(SyntaxCommand command, CommandDefinition definition)
+    public CommandArgument(SyntaxCommandInvocation command, CommandDefinition definition)
     {
         _command = command;
         _definition = definition;

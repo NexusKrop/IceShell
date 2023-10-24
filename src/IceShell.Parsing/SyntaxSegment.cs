@@ -9,38 +9,41 @@ namespace IceShell.Parsing;
 public record SyntaxSegment
 {
     /// <summary>
-    /// Initializes a new instance of <see cref="SyntaxSegment"/> class as a command segment.
+    /// Initializes a new instance of <see cref="SyntaxSegment"/> class as internal command invocation segment.
     /// </summary>
     /// <param name="command">The command.</param>
     /// <param name="nextAction">The action to perform when executing the next segment.</param>
-    public SyntaxSegment(SyntaxCommand command, SyntaxNextAction nextAction = SyntaxNextAction.None)
+    public SyntaxSegment(SyntaxCommandInvocation command, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
-        Command = command;
-        Type = SegmentType.Command;
+        InternalCommand = command;
+        Type = SegmentType.InternalCommand;
         NextAction = nextAction;
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="SyntaxSegment"/> class as a file segment.
+    /// Initializes a new instance of <see cref="SyntaxSegment"/> class as external command invocation segment.
     /// </summary>
-    /// <param name="file">The file.</param>
+    /// <param name="externalCommand">The external command reference.</param>
     /// <param name="nextAction">The action to perform when executing the next segment.</param>
-    /// <param name="additionalStatements">Additional statements to pass when executing the file.</param>
-    public SyntaxSegment(string file, SyntaxNextAction nextAction = SyntaxNextAction.None, IEnumerable<SyntaxStatement>? additionalStatements = null)
+    public SyntaxSegment(ExternalCommandRef externalCommand, SyntaxNextAction nextAction = SyntaxNextAction.None)
     {
-        File = file;
-        Type = SegmentType.File;
+        ExternalCommand = externalCommand;
+        Type = SegmentType.ExternalCommand;
         NextAction = nextAction;
-        FileStatements = additionalStatements;
     }
 
     /// <summary>
-    /// Gets or sets the command of this instance.
+    /// Gets or sets the internal command invocation.
     /// </summary>
     /// <value>
-    /// The command of this instance. The value should be ignored if <see cref="Type"/> is not <see cref="SegmentType.Command"/>.
+    /// The command of this instance. The value should be ignored if <see cref="Type"/> is not <see cref="SegmentType.InternalCommand"/>.
     /// </value>
-    public SyntaxCommand? Command { get; set; }
+    public SyntaxCommandInvocation? InternalCommand { get; set; }
+
+    /// <summary>
+    /// Gets or sets the external command reference.
+    /// </summary>
+    public ExternalCommandRef ExternalCommand { get; set; }
 
     /// <summary>
     /// Gets or sets the type of the command.
@@ -51,14 +54,10 @@ public record SyntaxSegment
     /// Gets or sets the file identifier of this instance.
     /// </summary>
     /// <value>
-    /// The file identifier of this instance. The value should be ignored if <see cref="Type"/> is not <see cref="SegmentType.File"/>.
+    /// The file identifier of this instance. The value should be ignored.
     /// </value>
+    [Obsolete("Use ExternalCommand for external commands.")]
     public string? File { get; set; }
-
-    /// <summary>
-    /// Get or sets the additional statements to supply to the file.
-    /// </summary>
-    public IEnumerable<SyntaxStatement>? FileStatements { get; set; }
 
     /// <summary>
     /// Gets or sets the action to perform when executing the next segment.

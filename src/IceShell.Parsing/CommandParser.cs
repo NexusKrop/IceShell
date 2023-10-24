@@ -62,7 +62,20 @@ public static class CommandParser
             }
             else
             {
-                thisCompound.Add(new SyntaxSegment(fileName, nextAction, currentSegment.ToArray()));
+                SyntaxStatement[] array;
+
+                if (currentSegment.Count == 1)
+                {
+                    array = Array.Empty<SyntaxStatement>();
+                }
+                else
+                {
+                    array = new SyntaxStatement[currentSegment.Count - 1];
+                    currentSegment.CopyTo(1, array, 0, currentSegment.Count - 1);
+                }
+
+                thisCompound.Add(new SyntaxSegment(new ExternalCommandRef(fileName, array),
+                    nextAction));
             }
         }
 
@@ -75,7 +88,7 @@ public static class CommandParser
     /// <param name="statements">The list of statements that constitutes of a command.</param>
     /// <returns>The parsed command.</returns>
     /// <exception cref="FormatException">The command syntax is invalid.</exception>
-    public static SyntaxCommand ParseSingleCommand(IList<SyntaxStatement> statements)
+    public static SyntaxCommandInvocation ParseSingleCommand(IList<SyntaxStatement> statements)
     {
         var options = new HashSet<SyntaxOption>();
         var values = new List<SyntaxStatement>();

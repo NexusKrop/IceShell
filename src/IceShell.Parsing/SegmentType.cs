@@ -13,11 +13,11 @@ public enum SegmentType
     /// </summary>
     None,
     /// <summary>
-    /// A <see cref="SyntaxSegment"/> with a command.
+    /// Invocation of an internal command.
     /// </summary>
-    Command,
+    InternalCommand,
     /// <summary>
-    /// A <see cref="SyntaxSegment"/> with a file.
+    /// Invocation of an external command.
     /// </summary>
-    File
+    ExternalCommand,
 }

@@ -5,21 +5,21 @@ namespace IceShell.Parsing;
 using System.Collections.Generic;
 
 /// <summary>
-/// Represents a command specified by the user.
+/// Represents an invocation sentence that invokes an internal command.
 /// </summary>
-public record SyntaxCommand
+public record SyntaxCommandInvocation
 {
     /// <summary>
-    /// Initializes a new instance of <see cref="SyntaxCommand"/> class.
+    /// Initializes a new instance of <see cref="SyntaxCommandInvocation"/> class.
     /// </summary>
     /// <param name="name">The name of the command.</param>
     /// <param name="options">The list of options.</param>
     /// <param name="values">The list of values.</param>
-    public SyntaxCommand(string name, ICollection<SyntaxOption> options, IList<SyntaxStatement> values)
+    public SyntaxCommandInvocation(string name, ICollection<SyntaxOption> options, IList<SyntaxStatement> values)
     {
         Name = name;
         Options = options;
-        Values = values; 
+        Values = values;
     }
 
     /// <summary>
