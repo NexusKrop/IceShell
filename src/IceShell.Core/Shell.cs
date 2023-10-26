@@ -39,7 +39,7 @@ public class Shell : IShell
     /// <summary>
     /// The default prompt string of the interactive shell.
     /// </summary>
-    public const string DefaultPrompt = "%P%G ";
+    public const string DefaultPrompt = "$P$G ";
 
     private readonly ShellSettings _settings;
 
@@ -250,9 +250,9 @@ public class Shell : IShell
 
         while (!_exit && !Executive.Interrupt)
         {
-            var prompt = this.Prompt.Replace("%P", Environment.CurrentDirectory, true, null)
-                .Replace("%G", ">", true, null)
-                .Replace("%L", "<", true, null);
+            _ = Executive.TryParsePrompt(this.Prompt, out var prompt);
+
+            prompt ??= "[prompt error]> ";
 
             var input = ReadLine.Read(prompt);
 

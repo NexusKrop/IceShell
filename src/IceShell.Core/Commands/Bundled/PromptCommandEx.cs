@@ -4,6 +4,7 @@
 namespace IceShell.Core.Commands.Bundled;
 
 using IceShell.Core.Api;
+using IceShell.Core.CLI.Languages;
 using IceShell.Core.Commands.Attributes;
 using NexusKrop.IceShell.Core;
 using NexusKrop.IceShell.Core.Commands.Complex;
@@ -15,6 +16,8 @@ using NexusKrop.IceShell.Core.Commands.Complex;
 [GreedyString]
 public class PromptCommandEx : IShellCommand
 {
+    internal const string MsgInvalidTemplate = "command_prompt_invalid_template";
+
     /// <summary>
     /// Gets or sets the command prompt to change to.
     /// </summary>
@@ -35,6 +38,13 @@ public class PromptCommandEx : IShellCommand
 
             shell.Prompt = Shell.DefaultPrompt;
             return CommandResult.Ok();
+        }
+
+        // Validate the prompt.
+        if (!Executive.TryParsePrompt(Prompt, out _))
+        {
+            return CommandResult.WithError(CommandErrorCode.BadArgument,
+                LangMessage.Get(MsgInvalidTemplate));
         }
 
         shell.Prompt = prompt;
