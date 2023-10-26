@@ -1,4 +1,11 @@
-# IceShell
+<!-- If you forgot the ID it may not render correctly -->
+
+<div id="iceshell-readme-centre-logo" align="center">
+<img src="assets/logo_with_bg.png" />
+</div>
+<h1 style="text-align: center;">IceShell</h1>
+
+<div id="iceshell-readme-centre-badges" align="center">
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/NexusKrop/IceShell/dotnet.yml?style=flat-square&logo=github)
 [![GitHub issues](https://img.shields.io/github/issues/NexusKrop/IceShell?style=flat-square)](https://github.com/NexusKrop/IceShell/issues)
@@ -6,8 +13,14 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/NexusKrop/IceShell?style=flat-square)
 [![License](https://img.shields.io/github/license/NexusKrop/IceShell?style=flat-square)](COPYING.txt)
 
+</div>
+
+<div id="iceshell-readme-centre-description" align="center">
+
 A cross-platform shell interpreter written in C#, and is inspired by Windows Command Prompt and
 MS-DOS `command.com`.
+
+</div>
 
 ## Usage
 
