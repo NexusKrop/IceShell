@@ -282,11 +282,32 @@ PROMPT [prompt]
 
 ### Arguments
 
-- **prompt**: _Optional._ The prompt to change to.
+- **prompt**: _Optional._ The prompt template to change to.
+
+### Remarks
+
+The prompt template is a string with placeholders:
+
+| Placeholder | Value |
+| ----------- | ----- |
+| `$Q` | The equal sign (`=`) |
+| `$$` | The dollar sign (`$`) |
+| `$T` | The current time in short time format |
+| `$D` | The current date in short date format |
+| `$P` | The path to the current working directory |
+| `$V` | The version of IceShell application |
+| `$G` | The greater than sign (`>`) |
+| `$L` | The lesser than sign (`<`) |
+| `$B` | The pipe sign (`|`) |
+| `$_` | System new-line sequence |
+
+### Errors
+
+- **10 - BadArgument**: The prompt template format is invalid.
 
 ### Exit Code
 
-Always succeed.
+Returns `0` if the command succeeds, non-zero otherwise. Check the error code for detailed error.
 
 <!-- ======================================= -->
 

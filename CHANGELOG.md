@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added support for `SByte`, `Byte`, `Int16`, `Int32` and `Int64` arguments.
 
+#### Shell
+
+- Added support for extended prompt format.
+
+### Changed
+
+#### Commands
+
+- `PROMPT` command will check the syntax of the prompt template.
+
 ## [v0.2.0-alpha]
 
 ### Added
